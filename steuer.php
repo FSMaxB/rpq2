@@ -19,6 +19,26 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+$einstell_template = file_get_contents('einstellzeile.html');
+$einstell_template_trenn = file_get_contents('einstellzeile_trenn.html');
+
+function einstell_zeile( $csv_string ) {
+	global $einstell_template, $einstell_template_trenn;
+	if( $csv_string == '*' ) {
+		echo $einstell_template_trenn;
+	}
+	else {
+		$fields = explode(',', $csv_string);
+		$output_line = $einstell_template;
+		$output_line = str_replace('{id}',$fields[0],$output_line);
+		$output_line = str_replace('{value}',$fields[1],$output_line);
+		$output_line = str_replace('{min}',$fields[2],$output_line);
+		$output_line = str_replace('{max}',$fields[3],$output_line);
+		$output_line = str_replace('{text}',$fields[4],$output_line);
+		echo $output_line;
+	}
+}
+
 $title = 'Steuerung';
 $author = 'Max Bruckner';
 $heading = 'Steuerung';
@@ -36,7 +56,14 @@ $lines = explode("\n", $filecontent);
 
 include('header.php');
 include('heading.php');
-echo $path;
-echo $lines[0];
+
+echo "<table>\n";
+foreach($lines as $line) {
+	if($line !== '') {
+		einstell_zeile($line);
+	}
+}
+echo '</table>';
+
 include('footer_sub.php');
 ?>
