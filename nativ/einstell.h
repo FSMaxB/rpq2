@@ -24,6 +24,8 @@
 
 class Einstellwert {
 public:
+	Einstellwert(unsigned int, signed int, signed int, signed int, string);
+	
 	unsigned int id();
 	signed int value();
 	signed int min();

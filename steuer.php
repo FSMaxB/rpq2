@@ -35,6 +35,7 @@ function einstell_zeile( $csv_string ) {
 		$output_line = str_replace('{min}',$fields[2],$output_line);
 		$output_line = str_replace('{max}',$fields[3],$output_line);
 		$output_line = str_replace('{text}',$fields[4],$output_line);
+		$output_line = str_replace('{form}',"<input type=\"checkbox\" name=\"checked" . $fields[0] . "\" value=\"true\">",$output_line);
 		echo $output_line;
 	}
 }
@@ -57,13 +58,16 @@ $lines = explode("\n", $filecontent);
 include('header.php');
 include('heading.php');
 
+echo "<form action=\"einstell_write.php\" method=\"get\">\n";
 echo "<table>\n";
 foreach($lines as $line) {
 	if($line !== '') {
 		einstell_zeile($line);
 	}
 }
-echo '</table>';
+echo "</table>\n";
+echo "<input type=\"submit\" value=\"Absenden\">";
+echo "</form>\n";
 
 include('footer_sub.php');
 ?>

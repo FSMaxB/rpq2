@@ -19,12 +19,16 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-foreach($_GET as $post) {
-	echo $post;
-}
-
+echo '<h3>Keys</h3>';
 $keys = array_keys($_GET);
 foreach($keys as $key) {
 	echo $key;
+	echo '<br/>';
+}
+
+echo '<h3>Values</h3>';
+foreach($_GET as $post) {
+	echo $post;
+	echo '<br/>';
 }
 ?>
