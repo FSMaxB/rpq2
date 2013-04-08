@@ -1,0 +1,21 @@
+INSTALLATIONSHINWEISE FÜR DAS RPQ2-WEBINTERFACE
+
+VORRAUSSETZUNGEN
+*funktionierende POSIX-Laufzeitumgebung
+*Webserver mit PHP5 (vorzugsweise apache2)
+*Pascal-Compiler (vorzugsweise freepascal)
+*C-Compiler und pthread-Bibliothek (vorzugsweise GCC)
+*Zip
+
+INSTALLATION
+
+Hinweis: Einige der im folgenden beschriebenen Befehle müssen mit Root-Rechten ausgeführt werden. Auf den meisten GNU/Linux-Systemen lässt sich das durch voranstellen des Befehls "sudo" bewerkstelligen.
+
+1. Kopieren der Ordnerstruktur in den Ordner des Webservers (normalerweise "/var/www")
+2. Besitzer der Ordner "regler", "csv", "einstell", "owndocs", "regler", "tty-logs", "tmp" auf den Benutzernamen des Webservers setzen (normalerweise mit dem Befehl "chown -R www-data:www-data ordnername"[mit Root-Rechten])
+3. Die Datei "send.c" und "receive.c" im Ordner "nativ" kompilieren, wobei der Programmname gleich dem Namen der Quelldatei ohne die Dateiendung sein muss (normalerweise mit dem Befehl "gcc send.c -o send -lpthread")
+4. Die Ordner "Bilder" und "docs" für andere lesbar machen ("sudo chmod -R +r Ordnername")
+4. Kopieren der CSV_ASM Datei mit der Dateiendung für die entsprechende Prozessorarchitektur im Ordner "nativ" zur Datei "CSV_ASM" (normalerweise mit dem Befehl "cp CSV_ASM.<rechnerarchitektur> CSV_ASM")
+5. Das Skript source.sh als root ausführen ("sudo ./source.sh")
+6. Dem Benutzernamen des Webservers die Rechte für den Zugriff auf die seriellen Schnittstellen geben (normalerweise mit dem Befehl "usermod -a -G dialout www-data"[mit Root-Rechten] "usermod -a -G tty www-data"[mit Root-Rechten]).
+7. Falls man den Rechner per Webinterface herunterfahren können möchte: Dem Benutzernamen des Webservers die Berechtigung zum Ausführen des "shutdown"-Befehles geben (normalerweise mit dem Befehl "chmod +s /sbin/shutdown"[mit Root-Rechten]; ACHTUNG: Anschließend kann jeder Benutzer den Computer herunterfahren)
