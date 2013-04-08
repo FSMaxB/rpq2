@@ -20,14 +20,14 @@
 */
 
 echo '<h3>Keys</h3>';
-$keys = array_keys($_GET);
+$keys = array_keys($_POST);
 foreach($keys as $key) {
 	echo $key;
 	echo '<br/>';
 }
 
 echo '<h3>Values</h3>';
-foreach($_GET as $post) {
+foreach($_POST as $post) {
 	echo $post;
 	echo '<br/>';
 }
