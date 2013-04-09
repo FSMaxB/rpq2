@@ -82,10 +82,16 @@ $path = $ordner . '/' . $filename;
 $filecontent = file_get_contents($path);
 $lines = explode("\n", $filecontent);
 
+$comment = $lines[0];
+$index = explode(',',$lines[1]);
+$index = $index[1];
+
 include('header.php');
 include('heading.php');
 
 echo "<form action=\"einstell_write.php\" method=\"post\">\n";
+echo '<input type="text" name="comment" value="' . $comment . '"></br>' . "\n";
+echo '<input type="hidden" name="index" value="' . $index . '">';
 echo "<table>\n";
 foreach($lines as $line) {
 	if($line !== '') {
