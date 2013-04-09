@@ -14,7 +14,7 @@
 FILE* input;						//Pointer der zu schickenden Datei
 FILE* output;						//Pointer der Schnittstelle im Schreibmodus
 FILE* f_antwort;					//Pointer der Schnittstelle im Lesemodus
-int status = TIMEOUT;				//Fehlerstatus mit TIMOUT vorbelegt -> ist dieser Wert am Ende immer noch gesetzt, so wurde der Thread abgebrochen, bevor er ihn ändern konnte
+int status = TIMEOUT;				//Fehlerstatus mit TIMEOUT vorbelegt -> ist dieser Wert am Ende immer noch gesetzt, so wurde der Thread abgebrochen, bevor er ihn ändern konnte
 int timeout = TIMEOUT_DELAY;		//Setzen des Standardwertes für den timeout
 int adresse;				//Regleradresse
 int adresse_antwort;			//Adresse des Reglers, der geantwortet hat

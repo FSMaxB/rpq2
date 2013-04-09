@@ -1,7 +1,7 @@
 /*
     RPQ2-Webinterface
     
-    Copyright (C) 2012 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
     
     This program is free software: you can redistribute it and/or modify
@@ -21,25 +21,53 @@
 #define EINSTELL_H
 
 #include <string.h>
+#include <fstream>
+#include <list>
+
+using std::string;
+using std::fstream;
+using std::ifstream;
+using std::ofstream;
+using std::list;
+
+class Einstelltabelle;
 
 class Einstellwert {
 public:
-	Einstellwert(unsigned int, signed int, signed int, signed int, string);
-	
-	unsigned int id();
-	signed int value();
-	signed int min();
-	signed int max();
-	string text();
-	
-	void setId(unsigned int);
-	void setValue(signed int);
-	void setMin(signed int);
-	void setMax(signed int);
-	void setText(string);
-private:
+	Einstellwert(string, Einstelltabelle*);
+	Einstellwert(unsigned int, signed int, signed int, signed int, string, Einstelltabelle*);
 	unsigned int id;
 	signed int value, min, max;
 	string text;
+	void read();
+	void write();
+	void set(string);
+	string get();
+private:
+	Einstelltabelle* parent;
+};
+
+class Einstelltabelle {
+public:
+	Einstelltabelle(fstream*, ifstream*, ofstream*);
+	fstream* tty;
+	
+	string comment;
+	unsigned int id;
+	
+	void read();
+	void write();
+private:
+	ifstream* csv_in;
+	ofstream* csv_out;
+	void read_csv();
+	void write_csv();	
+};
+
+class Exception {
+public:
+	Exception(unsigned int);
+	unsigned int type;
+	void print();
 };
 #endif

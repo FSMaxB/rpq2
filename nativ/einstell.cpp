@@ -1,7 +1,7 @@
 /*
     RPQ2-Webinterface
     
-    Copyright (C) 2012 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
     
     This program is free software: you can redistribute it and/or modify
@@ -19,67 +19,88 @@
 */
 
 /*
-	einstell read/write regleradresse input.csv [output.csv]
+	einstell read/write schnittstelle regleradresse input.csv [output.csv]
 */
 
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
+#include <string.h>
 
 #include "einstell.h"
 
+using std::string;
+using std::ifstream;
+using std::ofstream;
+using std::iostream;
+using std::fstream;
+
 int main(int argc, const char* argv[]) {
-	ifstream csv;
-	
-	
-	
+	ifstream csv_in;
+	ofstream csv_out;
+	fstream tty;
 }
 
-Einstellwert::Einstellwert(unsigned int p_id, signed int p_value, signed int p_min, signed int p_max, string p_text) {
+Einstellwert::Einstellwert(string line, Einstelltabelle* p_parent) {
+	parent = p_parent;
+	set(line);
+}
+
+Einstellwert::Einstellwert(unsigned int p_id, signed int p_value, signed int p_min, signed int p_max, string p_text, Einstelltabelle* p_parent) {
 	id = p_id;
 	value = p_value;
 	min = p_min;
 	max = p_max;
 	text = p_text;
+	parent = p_parent;
+}
+
+
+void Einstellwert::read() {
 	
 }
 
-unsigned int Einstellwert::id() {
-	return id;
+void Einstellwert::write() {
+	
 }
 
-signed int Einstellwert::value() {
-	return value;
+//Parsen des Strings, damit die einzelnen Objekteigenschaften befüllt werden können.
+void Einstellwert::set(string line) {
+	
 }
 
-signed int Einstellwert::min() {
-	return min;
+string Einstellwert::get() {
+	
 }
 
-signed int Einstellwert::max() {
-	return max;
+Einstelltabelle::Einstelltabelle(fstream* p_tty, ifstream* p_csv_in, ofstream* p_csv_out) {
+	tty = p_tty;
+	csv_in = p_csv_in;
+	csv_out = p_csv_out;
+	
+	read_csv();
 }
 
-string Einstellwert::text() {
-	return text;
+void Einstelltabelle::read() {
+	
 }
 
-void Einstellwert::setId(unsigned int p_id) {
-	id = p_id;
+void Einstelltabelle::write() {
+	
 }
 
-void Einstellwert::setValue(signed int p_value) {
-	value = p_value;
+void Einstelltabelle::read_csv() {
+	
 }
 
-void Einstellwert::setMin(signed int p_min) {
-	min = p_min;
+void Einstelltabelle::write_csv() {
+	
 }
 
-void Einstellwert::setMax(signed int p_max) {
-	max = p_max;
+Exception::Exception(unsigned int p_type) {
+	type = p_type;
 }
 
-void Einstellwert::setText(string p_text) {
-	text = p_text;
+void Exception::print() {
+		
 }
