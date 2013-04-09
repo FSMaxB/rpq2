@@ -1,3 +1,14 @@
-1,100,0,200,Dies ist ein Test
+Subindex,Wert,Min,Max,Text
+1,100,0,200,Einstellwert1
+4,101,0,200,Einstellwert2
+8,102,0,200,Einstellwert3
+12,103,0,200,Einstellwert4
+19,104,0,200,Einstellwert5
+30,105,0,200,Einstellwert6
 *
-4,34,4,345,Dies ist ein zweiter Test
+36,106,0,200,Einstellwert7
+41,100,0,200,Einstellwert8
+49,100,0,200,Einstellwert9
+50,100,0,200,Einstellwert10
+51,100,0,200,Einstellwert11
+61,109,0,200,Einstellwert12

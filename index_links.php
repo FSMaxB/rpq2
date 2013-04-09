@@ -32,8 +32,11 @@
     <h2 align="center">Regler-Sollwertvorgaben</h2>
   </button>
   <br />
-  <button onclick="window.location.href='einstell.php'" style="width:100%">
-    <h2 align="center">CSV-Einstellwerte</h2>
+  <button onclick="window.location.href='einstelltab.php'" style="width:100%">
+    <h2 align="center">Einstellwerttabellen verwalten</h2>
+  </button>
+  <button onclick="window.location.href='einstell.php?filename=default.csv'" style="width:100%">
+    <h2 align="center">Einstellwerte</h2>
   </button>
   <br />
   <button onclick="window.location.href='mess.php'" style="width:100%">

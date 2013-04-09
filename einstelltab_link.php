@@ -17,15 +17,10 @@
     
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see http://www.gnu.org/licenses/.
-    
-    --------------------einstell_link.php-----------------------------
-    Link der für jede Datei in der Liste von CSV-Einstellwerten zum 
-    Einsatz kommt.
 */
 ?>
 
 <a href="<?php echo "$ordner/$dateiname";?>"><?php echo $dateiname;?></a>
 &ensp;<a href="remove.php?pfad=<?php echo "$ordner/$dateiname";?>&amp;return=<?php echo $return;?>">[Löschen]</a>
-&ensp;<a href="submit.php?pfad=<?php echo "$ordner/$dateiname";?>&modus=einstell">[Übertragen]</a>
-
+&ensp;<a href="einstell.php?filename=<?php echo "$dateiname";?>">[Bearbeiten]</a>
 <br />

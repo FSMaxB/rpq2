@@ -19,20 +19,19 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-$path = $_GET["path"];
+$title = 'Einstellwerttabellen verwalten';
+$author = 'Max Bruckner';
+$heading = 'Einstellwerttabellen verwalten';
 
-echo '<h3>Keys</h3>';
-$keys = array_keys($_POST);
-foreach($keys as $key) {
-	echo $key;
-	echo '<br/>';
-}
+$ordner = 'einstell';			//Ordner, in dem die CSV-Einstellwerte gespeichert werden
+$link = 'einstelltab_link.php';	//Datei mit den Links für die Auflistung der CSV-Einstellwerte
+$return = 'einstelltab.php';		//Diese Seite, um hierher zurückkehren zu können
+$include = 'upload_csv.php';	//Datei, die in upload.php eingebunden werden soll (zum Verarbeiten der Dateiendungen)
 
-echo '<h3>Values</h3>';
-foreach($_POST as $post) {
-	echo $post;
-	echo '<br/>';
-}
 
-//$trennlines = $_POST[];
+include('header.php');
+include('heading.php');
+include('upload_form.php');		//Einbinden des Upload-Formulars
+include('list.php');			//Auflistung der Dateien
+include('footer_sub.php');
 ?>
