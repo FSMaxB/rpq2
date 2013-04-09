@@ -19,20 +19,27 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-$path = $_GET["path"];
+$filename = $_POST["filename"];
+$mode = $_POST["mode"];
 
-echo '<h3>Keys</h3>';
-$keys = array_keys($_POST);
-foreach($keys as $key) {
-	echo $key;
-	echo '<br/>';
+$comment = $_POST["comment"];
+$index = $_POST["index"];
+$count = $_POST["count"];
+
+echo $comment . "\n";
+echo 'Index,' . $index . "\n";
+
+$linecounter = 0;
+for($counter = 1; $counter <= $count; $counter++) {
+	$linecounter++;
+	if(in_array($linecounter,$_POST["trenn"])) {
+		echo "*\n";
+		$linecounter++;
+	}
+	
+	if($_POST["check$counter"] === "true") {
+		echo $_POST["id$counter"] . ',' . $_POST["value$counter"] . ',' . $_POST["min$counter"] . ',' . $_POST["max$counter"] . ',' . $_POST["text$counter"] . "\n";
+	}
 }
 
-echo '<h3>Values</h3>';
-foreach($_POST as $post) {
-	echo $post;
-	echo '<br/>';
-}
-
-//$trennlines = $_POST[];
 ?>

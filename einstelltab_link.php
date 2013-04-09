@@ -20,7 +20,7 @@
 */
 ?>
 
-<a href="<?php echo "$ordner/$dateiname";?>"><?php echo $dateiname;?></a>
+<a href="einstell.php?filename=<?php echo "$dateiname";?>"><?php echo $dateiname;?></a>
 &ensp;<a href="remove.php?pfad=<?php echo "$ordner/$dateiname";?>&amp;return=<?php echo $return;?>">[Löschen]</a>
-&ensp;<a href="einstell.php?filename=<?php echo "$dateiname";?>">[Bearbeiten]</a>
+&ensp;<a href="<?php echo "$ordner/$dateiname";?>">[Herunterladen]</a>
 <br />

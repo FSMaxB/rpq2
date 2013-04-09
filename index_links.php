@@ -43,10 +43,6 @@
     <h2 align="center">Messwerte</h2>
   </button>
   <br />
-  <button onclick="window.location.href='steuer.php'" style="width:100%">
-    <h2 align="center">Steuerung</h2>
-  </button>
-  <br />
   <button onclick="window.location.href='docs.php'" style="width:100%">
     <h2 align="center">Innowatt-Dokumentationen</h2>
   </button>

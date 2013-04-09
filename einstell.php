@@ -18,21 +18,22 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
-
-$einstell_template = file_get_contents('einstellzeile.html');	//Vorlage für die Listenelemente
-$einstell_template_trenn = file_get_contents('einstellzeile_trenn.html');	//Vorlage für die Trennlinien
+$einstell_template = file_get_contents('einstell.html'); //Vorlage für die Seite "Einstellwerte"
+$einstellzeile_template = file_get_contents('einstellzeile.html');	//Vorlage für die Listenelemente
+$einstellzeile_template_trenn = file_get_contents('einstellzeile_trenn.html');	//Vorlage für die Trennlinien
 $counter = 0;
-$linecounter = 0;		//Zählt die bearbeiteten CSV-Zeilen
+$linecounter = 1;		//Zählt die bearbeiteten CSV-Zeilen
 $trennlines;			//Array, das alle Zeilen enthält, in denen sich Trennlinien befinden.
+$einstellwerte; //String, in den die Fertige Liste von Einstellwerten reinkommt.
+$trenn; //hidden formulare für den Array mit trennzeilen.
 
 function einstell_zeile( $csv_string ) {
-	global $einstell_template, $einstell_template_trenn, $counter, $linecounter, $trennlines;
-	
-	$linecounter++;
+	global $einstellzeile_template, $einstellzeile_template_trenn, $counter, $linecounter, $trennlines, $einstellwerte;
 	
 	if( $csv_string == '*' ) {
-		echo $einstell_template_trenn;
+		$einstellwerte = $einstellwerte . "\n" . $einstellzeile_template_trenn;
 		$trennlines[] = $linecounter;
+		$linecounter++;
 	}
 	else {
 		$fields = explode(',', $csv_string);
@@ -44,7 +45,7 @@ function einstell_zeile( $csv_string ) {
 		
 		$counter++;
 		
-		$output_line = $einstell_template;
+		$output_line = $einstellzeile_template;
 		$output_line = str_replace('{id}',$fields[0],$output_line);
 		
 		$value = '<input type="text" name="value' . $counter . '" value="' . $fields[1] . '" tabindex="' . $counter . '">'; 
@@ -63,7 +64,8 @@ function einstell_zeile( $csv_string ) {
 		      . '<input type="hidden" name="text' . $counter . '" value="' . $fields[4] . '">';
 		$output_line = str_replace('{form}',$form,$output_line);
 		
-		echo $output_line;
+		$einstellwerte = $einstellwerte . "\n" . $output_line;
+		$linecounter++;
 	}
 }
 
@@ -89,25 +91,23 @@ $index = $index[1];
 include('header.php');
 include('heading.php');
 
-echo "<form action=\"einstell_write.php\" method=\"post\">\n";
-echo '<input type="text" name="comment" value="' . $comment . '"></br>' . "\n";
-echo '<input type="hidden" name="index" value="' . $index . '">';
-echo "<table>\n";
 foreach($lines as $line) {
 	if($line !== '') {
 		einstell_zeile($line);
 	}
 }
-echo "</table>\n";
 
 foreach($trennlines as $trennline) {
-	echo '<input type="hidden" name="trenn[]" value="' . $trennline . '">';
+	$trenn = $trenn . "\n" .  '<input type="hidden" name="trenn[]" value="' . $trennline . '">';
 }
 
-echo '<input type="hidden" name="count" value="' . $counter . '">';
-echo '<input type="reset" value="Zurücksetzen">';
-echo '<input type="submit" value="Absenden">';
-echo "</form>\n";
+$einstell_template = str_replace('{comment}',$comment,$einstell_template);
+$einstell_template = str_replace('{index}',$index,$einstell_template);
+$einstell_template = str_replace('{einstellwerte}',$einstellwerte,$einstell_template);
+$einstell_template = str_replace('{counter}',$counter,$einstell_template);
+$einstell_template = str_replace('{trenn}',$trenn,$einstell_template);
+
+echo $einstell_template;
 
 include('footer_sub.php');
 ?>
