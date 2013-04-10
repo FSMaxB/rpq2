@@ -35,10 +35,37 @@ using std::ofstream;
 using std::iostream;
 using std::fstream;
 
+using std::cout;
+using std::endl;	
+
+//testfunktionen etc
+const unsigned char ansi_color = 27;
+void test_einstellwert_set();
+void test_einstellwert_get();
+
 int main(int argc, const char* argv[]) {
 	ifstream csv_in;
 	ofstream csv_out;
 	fstream tty;
+	
+	test_einstellwert_set();
+	test_einstellwert_get();
+}
+
+void test_einstellwert_set() {
+	cout << ansi_color << "[31mTeste Einstellwert::set(string) ..." << ansi_color << "[0m" << endl;
+	Einstellwert test("1,100,0,200,Dies ist eine Beschreibung!",NULL);
+	cout << "id: " << test.id << endl;
+	cout << "value: " << test.value << endl;
+	cout << "min: " << test.min << endl;
+	cout << "max: " << test.max << endl;
+	cout << "text: " << test.text << endl;
+}
+
+void test_einstellwert_get() {
+	cout << ansi_color << "[31mTeste Einstellwert::get() ..." << ansi_color << "[0m" << endl;
+	Einstellwert test(1,100,-20,200,string("Mal sehen ob das klappt!"),NULL);
+	cout << test.get() << endl;
 }
 
 Einstellwert::Einstellwert(string line, Einstelltabelle* p_parent) {
@@ -66,11 +93,59 @@ void Einstellwert::write() {
 
 //Parsen des Strings, damit die einzelnen Objekteigenschaften befüllt werden können.
 void Einstellwert::set(string line) {
+	unsigned int i = 0;
+	string temp;
 	
+	//id
+	while( (line[i] != ',') && (i < line.length()) ) {
+		temp += line[i];
+		i++;
+	}
+	i++;
+	id = atoi( temp.c_str() );
+	temp.clear();
+	
+	//value
+	while( (line[i] != ',') && (i < line.length()) ) {
+		temp += line[i];
+		i++;
+	}
+	i++;
+	value = atoi( temp.c_str() );
+	temp.clear();
+	
+	//min
+	while( (line[i] != ',') && (i < line.length()) ) {
+		temp += line[i];
+		i++;
+	}
+	i++;
+	min = atoi( temp.c_str() );
+	temp.clear();
+	
+	//max
+	while( (line[i] != ',') && (i < line.length()) ) {
+		temp += line[i];
+		i++;
+	}
+	i++;
+	max = atoi( temp.c_str() );
+	temp.clear();
+	
+	//text
+	while( i < line.length() ) {
+		temp += line[i];
+		i++;
+	}
+	text = temp;
+	temp.clear();
 }
 
+//Gibt eine CSV-Zeile mit den Objekteigenschaften zurück
 string Einstellwert::get() {
-	
+	char temp[256];
+	sprintf( temp, "%i,%i,%i,%i,%s", id, value, min, max, text.c_str() );
+	return string(temp);
 }
 
 Einstelltabelle::Einstelltabelle(fstream* p_tty, ifstream* p_csv_in, ofstream* p_csv_out) {
