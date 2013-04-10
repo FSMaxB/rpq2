@@ -73,5 +73,7 @@ public:
 	void print();
 	
 	static const unsigned int BAD_PARAMS = 0;
+	static const unsigned int BAD_FILE = 1;
+	static const unsigned int BAD_INTERFACE = 2;
 };
 #endif

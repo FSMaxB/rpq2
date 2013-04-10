@@ -38,10 +38,15 @@ using std::fstream;
 using std::cout;
 using std::endl;	
 
-//Dateiströme
+
+//Variablen
 ifstream csv_in;
 ofstream csv_out;
-fstream tty;
+fstream serial_interface;
+unsigned int regleradresse;
+bool mode;
+const bool READ = false;
+const bool WRITE = true;
 
 void handle_args(int, const char**);
 
@@ -62,12 +67,47 @@ int main(int argc, const char* argv[]) {
 	test_einstellwert_set();
 	test_einstellwert_get();
 	
+	//TODO eigentlicher Programmablauf
+	
+	csv_in.close();
+	csv_out.close();
+	serial_interface.close();
+	
 	return EXIT_SUCCESS;
 }
 
 void handle_args(int argc, const char* argv[]) {
-	if( (argc != 4) && (argc != 5) ) {
-		throw Exception(Exception::BAD_PARAMS);
+	if( (argc != 5) && (argc != 6) ) {
+		throw Exception(Exception::BAD_PARAMS, "Falsche Anzahl an Parametern!");
+	}
+
+	//Lesen oder Schreiben?
+	if( !string("write").compare(argv[1]) ) {
+		if( argc != 5 ) {
+			throw Exception(Exception::BAD_PARAMS, "Falsche Anzahl an Parametern!");
+		}
+		mode = WRITE;
+	} else if( !string("read").compare(argv[1]) ) {
+		if( argc != 6 ) {
+			throw Exception(Exception::BAD_PARAMS, "Falsche Anzahl an Parametern!");
+		}
+		mode = READ;
+		csv_out.open(argv[5]);
+		if( !csv_out.good() ) {
+			throw Exception(Exception::BAD_FILE, string("Datei: ") + string(argv[5]));
+		}
+	} else {
+		throw(Exception(Exception::BAD_PARAMS, string("Ungültiger Parameter: ") + string(argv[1])));
+	}
+	
+	csv_in.open(argv[4]);
+	if( !csv_in.good() ) {
+		throw Exception(Exception::BAD_FILE, string("Datei: ") + string(argv[4]));
+	}
+	
+	serial_interface.open(argv[2]);
+	if( !serial_interface.good() ) {
+		throw Exception(Exception::BAD_INTERFACE, string("Schnittstelle: ") + string(argv[2]));
 	}
 }
 
@@ -112,52 +152,10 @@ void Einstellwert::write() {
 
 //Parsen des Strings, damit die einzelnen Objekteigenschaften befüllt werden können.
 void Einstellwert::set(string line) {
-	unsigned int i = 0;
-	string temp;
-	
-	//id
-	while( (line[i] != ',') && (i < line.length()) ) {
-		temp += line[i];
-		i++;
-	}
-	i++;
-	id = atoi( temp.c_str() );
-	temp.clear();
-	
-	//value
-	while( (line[i] != ',') && (i < line.length()) ) {
-		temp += line[i];
-		i++;
-	}
-	i++;
-	value = atoi( temp.c_str() );
-	temp.clear();
-	
-	//min
-	while( (line[i] != ',') && (i < line.length()) ) {
-		temp += line[i];
-		i++;
-	}
-	i++;
-	min = atoi( temp.c_str() );
-	temp.clear();
-	
-	//max
-	while( (line[i] != ',') && (i < line.length()) ) {
-		temp += line[i];
-		i++;
-	}
-	i++;
-	max = atoi( temp.c_str() );
-	temp.clear();
-	
-	//text
-	while( i < line.length() ) {
-		temp += line[i];
-		i++;
-	}
+	char temp[256];
+	sscanf(line.c_str(), "%i,%i,%i,%i,%[^,]s", &id, &value, &min, &max, temp);
+
 	text = temp;
-	temp.clear();
 }
 
 //Gibt eine CSV-Zeile mit den Objekteigenschaften zurück
@@ -210,7 +208,13 @@ void Exception::print() {
 		//Ausgabe nach Fehlertyp
 		switch(type) {
 			case BAD_PARAMS:
-				cout << "FEHLER: Falsche Parameter" << endl;
+				cout << "FEHLER: Ungültige Parameter" << endl;
+				break;
+			case BAD_FILE:
+				cout << "FEHLER: Ungültige Datei" << endl;
+				break;
+			case BAD_INTERFACE:
+				cout << "FEHLER: Ungültige Schnittstelle" << endl;
 				break;
 		}
 		
