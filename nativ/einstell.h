@@ -54,6 +54,7 @@ public:
 	
 	string comment;
 	unsigned int id;
+	list<Einstellwert> einstellwerte;
 	
 	void read();
 	void write();
@@ -75,5 +76,7 @@ public:
 	static const unsigned int BAD_PARAMS = 0;
 	static const unsigned int BAD_FILE = 1;
 	static const unsigned int BAD_INTERFACE = 2;
+	static const unsigned int BUFFER_OVERFLOW = 3;
+	static const unsigned int IO_ERROR = 4;
 };
 #endif

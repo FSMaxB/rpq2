@@ -40,9 +40,9 @@ using std::endl;
 
 
 //Variablen
-ifstream csv_in;
-ofstream csv_out;
-fstream serial_interface;
+ifstream g_csv_in;
+ofstream g_csv_out;
+fstream g_tty;
 unsigned int regleradresse;
 bool mode;
 const bool READ = false;
@@ -69,9 +69,9 @@ int main(int argc, const char* argv[]) {
 	
 	//TODO eigentlicher Programmablauf
 	
-	csv_in.close();
-	csv_out.close();
-	serial_interface.close();
+	g_csv_in.close();
+	g_csv_out.close();
+	g_tty.close();
 	
 	return EXIT_SUCCESS;
 }
@@ -92,23 +92,25 @@ void handle_args(int argc, const char* argv[]) {
 			throw Exception(Exception::BAD_PARAMS, "Falsche Anzahl an Parametern!");
 		}
 		mode = READ;
-		csv_out.open(argv[5]);
-		if( !csv_out.good() ) {
+		g_csv_out.open(argv[5]);
+		if( !g_csv_out.good() ) {
 			throw Exception(Exception::BAD_FILE, string("Datei: ") + string(argv[5]));
 		}
 	} else {
 		throw(Exception(Exception::BAD_PARAMS, string("Ungültiger Parameter: ") + string(argv[1])));
 	}
 	
-	csv_in.open(argv[4]);
-	if( !csv_in.good() ) {
+	g_csv_in.open(argv[4]);
+	if( !g_csv_in.good() ) {
 		throw Exception(Exception::BAD_FILE, string("Datei: ") + string(argv[4]));
 	}
 	
-	serial_interface.open(argv[2]);
-	if( !serial_interface.good() ) {
+	g_tty.open(argv[2]);
+	if( !g_tty.good() ) {
 		throw Exception(Exception::BAD_INTERFACE, string("Schnittstelle: ") + string(argv[2]));
 	}
+	
+	sscanf(argv[3], "%u", &regleradresse);
 }
 
 void test_einstellwert_set() {
@@ -153,6 +155,9 @@ void Einstellwert::write() {
 //Parsen des Strings, damit die einzelnen Objekteigenschaften befüllt werden können.
 void Einstellwert::set(string line) {
 	char temp[256];
+	if( line.length() > 255 ) {
+		throw Exception(Exception::BUFFER_OVERFLOW);
+	}
 	sscanf(line.c_str(), "%i,%i,%i,%i,%[^,]s", &id, &value, &min, &max, temp);
 
 	text = temp;
@@ -173,7 +178,7 @@ Einstelltabelle::Einstelltabelle(fstream* p_tty, ifstream* p_csv_in, ofstream* p
 	read_csv();
 }
 
-//Lesen der Einstellwerten aus Regler
+//Lesen der Einstellwerte aus Regler
 void Einstelltabelle::read() {
 	//TODO
 }
@@ -185,12 +190,44 @@ void Einstelltabelle::write() {
 
 //Einlesen der Einstellwerte aus CSV
 void Einstelltabelle::read_csv() {
-	//TODO
+	char buffer[256];
+	
+	//Kommentar
+	csv_in->getline(buffer, 256);
+	if( !csv_in->good() ) {	//Das Failbit wird von getline() gesetzt, wenn die Zeile nach 255 Zeichen immer noch nicht zu ende war. Es werden auch fehler aufgefangen, die kein Buffer-Overflow sind, aber das sei hier egal
+		throw Exception(Exception::BUFFER_OVERFLOW, "Der Kommentar ist zu Lang");
+	}
+	comment = buffer;
+	buffer[0] = '\0';	//buffer resetten
+	
+	//Hole "Index," aus dem Stream
+	csv_in->getline(buffer, 256, ',');
+	if( !csv_in->good() ) {
+		throw Exception(Exception::BUFFER_OVERFLOW);
+	}
+	buffer[0]= '\0';
+	
+	//Lese Index aus
+	csv_in->getline(buffer, 256);
+	if( !csv_in->good() ) {
+		throw Exception(Exception::BUFFER_OVERFLOW);
+	}
+	sscanf(buffer, "%u", &id);
+	buffer[0] = '\0';
+	
+	//Restliche Zeilen einlesen
+	while( !csv_in->eof() ) {	//solange Dateiende noch nicht erreicht
+		csv_in->getline(buffer, 256);
+		if( csv_in->fail() ) {
+			throw Exception(Exception::BUFFER_OVERFLOW);
+		}
+		einstellwerte.push_back( Einstellwert( string(buffer), this ) );
+	}
 }
 
 //Schreiben der Einstellwerte in CSV
 void Einstelltabelle::write_csv() {
-	
+	//TODO
 }
 
 Exception::Exception(unsigned int p_type, string p_message) {
@@ -216,6 +253,11 @@ void Exception::print() {
 			case BAD_INTERFACE:
 				cout << "FEHLER: Ungültige Schnittstelle" << endl;
 				break;
+			case BUFFER_OVERFLOW:
+				cout << "FEHLER: Pufferüberlauf" << endl;
+				break;
+			case IO_ERROR:
+				cout << "FEHLER: Ein-/Ausgabefehler" << endl;
 		}
 		
 		if(message != "") {
