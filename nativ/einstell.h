@@ -67,7 +67,11 @@ private:
 class Exception {
 public:
 	Exception(unsigned int);
+	Exception(unsigned int, string);
 	unsigned int type;
+	string message;
 	void print();
+	
+	static const unsigned int BAD_PARAMS = 0;
 };
 #endif

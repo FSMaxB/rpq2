@@ -38,18 +38,37 @@ using std::fstream;
 using std::cout;
 using std::endl;	
 
+//Dateiströme
+ifstream csv_in;
+ofstream csv_out;
+fstream tty;
+
+void handle_args(int, const char**);
+
 //testfunktionen etc
 const unsigned char ansi_color = 27;
 void test_einstellwert_set();
 void test_einstellwert_get();
 
+
 int main(int argc, const char* argv[]) {
-	ifstream csv_in;
-	ofstream csv_out;
-	fstream tty;
+	try {
+		handle_args(argc, argv);
+	} catch(Exception e) {
+		e.print();
+		return EXIT_FAILURE;
+	}
 	
 	test_einstellwert_set();
 	test_einstellwert_get();
+	
+	return EXIT_SUCCESS;
+}
+
+void handle_args(int argc, const char* argv[]) {
+	if( (argc != 4) && (argc != 5) ) {
+		throw Exception(Exception::BAD_PARAMS);
+	}
 }
 
 void test_einstellwert_set() {
@@ -84,11 +103,11 @@ Einstellwert::Einstellwert(unsigned int p_id, signed int p_value, signed int p_m
 
 
 void Einstellwert::read() {
-	
+	//TODO
 }
 
 void Einstellwert::write() {
-	
+	//TODO
 }
 
 //Parsen des Strings, damit die einzelnen Objekteigenschaften befüllt werden können.
@@ -156,26 +175,46 @@ Einstelltabelle::Einstelltabelle(fstream* p_tty, ifstream* p_csv_in, ofstream* p
 	read_csv();
 }
 
+//Lesen der Einstellwerten aus Regler
 void Einstelltabelle::read() {
-	
+	//TODO
 }
 
+//Schreiben der Einstellwerte in Regler
 void Einstelltabelle::write() {
-	
+	//TODO
 }
 
+//Einlesen der Einstellwerte aus CSV
 void Einstelltabelle::read_csv() {
-	
+	//TODO
 }
 
+//Schreiben der Einstellwerte in CSV
 void Einstelltabelle::write_csv() {
 	
 }
 
-Exception::Exception(unsigned int p_type) {
-	type = p_type;
+Exception::Exception(unsigned int p_type, string p_message) {
+		type = p_type;
+		message = p_message;
 }
 
+Exception::Exception(unsigned int p_type) {
+	type = p_type;
+	message = "";
+}
+
+//Gibt die Exception auf der Konsole aus
 void Exception::print() {
+		//Ausgabe nach Fehlertyp
+		switch(type) {
+			case BAD_PARAMS:
+				cout << "FEHLER: Falsche Parameter" << endl;
+				break;
+		}
 		
+		if(message != "") {
+				cout << message << endl;
+		}
 }
