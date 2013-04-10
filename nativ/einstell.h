@@ -34,8 +34,8 @@ class Einstelltabelle;
 
 class Einstellwert {
 public:
-	Einstellwert(string, Einstelltabelle*);
-	Einstellwert(unsigned int, signed int, signed int, signed int, string, Einstelltabelle*);
+	Einstellwert(string, fstream*);
+	Einstellwert(unsigned int, signed int, signed int, signed int, string, fstream*);
 	unsigned int id;
 	signed int value, min, max;
 	string text;
@@ -44,7 +44,7 @@ public:
 	void set(string);
 	string get();
 private:
-	Einstelltabelle* parent;
+	fstream* tty;
 };
 
 class Einstelltabelle {
@@ -54,10 +54,12 @@ public:
 	
 	string comment;
 	unsigned int id;
-	list<Einstellwert> einstellwerte;
+	list<Einstellwert> storage;
 	
 	void read();
 	void write();
+	
+	void test();
 private:
 	ifstream* csv_in;
 	ofstream* csv_out;

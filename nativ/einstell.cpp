@@ -39,14 +39,18 @@ using std::cout;
 using std::endl;	
 
 
+//Konstanten
+const bool READ = false;
+const bool WRITE = true;
+const unsigned int BUFFER = 256;
+
 //Variablen
 ifstream g_csv_in;
 ofstream g_csv_out;
 fstream g_tty;
 unsigned int regleradresse;
 bool mode;
-const bool READ = false;
-const bool WRITE = true;
+
 
 void handle_args(int, const char**);
 
@@ -54,7 +58,23 @@ void handle_args(int, const char**);
 const unsigned char ansi_color = 27;
 void test_einstellwert_set();
 void test_einstellwert_get();
+void test_einstelltabelle_csv();
 
+string get(ifstream* input, char delimiter = '\n') {
+	char buffer;
+	string result;
+	while( (buffer = input->get()) != (EOF) ) {
+		//buffer = input->get();
+		if(buffer == delimiter) {
+			break;
+		}
+		if(input->bad()) {
+			throw Exception(Exception::IO_ERROR);
+		}
+		result += buffer;
+	}
+	return result;
+}
 
 int main(int argc, const char* argv[]) {
 	try {
@@ -66,6 +86,7 @@ int main(int argc, const char* argv[]) {
 	
 	test_einstellwert_set();
 	test_einstellwert_get();
+	test_einstelltabelle_csv();
 	
 	//TODO eigentlicher Programmablauf
 	
@@ -129,18 +150,28 @@ void test_einstellwert_get() {
 	cout << test.get() << endl;
 }
 
-Einstellwert::Einstellwert(string line, Einstelltabelle* p_parent) {
-	parent = p_parent;
+void test_einstelltabelle_csv() {
+	cout << ansi_color << "[31mTeste Einstelltabelle::read/write_csv ..." << ansi_color << "[0m" << endl;
+	Einstelltabelle test(&g_tty, &g_csv_in, &g_csv_out);
+	try {
+		test.test();
+	} catch (Exception e) {
+		e.print();
+	}
+}
+
+Einstellwert::Einstellwert(string line, fstream* p_tty) {
+	tty = p_tty;
 	set(line);
 }
 
-Einstellwert::Einstellwert(unsigned int p_id, signed int p_value, signed int p_min, signed int p_max, string p_text, Einstelltabelle* p_parent) {
+Einstellwert::Einstellwert(unsigned int p_id, signed int p_value, signed int p_min, signed int p_max, string p_text, fstream* p_tty) {
 	id = p_id;
 	value = p_value;
 	min = p_min;
 	max = p_max;
 	text = p_text;
-	parent = p_parent;
+	tty = p_tty;
 }
 
 
@@ -154,8 +185,8 @@ void Einstellwert::write() {
 
 //Parsen des Strings, damit die einzelnen Objekteigenschaften befüllt werden können.
 void Einstellwert::set(string line) {
-	char temp[256];
-	if( line.length() > 255 ) {
+	char temp[BUFFER];
+	if( line.length() > (BUFFER - 1) ) {
 		throw Exception(Exception::BUFFER_OVERFLOW);
 	}
 	sscanf(line.c_str(), "%i,%i,%i,%i,%[^,]s", &id, &value, &min, &max, temp);
@@ -165,7 +196,7 @@ void Einstellwert::set(string line) {
 
 //Gibt eine CSV-Zeile mit den Objekteigenschaften zurück
 string Einstellwert::get() {
-	char temp[256];
+	char temp[BUFFER];
 	sprintf( temp, "%i,%i,%i,%i,%s", id, value, min, max, text.c_str() );
 	return string(temp);
 }
@@ -190,44 +221,51 @@ void Einstelltabelle::write() {
 
 //Einlesen der Einstellwerte aus CSV
 void Einstelltabelle::read_csv() {
-	char buffer[256];
+	string buffer;
 	
 	//Kommentar
-	csv_in->getline(buffer, 256);
-	if( !csv_in->good() ) {	//Das Failbit wird von getline() gesetzt, wenn die Zeile nach 255 Zeichen immer noch nicht zu ende war. Es werden auch fehler aufgefangen, die kein Buffer-Overflow sind, aber das sei hier egal
-		throw Exception(Exception::BUFFER_OVERFLOW, "Der Kommentar ist zu Lang");
-	}
-	comment = buffer;
-	buffer[0] = '\0';	//buffer resetten
+	comment = get(csv_in);
 	
 	//Hole "Index," aus dem Stream
-	csv_in->getline(buffer, 256, ',');
-	if( !csv_in->good() ) {
-		throw Exception(Exception::BUFFER_OVERFLOW);
-	}
-	buffer[0]= '\0';
+	get(csv_in, ',');
 	
 	//Lese Index aus
-	csv_in->getline(buffer, 256);
-	if( !csv_in->good() ) {
-		throw Exception(Exception::BUFFER_OVERFLOW);
-	}
-	sscanf(buffer, "%u", &id);
-	buffer[0] = '\0';
+	sscanf( get(csv_in).c_str() , "%u", &id);
 	
 	//Restliche Zeilen einlesen
 	while( !csv_in->eof() ) {	//solange Dateiende noch nicht erreicht
-		csv_in->getline(buffer, 256);
-		if( csv_in->fail() ) {
-			throw Exception(Exception::BUFFER_OVERFLOW);
+		try {
+		buffer = get(csv_in);
+		} catch (Exception e) {
+			e.message = "Konnte CSV nicht einlesen.";
+			e.print();
+			exit(EXIT_FAILURE);
 		}
-		einstellwerte.push_back( Einstellwert( string(buffer), this ) );
+		if( !buffer.empty() ) {
+			if( buffer[0] != '*' ) {	//Trennzeilen werden nicht eingelesen
+				storage.push_back( Einstellwert( buffer, tty ) );
+			}
+		}
+		buffer.clear();
 	}
+}
+
+void Einstelltabelle::test() {
+		write_csv();
 }
 
 //Schreiben der Einstellwerte in CSV
 void Einstelltabelle::write_csv() {
-	//TODO
+	(*csv_out) << comment << endl;
+	(*csv_out) << "Index," << id << endl;
+	
+	list<Einstellwert>::iterator i = storage.begin(), end = storage.end();
+	for (; i != end; ++i) {
+		(*csv_out) << i->get() << endl;
+	}
+	
+	
+	//TODO Implementierung mit echter Datei statt cout
 }
 
 Exception::Exception(unsigned int p_type, string p_message) {
