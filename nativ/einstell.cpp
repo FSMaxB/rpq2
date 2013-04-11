@@ -419,11 +419,11 @@ string SDO::get_string() {
 
 void SDO::set(string sdo, unsigned int p_regleradresse) {
 	regleradresse = p_regleradresse;
-	identifier = hex_to_int(sdo.substr(0,4), 4)  - regleradresse;
-	control = hex_to_int(sdo.substr(4,2), 2);
-	index = hex_to_int( sdo.substr(8,2) + sdo.substr(6,2), 4);
-	subindex = hex_to_int( sdo.substr(10,2), 2);
-	value = hex_to_int( sdo.substr(14,2) + sdo.substr(12,2), 4);
+	identifier = hex_to_int(sdo.substr(0,4))  - regleradresse;
+	control = hex_to_int(sdo.substr(4,2));
+	index = hex_to_int( sdo.substr(8,2) + sdo.substr(6,2));
+	subindex = hex_to_int( sdo.substr(10,2));
+	value = hex_to_int( sdo.substr(14,2) + sdo.substr(12,2), SIGNED);
 }
 
 void SDO::set(unsigned int p_identifier, unsigned int p_regleradresse, unsigned int p_control, unsigned int p_index, Einstellwert p_einstellwert) {
