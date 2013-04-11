@@ -47,9 +47,10 @@ using std::transform;
 using std::cout;
 using std::endl;	
 
-struct thread_es {
-	Einstellwert* e;
+struct thread_p {
+	fstream* tty;
 	string* s;
+	bool fail;
 };
 
 //Konstanten
@@ -79,6 +80,37 @@ void test_einstellwert_get();
 void test_einstelltabelle_csv();
 void test_sdo_out();
 void test_sdo_in();
+
+signed long hex_to_int(string hex, bool mode = UNSIGNED) {
+	signed long unsigned_value;
+	stringstream ss;
+	ss << std::hex << hex;
+	ss >> unsigned_value;
+	signed long pot = pow(16,hex.length());
+	if( (mode == SIGNED) && (unsigned_value > ( ( pot / 2 ) - 1 ) ) ) {
+		return (unsigned_value - pot);
+	}
+	return unsigned_value;
+}
+
+string int_to_hex(signed long value, unsigned int length) {
+	string result;
+	stringstream ss;
+
+	ss << std::hex << value;
+	ss >> result;
+
+	//String kürzen
+	if( result.length() > length ) {
+		result.erase(0,result.length()-length);
+	} else if( result.length() < length ) {
+		result.insert(0, length - result.length(), '0');
+	}
+
+	transform(result.begin(), result.end(),result.begin(), ::toupper);
+
+	return result;
+}
 
 string get(ifstream* input, char delimiter = '\n') {
 	char buffer;
@@ -228,20 +260,22 @@ Einstellwert::Einstellwert(unsigned int p_id, signed int p_value, signed int p_m
 void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 	//Übergabeparameter für nanosleep
 	struct timespec timeout;
-	timeout.tv_sec = (int) TIMEOUT / 1000;
-	timeout.tv_nsec = (TIMEOUT % 1000) * 1000000;
-
-	cout << "I'm reading!" << endl;
+	timeout.tv_sec = TIMEOUT;
+	timeout.tv_nsec = 0;
 
 	SDO package_sent( 0x600, regleradresse, 0x40, index, (*this));
 	SDO package_received(0,0,0,0,0,0);
 	string received;
+	thread_p params;
+	params.tty = tty;
+	params.s = &received;
+	params.fail = false;
 	pthread_t thread;
 	unsigned int i;
 	for(i = 0; i < 3; i++) {
 		received.clear();
 		send(package_sent.get_string());
-		pthread_create(&thread, NULL, receive, (void*) &received);
+		pthread_create(&thread, NULL, receive, (void*) &params);
 		pthread_detach(thread);
 
 		nanosleep(&timeout, NULL);
@@ -249,8 +283,9 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 
 		//Überprüfen der Antwort
 		if( received.length() == 23 ) {	//Wenn die Falsche Zahl an Zeichen zurückgekommen ist, braucht man gar nicht erst zu testen
-			package_received.set(received, regleradresse);
-			if( 	(package_received.identifier == 0x580)
+			package_received.set(received.substr(3,received.length() - 3), hex_to_int(received.substr(1,2)));
+			if( 	(package_received.regleradresse == regleradresse)
+				&&	(package_received.identifier == 0x580)
 				&&	(package_received.control == 0x4B)
 				&&	(package_received.index == index)
 				&&	(package_received.subindex == id)) {
@@ -272,12 +307,46 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
 	//Übergabeparameter für nanosleep
 	struct timespec timeout;
-	timeout.tv_sec = (int) TIMEOUT / 1000;
-	timeout.tv_nsec = (TIMEOUT % 1000) * 1000000;
+	timeout.tv_sec = TIMEOUT;
+	timeout.tv_nsec = 0;
 
-	cout << "I'm writing!" << endl;
+	SDO package_sent( 0x600, regleradresse, 0x2B, index, (*this));
+	SDO package_received(0,0,0,0,0,0);
+	string received;
+	thread_p params;
+	params.tty = tty;
+	params.s = &received;
+	params.fail = false;
+	pthread_t thread;
+	unsigned int i;
+	for(i = 0; i < 3; i++) {
+		received.clear();
+		send(package_sent.get_string());
+		pthread_create(&thread, NULL, receive, (void*) &params);
+		pthread_detach(thread);
 
-	//TODO
+		nanosleep(&timeout, NULL);
+		pthread_cancel(thread);
+
+		//Überprüfen der Antwort
+		if( received.length() == 23 ) {	//Wenn die Falsche Zahl an Zeichen zurückgekommen ist, braucht man gar nicht erst zu testen
+			package_received.set(received.substr(3,received.length() - 3), hex_to_int(received.substr(1,2)));
+			if( 	(package_received.regleradresse == regleradresse)
+				&&	(package_received.identifier == 0x580)
+				&&	(package_received.control == 0x60)
+				&&	(package_received.index == index)
+				&&	(package_received.subindex == id)) {
+				i = 4;
+			}
+		}
+
+		send(string("csdo"));	//Clearen des Reglers
+
+	}
+
+	if( i == 3 ) {	//Wurde die Schleife dreimal ohne Ergebnis durchlaufen?
+		throw Exception(Exception::NO_RESPONSE, string("Fehler bei ") + get());
+	}
 }
 
 void Einstellwert::send(string s) {
@@ -300,21 +369,21 @@ void Einstellwert::send(string s) {
 }
 
 void *Einstellwert::receive(void* parameter) {
-	string* s;
-	s = (string*) parameter;
+	thread_p* p;
+	p = (thread_p*) parameter;
 
 	char buffer;
 	for(unsigned int i = 0; i < 23; /*empty*/) {
-			buffer = tty->get();
-			if(tty->fail()) {
-				throw Exception(Exception::IO_ERROR,"Konnte Schnittstelle nicht lesen!");
+			buffer = p->tty->get();
+			if(p->tty->fail()) {
+				p->fail = true;
 			}
 			if( isalnum(buffer) ) {
-				(*s) += buffer;
+				(*p->s) += buffer;
 				i++;
 			}
 		}
-		return (void*) s;
+		return (void*) p;
 }
 
 //Parsen des Strings, damit die einzelnen Objekteigenschaften befüllt werden können.
@@ -339,37 +408,6 @@ string Einstellwert::get() {
 	char temp[BUFFER];
 	sprintf( temp, "%i,%i,%i,%i,%s", id, value, min, max, text.c_str() );
 	return string(temp);
-}
-
-signed long hex_to_int(string hex, bool mode = UNSIGNED) {
-	signed long unsigned_value;
-	stringstream ss;
-	ss << std::hex << hex;
-	ss >> unsigned_value;
-	signed long pot = pow(16,hex.length());
-	if( (mode == SIGNED) && (unsigned_value > ( ( pot / 2 ) - 1 ) ) ) {
-		return (unsigned_value - pot);
-	}
-	return unsigned_value;
-}
-
-string int_to_hex(signed long value, unsigned int length) {
-	string result;
-	stringstream ss;
-
-	ss << std::hex << value;
-	ss >> result;
-
-	//String kürzen
-	if( result.length() > length ) {
-		result.erase(0,result.length()-length);
-	} else if( result.length() < length ) {
-		result.insert(0, length - result.length(), '0');
-	}
-
-	transform(result.begin(), result.end(),result.begin(), ::toupper);
-
-	return result;
 }
 
 Einstelltabelle::Einstelltabelle(fstream* p_tty, ifstream* p_csv_in, ofstream* p_csv_out) {

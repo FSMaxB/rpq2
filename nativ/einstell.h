@@ -47,7 +47,7 @@ public:
 private:
 	fstream* tty;
 	void send(string);
-	void *receive(void*);
+	static void *receive(void*);
 };
 
 class Einstelltabelle {
