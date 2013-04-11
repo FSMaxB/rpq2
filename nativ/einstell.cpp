@@ -67,6 +67,7 @@ void test_einstellwert_set();
 void test_einstellwert_get();
 void test_einstelltabelle_csv();
 void test_sdo_out();
+void test_sdo_in();
 
 string get(ifstream* input, char delimiter = '\n') {
 	char buffer;
@@ -96,6 +97,7 @@ int main(int argc, const char* argv[]) {
 	test_einstellwert_get();
 	test_einstelltabelle_csv();
 	test_sdo_out();
+	test_sdo_in();
 	
 	//TODO eigentlicher Programmablauf
 	
@@ -179,6 +181,17 @@ void test_sdo_out() {
 	//Lesen
 	test.set(1536, 2, 64, 8212, 11, 99);
 	cout << test.get_string() << endl;
+}
+
+void test_sdo_in() {
+	cout << ansi_color << "[31mTeste SDO::set(string,unsigned int) ..." << ansi_color << "[0m" << endl;
+	SDO test(string("0582601420050200008000"), 2);
+	cout << "identifier: " << test.identifier << endl;
+	cout << "regleradresse: " << test.regleradresse << endl;
+	cout << "control: " << test.control << endl;
+	cout << "index: " << test.index << endl;
+	cout << "subindex: " << test.subindex << endl;
+	cout << "value: " <<  test.value << endl;
 }
 
 Einstellwert::Einstellwert(string line, fstream* p_tty) {
@@ -405,7 +418,12 @@ string SDO::get_string() {
 }
 
 void SDO::set(string sdo, unsigned int p_regleradresse) {
-	//TODO
+	regleradresse = p_regleradresse;
+	identifier = hex_to_int(sdo.substr(0,4), 4)  - regleradresse;
+	control = hex_to_int(sdo.substr(4,2), 2);
+	index = hex_to_int( sdo.substr(8,2) + sdo.substr(6,2), 4);
+	subindex = hex_to_int( sdo.substr(10,2), 2);
+	value = hex_to_int( sdo.substr(14,2) + sdo.substr(12,2), 4);
 }
 
 void SDO::set(unsigned int p_identifier, unsigned int p_regleradresse, unsigned int p_control, unsigned int p_index, Einstellwert p_einstellwert) {
