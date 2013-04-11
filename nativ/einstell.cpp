@@ -47,6 +47,10 @@ using std::transform;
 using std::cout;
 using std::endl;	
 
+struct thread_es {
+	Einstellwert* e;
+	string* s;
+};
 
 //Konstanten
 const unsigned int DELAY = 10;	//Delay zwischen Werten in Milisekunden
@@ -229,7 +233,40 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 
 	cout << "I'm reading!" << endl;
 
-	//TODO
+	SDO package_sent( 0x600, regleradresse, 0x40, index, (*this));
+	SDO package_received(0,0,0,0,0,0);
+	string received;
+	pthread_t thread;
+	unsigned int i;
+	for(i = 0; i < 3; i++) {
+		received.clear();
+		send(package_sent.get_string());
+		pthread_create(&thread, NULL, receive, (void*) &received);
+		pthread_detach(thread);
+
+		nanosleep(&timeout, NULL);
+		pthread_cancel(thread);
+
+		//Überprüfen der Antwort
+		if( received.length() == 23 ) {	//Wenn die Falsche Zahl an Zeichen zurückgekommen ist, braucht man gar nicht erst zu testen
+			package_received.set(received, regleradresse);
+			if( 	(package_received.identifier == 0x580)
+				&&	(package_received.control == 0x4B)
+				&&	(package_received.index == index)
+				&&	(package_received.subindex == id)) {
+				i = 4;
+			}
+		}
+
+		send(string("csdo"));	//Clearen des Reglers
+
+	}
+
+	if( i == 3 ) {	//Wurde die Schleife dreimal ohne Ergebnis durchlaufen?
+		throw Exception(Exception::NO_RESPONSE, string("Fehler bei ") + get());
+	} else {
+		value = package_received.value;
+	}
 }
 
 void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
