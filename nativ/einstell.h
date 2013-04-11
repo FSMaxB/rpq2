@@ -31,6 +31,7 @@ using std::ofstream;
 using std::list;
 
 class Einstelltabelle;
+class SDO;
 
 class Einstellwert {
 public:
@@ -39,12 +40,14 @@ public:
 	unsigned int id;
 	signed int value, min, max;
 	string text;
-	void read(unsigned int);
-	void write(unsigned int);
+	void read(unsigned int, unsigned int);
+	void write(unsigned int, unsigned int);
 	void set(string);
 	string get();
 private:
 	fstream* tty;
+	void send(string);
+	void *receive(void*);
 };
 
 class Einstelltabelle {
@@ -80,6 +83,8 @@ public:
 	static const unsigned int BAD_INTERFACE = 2;
 	static const unsigned int BUFFER_OVERFLOW = 3;
 	static const unsigned int IO_ERROR = 4;
+	static const unsigned int NO_RESPONSE = 5;
+	static const unsigned int BAD_SDO = 6;
 };
 
 class SDO {

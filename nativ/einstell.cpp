@@ -29,6 +29,9 @@
 #include <math.h>
 #include <algorithm>
 #include <sstream>
+#include <pthread.h>
+#include <cctype>
+#include <time.h>
 
 #include "einstell.h"
 
@@ -37,6 +40,9 @@ using std::ifstream;
 using std::ofstream;
 using std::iostream;
 using std::fstream;
+using std::stringstream;
+using std::swap;
+using std::transform;
 
 using std::cout;
 using std::endl;	
@@ -44,6 +50,7 @@ using std::endl;
 
 //Konstanten
 const unsigned int DELAY = 10;	//Delay zwischen Werten in Milisekunden
+const unsigned int TIMEOUT = 2;	//Timeout beim Warten auf Antwort von Regler in Sekunden
 const bool READ = false;
 const bool WRITE = true;
 const bool SIGNED = true;
@@ -93,13 +100,18 @@ int main(int argc, const char* argv[]) {
 		return EXIT_FAILURE;
 	}
 	
-	test_einstellwert_set();
-	test_einstellwert_get();
-	test_einstelltabelle_csv();
+	//test_einstellwert_set();
+	//test_einstellwert_get();
+	//test_einstelltabelle_csv();
 	test_sdo_out();
 	test_sdo_in();
 	
-	//TODO eigentlicher Programmablauf
+	Einstelltabelle tabelle(&g_tty, &g_csv_in, &g_csv_out);
+	if(mode == READ) {
+		tabelle.read(g_regleradresse);
+	} else {
+		tabelle.write(g_regleradresse);
+	}
 	
 	g_csv_in.close();
 	g_csv_out.close();
@@ -209,12 +221,63 @@ Einstellwert::Einstellwert(unsigned int p_id, signed int p_value, signed int p_m
 }
 
 
-void Einstellwert::read(unsigned int regleradresse) {
+void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
+	//Übergabeparameter für nanosleep
+	struct timespec timeout;
+	timeout.tv_sec = (int) TIMEOUT / 1000;
+	timeout.tv_nsec = (TIMEOUT % 1000) * 1000000;
+
+	cout << "I'm reading!" << endl;
+
 	//TODO
 }
 
-void Einstellwert::write(unsigned int regleradresse) {
+void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
+	//Übergabeparameter für nanosleep
+	struct timespec timeout;
+	timeout.tv_sec = (int) TIMEOUT / 1000;
+	timeout.tv_nsec = (TIMEOUT % 1000) * 1000000;
+
+	cout << "I'm writing!" << endl;
+
 	//TODO
+}
+
+void Einstellwert::send(string s) {
+	//Übergabeparameter für nanosleep
+	struct timespec delay;
+	delay.tv_sec = (int) DELAY / 1000;			//Sekunden aus DELAY
+	delay.tv_nsec = (DELAY % 1000) * 1000000;	//Milisekunden aus DELAY
+
+	bool send_delay = true;	//Immer wenn auf true soll ein DELAY gewartet werden
+	for(unsigned int i; i < s.length(); i++) {
+		(*tty) << s[i];
+		send_delay++;
+		if(send_delay) {	//Alle zwei Zeichen wird DELAY gewartet
+			nanosleep(&delay, NULL);
+		}
+		if( tty->fail() ) {
+			throw Exception(Exception::IO_ERROR, "Konnte nicht auf Schnittstelle schreiben.");
+		}
+	}
+}
+
+void *Einstellwert::receive(void* parameter) {
+	string* s;
+	s = (string*) parameter;
+
+	char buffer;
+	for(unsigned int i = 0; i < 23; /*empty*/) {
+			buffer = tty->get();
+			if(tty->fail()) {
+				throw Exception(Exception::IO_ERROR,"Konnte Schnittstelle nicht lesen!");
+			}
+			if( isalnum(buffer) ) {
+				(*s) += buffer;
+				i++;
+			}
+		}
+		return (void*) s;
 }
 
 //Parsen des Strings, damit die einzelnen Objekteigenschaften befüllt werden können.
@@ -243,7 +306,7 @@ string Einstellwert::get() {
 
 signed long hex_to_int(string hex, bool mode = UNSIGNED) {
 	signed long unsigned_value;
-	std::stringstream ss;
+	stringstream ss;
 	ss << std::hex << hex;
 	ss >> unsigned_value;
 	signed long pot = pow(16,hex.length());
@@ -255,7 +318,7 @@ signed long hex_to_int(string hex, bool mode = UNSIGNED) {
 
 string int_to_hex(signed long value, unsigned int length) {
 	string result;
-	std::stringstream ss;
+	stringstream ss;
 
 	ss << std::hex << value;
 	ss >> result;
@@ -267,7 +330,7 @@ string int_to_hex(signed long value, unsigned int length) {
 		result.insert(0, length - result.length(), '0');
 	}
 
-	std::transform(result.begin(), result.end(),result.begin(), ::toupper);
+	transform(result.begin(), result.end(),result.begin(), ::toupper);
 
 	return result;
 }
@@ -282,12 +345,31 @@ Einstelltabelle::Einstelltabelle(fstream* p_tty, ifstream* p_csv_in, ofstream* p
 
 //Lesen der Einstellwerte aus Regler
 void Einstelltabelle::read(unsigned int regleradresse) {
-	//TODO
+	list<Einstellwert>::iterator i = storage.begin(), end = storage.end();
+	for (; i != end; ++i) {
+		try {
+			i->read(regleradresse, id);
+		} catch(Exception e) {
+			e.print();
+			exit(EXIT_FAILURE);
+		}
+	}
+
+	write_csv();
 }
 
 //Schreiben der Einstellwerte in Regler
 void Einstelltabelle::write(unsigned int regleradresse) {
-	//TODO
+	list<Einstellwert>::iterator i = storage.begin(), end = storage.end();
+	for (; i != end; ++i) {
+		try {
+			i->write(regleradresse, id);
+		} catch (Exception e) {
+			e.print();
+			exit(EXIT_FAILURE);
+		}
+
+	}
 }
 
 //Einlesen der Einstellwerte aus CSV
@@ -365,6 +447,12 @@ void Exception::print() {
 			case IO_ERROR:
 				cout << "FEHLER: Ein-/Ausgabefehler" << endl;
 				break;
+			case NO_RESPONSE:
+				cout << "FEHLER: Regler antwortet nicht" << endl;
+				break;
+			case BAD_SDO:
+				cout << "FEHLER: Inkorrekte Antwort des Reglers" << endl;
+				break;
 		}
 		
 		if(message != "") {
@@ -402,16 +490,16 @@ string SDO::get_string() {
 
 	//Index
 	string s_index = int_to_hex(index, 4);
-	std::swap(s_index[0], s_index[2]);
-	std::swap(s_index[1], s_index[3]);
+	swap(s_index[0], s_index[2]);
+	swap(s_index[1], s_index[3]);
 
 	//Subindex
 	string s_subindex = int_to_hex(subindex,2);
 
 	//Wert
 	string s_value = int_to_hex(value, 4);
-	std::swap(s_value[0], s_value[2]);
-	std::swap(s_value[1], s_value[3]);
+	swap(s_value[0], s_value[2]);
+	swap(s_value[1], s_value[3]);
 	s_value += "0000";
 
 	return sdo_identifier + s_control + s_index + s_subindex + s_value + string("8000");
