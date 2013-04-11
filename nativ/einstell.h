@@ -39,8 +39,8 @@ public:
 	unsigned int id;
 	signed int value, min, max;
 	string text;
-	void read();
-	void write();
+	void read(unsigned int);
+	void write(unsigned int);
 	void set(string);
 	string get();
 private:
@@ -56,10 +56,10 @@ public:
 	unsigned int id;
 	list<Einstellwert> storage;
 	
-	void read();
-	void write();
+	void read(unsigned int);
+	void write(unsigned int);
 	
-	void test();
+	void test_csv();
 private:
 	ifstream* csv_in;
 	ofstream* csv_out;
@@ -80,5 +80,24 @@ public:
 	static const unsigned int BAD_INTERFACE = 2;
 	static const unsigned int BUFFER_OVERFLOW = 3;
 	static const unsigned int IO_ERROR = 4;
+};
+
+class SDO {
+public:
+	SDO(string, unsigned int);
+	SDO(unsigned int, unsigned int, unsigned int, unsigned int, Einstellwert);
+	SDO(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, signed int);
+
+	string get_string();
+	void set(string, unsigned int);
+	void set(unsigned int, unsigned int, unsigned int, unsigned int, Einstellwert);
+	void set(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, signed int);
+
+	unsigned int identifier;
+	unsigned int regleradresse;
+	unsigned int control;
+	unsigned int index;
+	unsigned int subindex;
+	signed int value;
 };
 #endif
