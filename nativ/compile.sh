@@ -6,3 +6,5 @@ gcc send.c -o send -lpthread;
 echo send kompiliert;
 gcc receive.c -o receive -lpthread;
 echo receive kompiliert;
+g++ einstell.cpp -o einstell -lpthread -lm;
+echo einstell kompiliert;
