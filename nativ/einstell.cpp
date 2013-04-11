@@ -139,8 +139,8 @@ int main(int argc, const char* argv[]) {
 	//test_einstellwert_set();
 	//test_einstellwert_get();
 	//test_einstelltabelle_csv();
-	test_sdo_out();
-	test_sdo_in();
+	//test_sdo_out();
+	//test_sdo_in();
 	
 	Einstelltabelle tabelle(&g_tty, &g_csv_in, &g_csv_out);
 	if(mode == READ) {
@@ -157,6 +157,18 @@ int main(int argc, const char* argv[]) {
 }
 
 void handle_args(int argc, const char* argv[]) {
+	//Hilfe ausgeben
+	if( (argc == 2) && !(string(argv[1]).compare("--help")) ) {
+		cout << "Programm zum auslesen und einspeichern von Einstellwerten in den RPQ2-Regler von Innowatt Energiesysteme GmbH" << endl;
+		cout << endl;
+		cout << "Verwendung:" << endl;
+		cout << "einstell write/read  schnittstelle regleradresse input.csv [output.csv]" << endl;
+		cout << endl;
+		cout << "write: einspeichern der Einstellwerte in \"input.csv\" über \"schnittstelle\" in Regler unter \"regleradresse\"" << endl;
+		cout << "read: auslesen der Einstellwerte in \"input.csv\" über \"schnittstelle\" aus Regler unter \"regleradresse\" und speichern der Ergebnisse in \"output.csv\"" << endl;
+		exit(EXIT_SUCCESS);
+	}
+
 	if( (argc != 5) && (argc != 6) ) {
 		throw Exception(Exception::BAD_PARAMS, "Falsche Anzahl an Parametern!");
 	}
