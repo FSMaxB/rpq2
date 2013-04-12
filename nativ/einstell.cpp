@@ -287,7 +287,7 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 
 	for(i = 0; i < 3; i++) {
 		received.clear();
-		send(package_sent.get_string() + "\n");		//TODO Sobald normaler Regler und nicht TeraTerm "\n" entfernen!
+		send(package_sent.get_string());
 
 		pthread_create(&thread, NULL, receive, (void*) &params);
 		pthread_detach(thread);
@@ -303,19 +303,19 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 			if( 	(package_received.regleradresse == regleradresse)
 				&&	(package_received.identifier == 0x580)
 				&&	(package_received.control == 0x4B)
-				/*&&	(package_received.index == index)
-				&&	(package_received.subindex == id)*/) {
+				&&	(package_received.index == index)
+				&&	(package_received.subindex == id)) {
 				cout << "index: " << package_received.index << endl;
 				cout << "subindex: " << package_received.subindex << endl;
 				cout << "value: " << package_received.value << endl;
 
 				i = 4;
 			}
-		} //TODO Wieder reinsetzen, wenn echter Regler
+		}
 
-		//TODO Sobald normaler Regler und nicht TeraTerm "\n" entfernen!
-		send(string("csdo") + "\n");	//Clearen des Reglers
-		nanosleep(&timeout, NULL); //TODO nach TeraTerm entfernen
+		send(string("csdo"));	//Clearen des Reglers
+
+		nanosleep(&timeout, NULL);
 
 	}
 
@@ -342,7 +342,7 @@ void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
 
 	for(i = 0; i < 3; i++) {
 		received.clear();
-		send(package_sent.get_string() + "\n");		//TODO Sobald normaler Regler und nicht TeraTerm "\n" entfernen!
+		send(package_sent.get_string());
 
 		pthread_create(&thread, NULL, receive, (void*) &params);
 		pthread_detach(thread);
@@ -366,8 +366,9 @@ void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
 			}
 		}
 
-		//TODO Sobald normaler Regler und nicht TeraTerm "\n" entfernen!
-		send(string("csdo") + "\n");	//Clearen des Reglers
+		send(string("csdo"));	//Clearen des Reglers
+
+		nanosleep(&timeout, NULL);
 
 	}
 
