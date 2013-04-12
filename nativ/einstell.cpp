@@ -49,7 +49,7 @@ using std::endl;
 
 //Konstanten
 const unsigned int DELAY = 10;	//Delay zwischen Werten in Milisekunden
-const unsigned int TIMEOUT = 2;	//Timeout beim Warten auf Antwort von Regler in Sekunden
+const unsigned int TIMEOUT = 1;	//Timeout beim Warten auf Antwort von Regler in Sekunden
 const bool READ = false;
 const bool WRITE = true;
 const bool SIGNED = true;
@@ -287,7 +287,7 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 
 	for(i = 0; i < 3; i++) {
 		received.clear();
-		send(package_sent.get_string());
+		send(package_sent.get_string() + "\n");		//TODO Sobald normaler Regler und nicht TeraTerm "\n" entfernen!
 
 		pthread_create(&thread, NULL, receive, (void*) &params);
 		pthread_detach(thread);
@@ -296,19 +296,26 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 
 		pthread_cancel(thread);
 
+		cout << "antwort: " << received << endl;
 		//Überprüfen der Antwort
 		if( received.length() == 23 ) {	//Wenn die Falsche Zahl an Zeichen zurückgekommen ist, braucht man gar nicht erst zu testen
 			package_received.set(received.substr(3,received.length() - 3), hex_to_int(received.substr(1,2)));
 			if( 	(package_received.regleradresse == regleradresse)
 				&&	(package_received.identifier == 0x580)
 				&&	(package_received.control == 0x4B)
-				&&	(package_received.index == index)
-				&&	(package_received.subindex == id)) {
+				/*&&	(package_received.index == index)
+				&&	(package_received.subindex == id)*/) {
+				cout << "index: " << package_received.index << endl;
+				cout << "subindex: " << package_received.subindex << endl;
+				cout << "value: " << package_received.value << endl;
+
 				i = 4;
 			}
-		}
+		} //TODO Wieder reinsetzen, wenn echter Regler
 
-		send(string("csdo"));	//Clearen des Reglers
+		//TODO Sobald normaler Regler und nicht TeraTerm "\n" entfernen!
+		send(string("csdo") + "\n");	//Clearen des Reglers
+		nanosleep(&timeout, NULL); //TODO nach TeraTerm entfernen
 
 	}
 
@@ -335,7 +342,7 @@ void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
 
 	for(i = 0; i < 3; i++) {
 		received.clear();
-		send(package_sent.get_string());
+		send(package_sent.get_string() + "\n");		//TODO Sobald normaler Regler und nicht TeraTerm "\n" entfernen!
 
 		pthread_create(&thread, NULL, receive, (void*) &params);
 		pthread_detach(thread);
@@ -343,7 +350,7 @@ void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
 		nanosleep(&timeout, NULL);
 
 		pthread_cancel(thread);
-
+		cout << "antwort: " << received << endl;
 		//Überprüfen der Antwort
 		if( received.length() == 23 ) {	//Wenn die Falsche Zahl an Zeichen zurückgekommen ist, braucht man gar nicht erst zu testen
 			package_received.set(received.substr(3,received.length() - 3), hex_to_int(received.substr(1,2)));
@@ -352,11 +359,15 @@ void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
 				&&	(package_received.control == 0x60)
 				&&	(package_received.index == index)
 				&&	(package_received.subindex == id)) {
+				cout << "index: " << package_received.index << endl;
+				cout << "subindex: " << package_received.subindex << endl;
+				cout << "value: " << package_received.value << endl;
 				i = 4;
 			}
 		}
 
-		send(string("csdo"));	//Clearen des Reglers
+		//TODO Sobald normaler Regler und nicht TeraTerm "\n" entfernen!
+		send(string("csdo") + "\n");	//Clearen des Reglers
 
 	}
 
@@ -374,6 +385,7 @@ void Einstellwert::send(string s) {
 	bool send_delay = true;	//Immer wenn auf true soll ein DELAY gewartet werden
 	for(unsigned int i = 0; i < s.length(); i++) {
 		tty_out << s[i];
+		tty_out.flush();
 		send_delay++;
 		if(send_delay) {	//Alle zwei Zeichen wird DELAY gewartet
 			nanosleep(&delay, NULL);
@@ -382,7 +394,6 @@ void Einstellwert::send(string s) {
 			throw Exception(Exception::IO_ERROR, "Konnte nicht auf Schnittstelle schreiben.");
 		}
 	}
-	tty_out.flush();
 }
 
 void *Einstellwert::receive(void* parameter) {
@@ -467,7 +478,7 @@ void Einstelltabelle::read_csv() {
 	get(csv_in, ',');
 	
 	//Lese Index aus
-	sscanf( get(csv_in).c_str() , "%u", &id);
+	id = hex_to_int(get(csv_in));
 	
 	//Restliche Zeilen einlesen
 	while( !csv_in->eof() ) {	//solange Dateiende noch nicht erreicht

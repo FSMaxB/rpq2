@@ -19,6 +19,26 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+function write($file) {
+	$output = $comment . "\n";
+	$output = $output . 'Index,' . $index . "\n";
+
+	$linecounter = 0;
+	for($counter = 1; $counter <= $count; $counter++) {
+		$linecounter++;
+		if(in_array($linecounter,$_POST["trenn"])) {
+			$output = $output . "*\n";
+			$linecounter++;
+		}
+	
+		if($_POST["check$counter"] === "true") {
+			$output = $output . $_POST["id$counter"] . ',' . $_POST["value$counter"] . ',' . $_POST["min$counter"] . ',' . $_POST["max$counter"] . ',' . $_POST["text$counter"] . "\n";
+		}
+	}
+	
+	echo $output;
+}
+
 $filename = $_POST["filename"];
 $mode = $_POST["mode"];
 
@@ -26,20 +46,10 @@ $comment = $_POST["comment"];
 $index = $_POST["index"];
 $count = $_POST["count"];
 
-echo $comment . "\n";
-echo 'Index,' . $index . "\n";
-
-$linecounter = 0;
-for($counter = 1; $counter <= $count; $counter++) {
-	$linecounter++;
-	if(in_array($linecounter,$_POST["trenn"])) {
-		echo "*\n";
-		$linecounter++;
-	}
-	
-	if($_POST["check$counter"] === "true") {
-		echo $_POST["id$counter"] . ',' . $_POST["value$counter"] . ',' . $_POST["min$counter"] . ',' . $_POST["max$counter"] . ',' . $_POST["text$counter"] . "\n";
-	}
+switch(mode) {
+	case save:
+		write($filename);
+		break;
 }
 
 ?>
