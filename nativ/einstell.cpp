@@ -47,12 +47,6 @@ using std::transform;
 using std::cout;
 using std::endl;	
 
-struct thread_p {
-	fstream* tty;
-	string* s;
-	bool fail;
-};
-
 //Konstanten
 const unsigned int DELAY = 10;	//Delay zwischen Werten in Milisekunden
 const unsigned int TIMEOUT = 2;	//Timeout beim Warten auf Antwort von Regler in Sekunden
@@ -68,6 +62,14 @@ ofstream g_csv_out;
 fstream g_tty;
 unsigned int g_regleradresse;
 bool mode;
+
+struct thread_p {
+	fstream* tty;
+	string* s;
+	bool fail;
+};
+
+static thread_p params;
 
 signed long hex_to_int(string, bool);
 string int_to_hex(signed long, unsigned int);
@@ -135,7 +137,9 @@ int main(int argc, const char* argv[]) {
 		e.print();
 		return EXIT_FAILURE;
 	}
-	
+
+	g_tty << "Quatsch" << endl;
+
 	//test_einstellwert_set();
 	//test_einstellwert_get();
 	//test_einstelltabelle_csv();
@@ -278,19 +282,21 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 	SDO package_sent( 0x600, regleradresse, 0x40, index, (*this));
 	SDO package_received(0,0,0,0,0,0);
 	string received;
-	thread_p params;
 	params.tty = tty;
 	params.s = &received;
 	params.fail = false;
 	pthread_t thread;
 	unsigned int i;
+
 	for(i = 0; i < 3; i++) {
 		received.clear();
 		send(package_sent.get_string());
+
 		pthread_create(&thread, NULL, receive, (void*) &params);
 		pthread_detach(thread);
 
 		nanosleep(&timeout, NULL);
+
 		pthread_cancel(thread);
 
 		//Überprüfen der Antwort
@@ -325,19 +331,21 @@ void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
 	SDO package_sent( 0x600, regleradresse, 0x2B, index, (*this));
 	SDO package_received(0,0,0,0,0,0);
 	string received;
-	thread_p params;
 	params.tty = tty;
 	params.s = &received;
 	params.fail = false;
 	pthread_t thread;
 	unsigned int i;
+
 	for(i = 0; i < 3; i++) {
 		received.clear();
 		send(package_sent.get_string());
+
 		pthread_create(&thread, NULL, receive, (void*) &params);
 		pthread_detach(thread);
 
 		nanosleep(&timeout, NULL);
+
 		pthread_cancel(thread);
 
 		//Überprüfen der Antwort
@@ -381,21 +389,17 @@ void Einstellwert::send(string s) {
 }
 
 void *Einstellwert::receive(void* parameter) {
-	thread_p* p;
-	p = (thread_p*) parameter;
-
 	char buffer;
-	for(unsigned int i = 0; i < 23; /*empty*/) {
-			buffer = p->tty->get();
-			if(p->tty->fail()) {
-				p->fail = true;
+	for(unsigned int i = 0; i < 23; ) {
+			buffer = params.tty->get();
+			if(params.tty->fail()) {
+				params.fail = true;
 			}
 			if( isalnum(buffer) ) {
-				(*p->s) += buffer;
+				*(params.s) += buffer;
 				i++;
 			}
-		}
-		return (void*) p;
+	}
 }
 
 //Parsen des Strings, damit die einzelnen Objekteigenschaften befüllt werden können.
