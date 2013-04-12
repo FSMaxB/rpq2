@@ -48,12 +48,15 @@ using std::cout;
 using std::endl;	
 
 //Konstanten
-const unsigned int DELAY = 10;	//Delay zwischen Werten in Milisekunden
+const unsigned int DELAY = 5;	//Delay zwischen Werten in Milisekunden
+const unsigned int BLOCK_DELAY = 10;	//Delay zwischen zwei Blöcken in Milisekunden
 const unsigned int TIMEOUT = 1;	//Timeout beim Warten auf Antwort von Regler in Sekunden
 const bool READ = false;
 const bool WRITE = true;
 const bool SIGNED = true;
 const bool UNSIGNED = false;
+const bool READY = true;
+const bool BUSY = false;
 const unsigned int BUFFER = 256;
 
 //Variablen
@@ -63,6 +66,7 @@ ifstream tty_in;
 ofstream tty_out;
 unsigned int g_regleradresse;
 bool mode;
+bool status;
 
 struct thread_p {
 	string* s;
@@ -273,9 +277,16 @@ Einstellwert::Einstellwert(unsigned int p_id, signed int p_value, signed int p_m
 
 void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 	//Übergabeparameter für nanosleep
-	struct timespec timeout;
-	timeout.tv_sec = TIMEOUT;
-	timeout.tv_nsec = 0;
+	struct timespec timeout_step;
+	timeout_step.tv_sec = 0;
+	timeout_step.tv_nsec = 100 * 1000000;	//100 Milisekunden
+	//Übergabeparameter für nanosleep
+	struct timespec delay;
+	delay.tv_sec = (int) DELAY / 1000;			//Sekunden aus DELAY
+	delay.tv_nsec = (DELAY % 1000) * 1000000;	//Milisekunden aus DELAY
+	struct timespec block_delay;
+	block_delay.tv_sec = (int) BLOCK_DELAY / 1000;
+	delay.tv_nsec = (BLOCK_DELAY % 1000) * 1000000;	//Milisekunden aus DELAY
 
 	SDO package_sent( 0x600, regleradresse, 0x40, index, (*this));
 	SDO package_received(0,0,0,0,0,0);
@@ -289,14 +300,19 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 		received.clear();
 		send(package_sent.get_string());
 
+		status = BUSY;
 		pthread_create(&thread, NULL, receive, (void*) &params);
 		pthread_detach(thread);
 
-		nanosleep(&timeout, NULL);
+		for(unsigned int j = 0; j <= (10*TIMEOUT); j++) {
+			nanosleep(&timeout_step, NULL);
+			if( status == READY ) {
+				break;
+			}
+		}
 
 		pthread_cancel(thread);
 
-		cout << "antwort: " << received << endl;
 		//Überprüfen der Antwort
 		if( received.length() == 23 ) {	//Wenn die Falsche Zahl an Zeichen zurückgekommen ist, braucht man gar nicht erst zu testen
 			package_received.set(received.substr(3,received.length() - 3), hex_to_int(received.substr(1,2)));
@@ -305,9 +321,6 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 				&&	(package_received.control == 0x4B)
 				&&	(package_received.index == index)
 				&&	(package_received.subindex == id)) {
-				cout << "index: " << package_received.index << endl;
-				cout << "subindex: " << package_received.subindex << endl;
-				cout << "value: " << package_received.value << endl;
 
 				i = 4;
 			}
@@ -315,7 +328,7 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 
 		send(string("csdo"));	//Clearen des Reglers
 
-		nanosleep(&timeout, NULL);
+		nanosleep(&block_delay, NULL);
 
 	}
 
@@ -328,9 +341,16 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 
 void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
 	//Übergabeparameter für nanosleep
-	struct timespec timeout;
-	timeout.tv_sec = TIMEOUT;
-	timeout.tv_nsec = 0;
+	struct timespec timeout_step;
+	timeout_step.tv_sec = 0;
+	timeout_step.tv_nsec = 100 * 1000000;	//100 Milisekunden
+	//Übergabeparameter für nanosleep
+	struct timespec delay;
+	delay.tv_sec = (int) DELAY / 1000;			//Sekunden aus DELAY
+	delay.tv_nsec = (DELAY % 1000) * 1000000;	//Milisekunden aus DELAY
+	struct timespec block_delay;
+	block_delay.tv_sec = (int) BLOCK_DELAY / 1000;
+	delay.tv_nsec = (BLOCK_DELAY % 1000) * 1000000;	//Milisekunden aus DELAY
 
 	SDO package_sent( 0x600, regleradresse, 0x2B, index, (*this));
 	SDO package_received(0,0,0,0,0,0);
@@ -344,13 +364,19 @@ void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
 		received.clear();
 		send(package_sent.get_string());
 
+		status = BUSY;
 		pthread_create(&thread, NULL, receive, (void*) &params);
 		pthread_detach(thread);
 
-		nanosleep(&timeout, NULL);
+		for(unsigned int j = 0; j <= (10*TIMEOUT); j++) {
+			nanosleep(&timeout_step, NULL);
+			if( status == READY) {
+				break;
+			}
+		}
 
 		pthread_cancel(thread);
-		cout << "antwort: " << received << endl;
+
 		//Überprüfen der Antwort
 		if( received.length() == 23 ) {	//Wenn die Falsche Zahl an Zeichen zurückgekommen ist, braucht man gar nicht erst zu testen
 			package_received.set(received.substr(3,received.length() - 3), hex_to_int(received.substr(1,2)));
@@ -359,16 +385,13 @@ void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
 				&&	(package_received.control == 0x60)
 				&&	(package_received.index == index)
 				&&	(package_received.subindex == id)) {
-				cout << "index: " << package_received.index << endl;
-				cout << "subindex: " << package_received.subindex << endl;
-				cout << "value: " << package_received.value << endl;
 				i = 4;
 			}
 		}
 
 		send(string("csdo"));	//Clearen des Reglers
 
-		nanosleep(&timeout, NULL);
+		nanosleep(&block_delay, NULL);
 
 	}
 
@@ -406,6 +429,8 @@ void *Einstellwert::receive(void* parameter) {
 				i++;
 			}
 	}
+
+	status = READY;
 }
 
 //Parsen des Strings, damit die einzelnen Objekteigenschaften befüllt werden können.
