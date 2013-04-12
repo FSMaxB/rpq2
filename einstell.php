@@ -48,7 +48,7 @@ function einstell_zeile( $csv_string ) {
 		$output_line = $einstellzeile_template;
 		$output_line = str_replace('{id}',$fields[0],$output_line);
 		
-		$value = '<input type="text" name="value' . $counter . '" value="' . $fields[1] . '" tabindex="' . $counter . '">'; 
+		$value = '<input type="text" size="6" maxlength="6" name="value' . $counter . '" value="' . $fields[1] . '" tabindex="' . $counter . '">'; 
 		$output_line = str_replace('{value}',$value,$output_line);
 		
 		$output_line = str_replace('{min}',$fields[2],$output_line);

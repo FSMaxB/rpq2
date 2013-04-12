@@ -19,36 +19,61 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-function write($file) {
-	$output = $comment . "\n";
-	$output = $output . 'Index,' . $index . "\n";
-
-	$linecounter = 0;
-	for($counter = 1; $counter <= $count; $counter++) {
-		$linecounter++;
-		if(in_array($linecounter,$_POST["trenn"])) {
-			$output = $output . "*\n";
-			$linecounter++;
-		}
-	
-		if($_POST["check$counter"] === "true") {
-			$output = $output . $_POST["id$counter"] . ',' . $_POST["value$counter"] . ',' . $_POST["min$counter"] . ',' . $_POST["max$counter"] . ',' . $_POST["text$counter"] . "\n";
-		}
-	}
-	
-	echo $output;
-}
-
-$filename = $_POST["filename"];
+$filename = $_POST["filename"] . '.csv';
 $mode = $_POST["mode"];
 
 $comment = $_POST["comment"];
 $index = $_POST["index"];
 $count = $_POST["count"];
 
-switch(mode) {
-	case save:
-		write($filename);
+function write() {
+	global $_POST, $comment, $index, $count;
+	
+	$output = $comment . "\n";
+	$output .= 'Index,' . $index . "\n";
+	
+	$linecounter = 0;
+	for($counter = 1; $counter <= $count; $counter++) {
+		$linecounter++;
+		if(in_array($linecounter,$_POST["trenn"])) {
+			$output .= "*\n";
+			$linecounter++;
+		}
+	
+		if($_POST["check$counter"] === "true") {
+			$output .= $_POST["id$counter"] . ',' . $_POST["value$counter"] . ',' . $_POST["min$counter"] . ',' . $_POST["max$counter"] . ',' . $_POST["text$counter"] . "\n";
+		}
+	}
+	
+	file_put_contents('einstell/' . $filename,$output);
+}
+
+function set_tty() {
+	system("stty -F /dev/ttyUSB0 -echo");
+	system("stty -F /dev/ttyUSB0 115200");
+	system("stty -F /dev/ttyUSB0 raw");
+}
+
+//function run() {
+//	$result = exec("nativ/einstell $mode /dev/ttyUSB0 ../einstell/send.csv $read");
+//}
+
+switch ($mode) {
+	case 'save':
+		write();
+		break;
+	case 'read':
+		$filename = 'send.csv';
+		write();
+		$read = '../einstell/antwort.csv';
+		run();
+		echo $result;
+		break;
+	case 'write':
+		$filename = 'send.csv';
+		write();
+		run();
+		echo $result;
 		break;
 }
 
