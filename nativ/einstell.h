@@ -35,8 +35,8 @@ class SDO;
 
 class Einstellwert {
 public:
-	Einstellwert(string, fstream*);
-	Einstellwert(unsigned int, signed int, signed int, signed int, string, fstream*);
+	Einstellwert(string);
+	Einstellwert(unsigned int, signed int, signed int, signed int, string);
 	unsigned int id;
 	signed int value, min, max;
 	string text;
@@ -45,15 +45,13 @@ public:
 	void set(string);
 	string get();
 private:
-	fstream* tty;
 	void send(string);
 	static void *receive(void*);
 };
 
 class Einstelltabelle {
 public:
-	Einstelltabelle(fstream*, ifstream*, ofstream*);
-	fstream* tty;
+	Einstelltabelle(ifstream*, ofstream*);
 	
 	string comment;
 	unsigned int id;

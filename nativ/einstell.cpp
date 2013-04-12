@@ -59,12 +59,12 @@ const unsigned int BUFFER = 256;
 //Variablen
 ifstream g_csv_in;
 ofstream g_csv_out;
-fstream g_tty;
+ifstream tty_in;
+ofstream tty_out;
 unsigned int g_regleradresse;
 bool mode;
 
 struct thread_p {
-	fstream* tty;
 	string* s;
 	bool fail;
 };
@@ -138,15 +138,13 @@ int main(int argc, const char* argv[]) {
 		return EXIT_FAILURE;
 	}
 
-	g_tty << "Quatsch" << endl;
-
 	//test_einstellwert_set();
 	//test_einstellwert_get();
 	//test_einstelltabelle_csv();
 	//test_sdo_out();
 	//test_sdo_in();
 	
-	Einstelltabelle tabelle(&g_tty, &g_csv_in, &g_csv_out);
+	Einstelltabelle tabelle(&g_csv_in, &g_csv_out);
 	if(mode == READ) {
 		tabelle.read(g_regleradresse);
 	} else {
@@ -155,7 +153,8 @@ int main(int argc, const char* argv[]) {
 	
 	g_csv_in.close();
 	g_csv_out.close();
-	g_tty.close();
+	tty_in.close();
+	tty_out.close();
 	
 	return EXIT_SUCCESS;
 }
@@ -201,8 +200,9 @@ void handle_args(int argc, const char* argv[]) {
 		throw Exception(Exception::BAD_FILE, string("Datei: ") + string(argv[4]));
 	}
 	
-	g_tty.open(argv[2]);
-	if( !g_tty.good() ) {
+	tty_in.open(argv[2]);
+	tty_out.open(argv[2]);
+	if( (!tty_in.good()) || (!tty_out.good()) ) {
 		throw Exception(Exception::BAD_INTERFACE, string("Schnittstelle: ") + string(argv[2]));
 	}
 	
@@ -211,7 +211,7 @@ void handle_args(int argc, const char* argv[]) {
 
 void test_einstellwert_set() {
 	cout << ansi_color << "[31mTeste Einstellwert::set(string) ..." << ansi_color << "[0m" << endl;
-	Einstellwert test("1,100,0,200,Dies ist eine Beschreibung!",NULL);
+	Einstellwert test("1,100,0,200,Dies ist eine Beschreibung!");
 	cout << "id: " << test.id << endl;
 	cout << "value: " << test.value << endl;
 	cout << "min: " << test.min << endl;
@@ -221,13 +221,13 @@ void test_einstellwert_set() {
 
 void test_einstellwert_get() {
 	cout << ansi_color << "[31mTeste Einstellwert::get() ..." << ansi_color << "[0m" << endl;
-	Einstellwert test(1,100,-20,200,string("Mal sehen ob das klappt!"),NULL);
+	Einstellwert test(1,100,-20,200,string("Mal sehen ob das klappt!"));
 	cout << test.get() << endl;
 }
 
 void test_einstelltabelle_csv() {
 	cout << ansi_color << "[31mTeste Einstelltabelle::read/write_csv ..." << ansi_color << "[0m" << endl;
-	Einstelltabelle test(&g_tty, &g_csv_in, &g_csv_out);
+	Einstelltabelle test(&g_csv_in, &g_csv_out);
 	try {
 		test.test_csv();
 	} catch (Exception e) {
@@ -258,18 +258,16 @@ void test_sdo_in() {
 	cout << "value: " <<  test.value << endl;
 }
 
-Einstellwert::Einstellwert(string line, fstream* p_tty) {
-	tty = p_tty;
+Einstellwert::Einstellwert(string line) {
 	set(line);
 }
 
-Einstellwert::Einstellwert(unsigned int p_id, signed int p_value, signed int p_min, signed int p_max, string p_text, fstream* p_tty) {
+Einstellwert::Einstellwert(unsigned int p_id, signed int p_value, signed int p_min, signed int p_max, string p_text) {
 	id = p_id;
 	value = p_value;
 	min = p_min;
 	max = p_max;
 	text = p_text;
-	tty = p_tty;
 }
 
 
@@ -282,7 +280,6 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 	SDO package_sent( 0x600, regleradresse, 0x40, index, (*this));
 	SDO package_received(0,0,0,0,0,0);
 	string received;
-	params.tty = tty;
 	params.s = &received;
 	params.fail = false;
 	pthread_t thread;
@@ -331,7 +328,6 @@ void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
 	SDO package_sent( 0x600, regleradresse, 0x2B, index, (*this));
 	SDO package_received(0,0,0,0,0,0);
 	string received;
-	params.tty = tty;
 	params.s = &received;
 	params.fail = false;
 	pthread_t thread;
@@ -376,25 +372,23 @@ void Einstellwert::send(string s) {
 	delay.tv_nsec = (DELAY % 1000) * 1000000;	//Milisekunden aus DELAY
 
 	bool send_delay = true;	//Immer wenn auf true soll ein DELAY gewartet werden
-	for(unsigned int i; i < s.length(); i++) {
-		(*tty) << s[i];
+	for(unsigned int i = 0; i < s.length(); i++) {
+		tty_out << s[i];
 		send_delay++;
 		if(send_delay) {	//Alle zwei Zeichen wird DELAY gewartet
 			nanosleep(&delay, NULL);
 		}
-		if( tty->fail() ) {
+		if( tty_out.fail() ) {
 			throw Exception(Exception::IO_ERROR, "Konnte nicht auf Schnittstelle schreiben.");
 		}
 	}
+	tty_out.flush();
 }
 
 void *Einstellwert::receive(void* parameter) {
 	char buffer;
 	for(unsigned int i = 0; i < 23; ) {
-			buffer = params.tty->get();
-			if(params.tty->fail()) {
-				params.fail = true;
-			}
+			tty_in >> buffer;
 			if( isalnum(buffer) ) {
 				*(params.s) += buffer;
 				i++;
@@ -426,8 +420,7 @@ string Einstellwert::get() {
 	return string(temp);
 }
 
-Einstelltabelle::Einstelltabelle(fstream* p_tty, ifstream* p_csv_in, ofstream* p_csv_out) {
-	tty = p_tty;
+Einstelltabelle::Einstelltabelle(ifstream* p_csv_in, ofstream* p_csv_out) {
 	csv_in = p_csv_in;
 	csv_out = p_csv_out;
 	
@@ -487,7 +480,7 @@ void Einstelltabelle::read_csv() {
 		}
 		if( !buffer.empty() ) {
 			if( buffer[0] != '*' ) {	//Trennzeilen werden nicht eingelesen
-				storage.push_back( Einstellwert( buffer, tty ) );
+				storage.push_back( Einstellwert( buffer) );
 			}
 		}
 		buffer.clear();
