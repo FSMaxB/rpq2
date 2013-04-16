@@ -19,15 +19,21 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+$author = 'Max Bruckner';
+$title = 'Einstellwerte übertragen';
+include('header.php');
+
 $filename = $_POST["filename"] . '.csv';
 $mode = $_POST["mode"];
 
 $comment = $_POST["comment"];
 $index = $_POST["index"];
 $count = $_POST["count"];
+$regleradresse = $_POST["regleradresse"];
+$results;
 
 function write() {
-	global $_POST, $comment, $index, $count;
+	global $_POST, $comment, $index, $count, $filename;
 	
 	$output = $comment . "\n";
 	$output .= 'Index,' . $index . "\n";
@@ -54,27 +60,51 @@ function set_tty() {
 	system("stty -F /dev/ttyUSB0 raw");
 }
 
-//function run() {
-//	$result = exec("nativ/einstell $mode /dev/ttyUSB0 ../einstell/send.csv $read");
-//}
+function run() {
+	global $results, $mode, $read, $regleradresse;
+	exec("nativ/einstell $mode /dev/ttyUSB0 $regleradresse einstell/send.csv $read", $outputs);
+	
+	foreach ($outputs as $output) {
+		$results .= $output . "\n";
+	}
+}
+
+function redirect($adress, $text) {
+		echo '<h2 align="center">' . nl2br($text) . '</h2><br />';
+		echo "<button onclick=\"window.location.href='$adress'\" style=\"width:100%\"><h3 align=\"center\">weiter</h3></button>";
+}
 
 switch ($mode) {
 	case 'save':
 		write();
+		redirect('einstelltab.php', "Einstellwerte in $filename gespeichert!");
 		break;
 	case 'read':
 		$filename = 'send.csv';
 		write();
-		$read = '../einstell/antwort.csv';
+		$read = 'einstell/antwort.csv';
 		run();
-		echo $result;
+		$pos = strpos($result,'FEHLER');
+		if( $pos == 0 )	{ //Enthält die Befehlsausgabe eine Fehlermeldung?
+			redirect("einstell.php?filename=send.csv" ,$results);
+		}	else {
+				redirect("einstell.php?filename=antwort.csv", 'Lesen der Einstellwerte erfolgreich!');
+		}
+		redirect('index.php', $results);
 		break;
 	case 'write':
 		$filename = 'send.csv';
 		write();
 		run();
-		echo $result;
+		$pos = strpos($result,'FEHLER');
+		if( $pos == 0)	{ //Enthält die Befehlsausgabe eine Fehlermeldung?
+			redirect("einstell.php?filename=send.csv" ,$results);
+		}	else {
+				redirect("index.php", 'Schreiben der Einstellwerte erfolgreich!');
+		}
 		break;
 }
+
+include('footer.php');
 
 ?>
