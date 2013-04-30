@@ -46,22 +46,24 @@ function einstell_zeile( $csv_string ) {
 		$counter++;
 		
 		$output_line = $einstellzeile_template;
-		$output_line = str_replace('{id}',$fields[0],$output_line);
+		
+		$id = '<input type="text" size="3" maxlength="3" name="id' . $counter . '" value="' . $fields[0] . '">';
+		$output_line = str_replace('{id}',$id,$output_line);
 		
 		$value = '<input type="text" size="6" maxlength="6" name="value' . $counter . '" value="' . $fields[1] . '" tabindex="' . $counter . '">'; 
 		$output_line = str_replace('{value}',$value,$output_line);
 		
 		$output_line = str_replace('{min}',$fields[2],$output_line);
 		$output_line = str_replace('{max}',$fields[3],$output_line);
-		$output_line = str_replace('{text}',$fields[4],$output_line);
+		
+		$text = '<input type="text" size="50" maxlength="50" name="text' . $counter . '" value="' . $fields[4] . '">';
+		$output_line = str_replace('{text}',$text,$output_line);
 		
 		$form = '<input type="hidden" name="check' . $counter . '" value="false">'
 		      . '<input type="checkbox" name="check' . $counter . '" value="true" checked>'
-		      . '<input type="hidden" name="id' . $counter . '" value="' . $fields[0] . '">'
 		      . '<input type="hidden" name="defv' . $counter . '" value="' . $fields[1] . '">'
 		      . '<input type="hidden" name="min' . $counter . '" value="' . $fields[2] . '">'
-		      . '<input type="hidden" name="max' . $counter . '" value="' . $fields[3] . '">'
-		      . '<input type="hidden" name="text' . $counter . '" value="' . $fields[4] . '">';
+		      . '<input type="hidden" name="max' . $counter . '" value="' . $fields[3] . '">';
 		$output_line = str_replace('{form}',$form,$output_line);
 		
 		$einstellwerte = $einstellwerte . "\n" . $output_line;
@@ -106,6 +108,7 @@ $einstell_template = str_replace('{index}',$index,$einstell_template);
 $einstell_template = str_replace('{einstellwerte}',$einstellwerte,$einstell_template);
 $einstell_template = str_replace('{counter}',$counter,$einstell_template);
 $einstell_template = str_replace('{trenn}',$trenn,$einstell_template);
+$einstell_template = str_replace('{filename}',$filename,$einstell_template);
 
 echo $einstell_template;
 

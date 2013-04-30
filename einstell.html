@@ -7,13 +7,13 @@
 			{einstellwerte}
 		</table>
 	</div>
-	{trenn}
-	<input type="text" name="filename">.csv</br>
+	Dateiname:<input type="text" name="filename" value="{filename}"></br>
 	Regleradresse:<input type="text" size="3" maxlength="3" name="regleradresse">
 	<select name="mode" size="1">
-		<option value="write" selected>Werte schreiben</option>
-		<option value="read">Werte auslesen</option>
+		<option value="read" selected>Werte auslesen</option>
 		<option value="save">CSV speichern</option>
+		<option value="write_save">Werte schreiben und speichern</option>
+		<option value="write">Werte schreiben</option>
 	</select>
 	<input type="hidden" name="count" value="{counter}">
 	<input type="reset" value="Zurücksetzen">

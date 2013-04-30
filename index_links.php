@@ -24,15 +24,7 @@
 ?>
 
 <div align=center>
-  <button onclick="window.location.href='csv.php'" style="width:100%">
-    <h2 align="center">CSV-Sollwerttabellen</h2>
-  </button>
-  <br />
-  <button onclick="window.location.href='regler.php'" style="width:100%">
-    <h2 align="center">Regler-Sollwertvorgaben</h2>
-  </button>
-  <br />
-  <button onclick="window.location.href='einstelltab.php'" style="width:100%">
+    <button onclick="window.location.href='einstelltab.php'" style="width:100%">
     <h2 align="center">Einstellwerttabellen verwalten</h2>
   </button>
   <button onclick="window.location.href='einstell.php?filename=default.csv'" style="width:100%">

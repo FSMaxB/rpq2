@@ -23,7 +23,7 @@ $author = 'Max Bruckner';
 $title = 'Einstellwerte übertragen';
 include('header.php');
 
-$filename = $_POST["filename"] . '.csv';
+$filename = $_POST["filename"];
 $mode = $_POST["mode"];
 
 $comment = $_POST["comment"];
@@ -32,8 +32,8 @@ $count = $_POST["count"];
 $regleradresse = $_POST["regleradresse"];
 $results;
 
-function write() {
-	global $_POST, $comment, $index, $count, $filename;
+function write($filename, $write_all) {
+	global $_POST, $comment, $index, $count;
 	
 	$output = $comment . "\n";
 	$output .= 'Index,' . $index . "\n";
@@ -46,7 +46,7 @@ function write() {
 			$linecounter++;
 		}
 	
-		if($_POST["check$counter"] === "true") {
+		if( ($_POST["check$counter"] === "true") || $write_all ) {
 			$output .= $_POST["id$counter"] . ',' . $_POST["value$counter"] . ',' . $_POST["min$counter"] . ',' . $_POST["max$counter"] . ',' . $_POST["text$counter"] . "\n";
 		}
 	}
@@ -62,7 +62,12 @@ function set_tty() {
 
 function run() {
 	global $results, $mode, $read, $regleradresse;
-	exec("nativ/einstell $mode /dev/ttyUSB0 $regleradresse einstell/send.csv $read", $outputs);
+	if($mode == 'write_save') {
+		$mode_param = 'write';
+	} else {
+		$mode_param = $mode;
+	}
+	exec("nativ/einstell $mode_param /dev/ttyUSB0 $regleradresse einstell/send.csv $read", $outputs);
 	
 	foreach ($outputs as $output) {
 		$results .= $output . "\n";
@@ -74,33 +79,44 @@ function redirect($adress, $text) {
 		echo "<button onclick=\"window.location.href='$adress'\" style=\"width:100%\"><h3 align=\"center\">weiter</h3></button>";
 }
 
+
+//set_tty();
+
 switch ($mode) {
 	case 'save':
-		write();
+		write($filename,false);
 		redirect('einstelltab.php', "Einstellwerte in $filename gespeichert!");
 		break;
 	case 'read':
-		$filename = 'send.csv';
-		write();
+		write('send.csv', false);
 		$read = 'einstell/antwort.csv';
 		run();
-		$pos = strpos($result,'FEHLER');
-		if( $pos == 0 )	{ //Enthält die Befehlsausgabe eine Fehlermeldung?
+		$pos = strpos($results,'FEHLER');
+		if( $pos !== false )	{ //Enthält die Befehlsausgabe eine Fehlermeldung?
 			redirect("einstell.php?filename=send.csv" ,$results);
 		}	else {
 				redirect("einstell.php?filename=antwort.csv", 'Lesen der Einstellwerte erfolgreich!');
 		}
-		redirect('index.php', $results);
 		break;
 	case 'write':
-		$filename = 'send.csv';
-		write();
+		write('send.csv', false);
 		run();
-		$pos = strpos($result,'FEHLER');
-		if( $pos == 0)	{ //Enthält die Befehlsausgabe eine Fehlermeldung?
+		$pos = strpos($results,'FEHLER');
+		if( $pos !== false)	{ //Enthält die Befehlsausgabe eine Fehlermeldung?
 			redirect("einstell.php?filename=send.csv" ,$results);
 		}	else {
-				redirect("index.php", 'Schreiben der Einstellwerte erfolgreich!');
+				redirect("einstell.php?filename=$filename", 'Schreiben der Einstellwerte erfolgreich!');
+		}
+		break;
+	case 'write_save':
+		write('send.csv', false);
+		run();
+		$pos = strpos($results,'FEHLER');
+		if( $pos !== false)	{ //Enthält die Befehlsausgabe eine Fehlermeldung?
+			redirect("einstell.php?filename=send.csv" ,$results);
+		}	else {
+				redirect("einstell.php?filename=$filename", 'Schreiben der Einstellwerte erfolgreich!');
+				write($filename, true);
 		}
 		break;
 }

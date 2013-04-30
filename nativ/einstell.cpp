@@ -67,6 +67,7 @@ ofstream tty_out;
 unsigned int g_regleradresse;
 bool mode;
 bool status;
+bool testmode = false;		//Testmodus zu Debug-Zwecken
 
 struct thread_p {
 	string* s;
@@ -119,7 +120,7 @@ string int_to_hex(signed long value, unsigned int length) {
 }
 
 string get(ifstream* input, char delimiter = '\n') {
-	char buffer;
+	signed char buffer;
 	string result;
 	while( (buffer = input->get()) != (EOF) ) {
 		//buffer = input->get();
@@ -289,6 +290,7 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 	delay.tv_nsec = (BLOCK_DELAY % 1000) * 1000000;	//Milisekunden aus DELAY
 
 	SDO package_sent( 0x600, regleradresse, 0x40, index, (*this));
+	package_sent.value = 0;
 	SDO package_received(0,0,0,0,0,0);
 	string received;
 	params.s = &received;
@@ -299,6 +301,10 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 	for(i = 0; i < 3; i++) {
 		received.clear();
 		send(package_sent.get_string());
+		
+		if(testmode) {
+			send(string("\n"));
+		}
 
 		status = BUSY;
 		pthread_create(&thread, NULL, receive, (void*) &params);
@@ -327,13 +333,17 @@ void Einstellwert::read(unsigned int regleradresse, unsigned int index) {
 		}
 
 		send(string("csdo"));	//Clearen des Reglers
-
+		
+		if(testmode) {
+			send(string("\n"));
+		}
+		
 		nanosleep(&block_delay, NULL);
 
 	}
 
 	if( i == 3 ) {	//Wurde die Schleife dreimal ohne Ergebnis durchlaufen?
-		throw Exception(Exception::NO_RESPONSE, string("Fehler bei ") + get());
+		throw Exception(Exception::NO_RESPONSE, string("Fehler bei ") + get() + string("\nAntwort:") + received);
 	} else {
 		value = package_received.value;
 	}
@@ -359,10 +369,14 @@ void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
 	params.fail = false;
 	pthread_t thread;
 	unsigned int i;
-
+	
 	for(i = 0; i < 3; i++) {
 		received.clear();
 		send(package_sent.get_string());
+		
+		if(testmode) {
+			send(string("\n"));
+		}
 
 		status = BUSY;
 		pthread_create(&thread, NULL, receive, (void*) &params);
@@ -390,13 +404,17 @@ void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
 		}
 
 		send(string("csdo"));	//Clearen des Reglers
+		
+		if(testmode) {
+			send(string("\n"));
+		}
 
 		nanosleep(&block_delay, NULL);
 
 	}
 
 	if( i == 3 ) {	//Wurde die Schleife dreimal ohne Ergebnis durchlaufen?
-		throw Exception(Exception::NO_RESPONSE, string("Fehler bei ") + get());
+		throw Exception(Exception::NO_RESPONSE, string("Fehler bei ") + get() + string("\nAntwort:") + received);
 	}
 }
 
@@ -421,7 +439,7 @@ void Einstellwert::send(string s) {
 }
 
 void *Einstellwert::receive(void* parameter) {
-	char buffer;
+	signed char buffer;
 	for(unsigned int i = 0; i < 23; ) {
 			tty_in >> buffer;
 			if( isalnum(buffer) ) {
@@ -531,7 +549,7 @@ void Einstelltabelle::test_csv() {
 //Schreiben der Einstellwerte in CSV
 void Einstelltabelle::write_csv() {
 	(*csv_out) << comment << endl;
-	(*csv_out) << "Index," << id << endl;
+	(*csv_out) << "Index," << int_to_hex(id, 4) << endl;
 	
 	list<Einstellwert>::iterator i = storage.begin(), end = storage.end();
 	for (; i != end; ++i) {
@@ -569,7 +587,7 @@ void Exception::print() {
 				cout << "FEHLER: Ein-/Ausgabefehler" << endl;
 				break;
 			case NO_RESPONSE:
-				cout << "FEHLER: Regler antwortet nicht" << endl;
+				cout << "FEHLER: Regler antwortet nicht korrekt" << endl;
 				break;
 			case BAD_SDO:
 				cout << "FEHLER: Inkorrekte Antwort des Reglers" << endl;
