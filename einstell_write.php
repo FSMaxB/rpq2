@@ -80,7 +80,7 @@ function redirect($adress, $text) {
 }
 
 
-//set_tty();
+set_tty();
 
 switch ($mode) {
 	case 'save':
