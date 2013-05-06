@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
     
-    Copyright (C) 2012 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
     
     This program is free software: you can redistribute it and/or modify
@@ -19,10 +19,25 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-$serial_interface = '/dev/ttyUSB0';
-$serial_baudrate = '115200';
+define('RAW', false);		//Verwende leere Seite
+define('LAYOUT', true);		//Verwende Layout
 
-$template_page = 'page.html';
-$template_layout = 'layout.html';
+include('settings.php');
 
+function draw_page( $content, $title, $author, $type, $header = '') {
+	$page = file_get_contents($template_page);
+	$layout = file_get_contents($template_layout);
+	
+	$output = str_replace('{header}', $header, $output);
+	$output = str_replace('{title}', $title, $output);
+	$output = str_replace('{author}', $author, $output);
+	
+	if( $type == LAYOUT ) {
+		$output = str_replace('{content}', $layout, $output);
+	}
+	
+	$output = str_replace('{content}', $content, $output);
+	
+	echo $output;
+}
 ?>
