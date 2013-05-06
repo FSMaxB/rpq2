@@ -77,6 +77,12 @@ Copyright &copy; 2012 Innowatt Energiesystem GmbH. Die veröffentlichung dieses 
 <p>
 Wird dieses Webinterface auf einem anderen Computer als dem Raspberry Pi&#8482; installiert, so sollten alle Hinweise auf denselbigen entfernt werden (in den Dateien <tt>footer.php</tt> und <tt>license.php</tt>)
 </p>
+<p>
+	<b>SICHERHEITSHINWEIS</b>
+</p>
+<p>
+	Dieses Webinterface sollte unter KEINEN UMSTÄNDEN über das Internet zugänglich gemacht werden, es ist nur für die Verwendung in einem lokalen Netzwerk vorgesehen. Es wurden keinerlei Maßnahmen zur Absicherung gegen Attacken und Manipulation getroffen, weshalb eine Anbindung an das Internet einen potenziellen Angriffsvektor für die Übernahme des gesamten internen Netzwerks durch Unbefugte darstellt.
+</p>
      </td>
     </tr>
   </table>

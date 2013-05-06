@@ -23,5 +23,6 @@ $serial_interface = '/dev/ttyUSB0';
 $serial_baudrate = '115200';
 
 $ordner_docs = 'docs';
+$ordner_regler = 'regler';
 
 ?>

@@ -24,7 +24,14 @@
 	eigentliche Konvertierungsprozess dann aufgerufen wird.
 */
 
+include('settings.php');
+include('page.php');
+
 $pfad = $_GET['pfad'];	//Holen des Pfades der zu konvertierenden Datei aus der URL
+
+$convert_form = file_get_contents('convert_form.html');
+$template_heading = file_get_contents('template_heading.html');
+$template_button = file_get_contents('template_button.html');
 
 //Extrahieren des Dateinamens aus dem Pfad
 $dummy = explode('/',$pfad);		//Auftrennen des Pfades anhand von '/'
@@ -34,8 +41,12 @@ $title = "Konvertieren der CSV-Sollwerttabelle \"$datei\"";
 $heading = "Konvertieren der CSV-Sollwerttabelle \"$datei\"";
 $author = 'Max Bruckner';
 
-include('header.php');			//Header einbinden
-include('heading.php');			//Überschrift einbinden
-include('convert_form.php');	//Formular für die Konvertierungseinstellungen einbinden
-include('convert_footer.php');	//Angepassten Footer einbinden
+$output = str_replace('{heading}',$heading,$template_heading);
+$output .= str_replace('{pfad}', $pfad, $convert_form);
+
+$button = str_replace('{link}', 'csv.php', $template_button);
+$button = str_replace('{text}', 'Zurück zu CSV-Sollwerttabellen', $button);
+$output .= $button;
+
+draw_page($output, $title, $author, LAYOUT);
 ?>

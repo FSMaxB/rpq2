@@ -23,19 +23,10 @@
     zum Konvertieren von convert.php aufgerufen. Aufgabe ist es, das
     native Programm zum konvertieren mit den richtigen Parametern aufzurufen.
 */
-?>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-       "http://www.w3.org/TR/html4/loose.dtd">
-<html>
- <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="author" content="Max Bruckner">
-  <title>CSV-Sollwerttabelle konvertieren</title>
- </head>
- <body>
-<?php
-include('regler_h.php'); //Headerdatei von "regler.php" einbinden
+include('settings.php');
+include('page.php');
+$ordner = $ordner_regler;
+$output;
 
 //Variablen aus URL holen
 //escapeshellcmd() erhöht die Sicherheit beim Aufrufen von nativen Programmen und korrigiert Pfadangaben
@@ -43,7 +34,7 @@ $input =  escapeshellcmd($_GET['input']);		//Zu konvertierende Datei
 $adresse = escapeshellcmd($_GET['adresse']);	//Regleradresse
 $return_success = $_GET['return_success'];		//Rücksprung bei erfolg
 $return_failure = $_GET['return_failure'];		//Rücksprung bei Fehler
-$rumpf = "$ordner/";							//Rumpf des Ordners, in dem die Konvertierte Datei landet
+$rumpf = "$ordner_regler/";							//Rumpf des Ordners, in dem die Konvertierte Datei landet
 
 //Trennen von Dateinamen und restlichem Pfad
 $dummy = explode('/',$input);				//Aufteilen des Pfades anhand von '/'
@@ -61,7 +52,13 @@ while($i<count($dummy)-1)		//Die Elemente von dummy wieder zu dem Pfad-Rumpf ohn
 }
 $input_rumpf = $input_rumpf . '/';
 
-$result = system("./nativ/CSV_ASM $input_rumpf $input_datei $adresse $rumpf");	//natives Konvertierungsprogramm aufrufen
+exec("./nativ/CSV_ASM $input_rumpf $input_datei $adresse $rumpf", $results);
+$result = '';
+foreach ($results as $temp) {
+	$result .= $temp;
+}
+
+$output .= $result;
 
 if(strpos($result,'ERROR')!==FALSE)	//Enthält die Befehlsausgabe eine Fehlermeldung?
 	$return = $return_failure;
@@ -70,7 +67,7 @@ if(strpos($result,'ERROR')!==FALSE)	//Enthält die Befehlsausgabe eine Fehlermel
 
 //Ist eine Weiterleitung angegeben worden, so erstelle entsprechenden Link
 if($return != '')
-	echo "<a href=\"$return\">[weiter]</a>";
+	$output .= "<a href=\"$return\">[weiter]</a>";
+	
+draw_page($output, $title, $author, NAKED);
 ?>
-</body>
-</html>

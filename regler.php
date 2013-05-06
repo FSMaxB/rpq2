@@ -1,9 +1,10 @@
 <?php
-include('regler_h.php'); //Headerdatei einbinden
+include('settings.php'); //Headerdatei einbinden
 $title = 'Regler-Sollwertvorgaben';
 $author = 'Max Bruckner';
 $heading = 'Regler-Sollwertvorgaben';
 
+$ordner = $ordner_regler;
 $link = "regler_link.php";	//Datei mit den Links für die Auflistung der Regler-Sollwertvorgaben
 
 $return = 'regler.php'; //Setzt automatische Weiterleitung auf diese Seite

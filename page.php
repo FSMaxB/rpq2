@@ -19,21 +19,28 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-define('RAW', false);		//Verwende leere Seite
-define('LAYOUT', true);		//Verwende Layout
+define('NAKED', 0);
+define('RAW', 1);		//Verwende leere Seite mit Header und Footer
+define('LAYOUT', 2);		//Verwende Layout
 
 include('settings.php');
 
 function draw_page( $content, $title, $author, $type, $header = '') {
+	$html = file_get_contents('template_html.html');
 	$page = file_get_contents('template_page.html');
 	$layout = file_get_contents('template_layout.html');
 	
-	$output = str_replace('{header}', $header, $page);
+	$output = str_replace('{header}', $header, $html);
 	$output = str_replace('{title}', $title, $output);
 	$output = str_replace('{author}', $author, $output);
 	
-	if( $type == LAYOUT ) {
-		$output = str_replace('{content}', $layout, $output);
+	switch ($type) {
+		case RAW:
+			$output = str_replace('{content}', $page, $output);
+			break;
+		case LAYOUT:
+			$output = str_replace('{content}', $page, $output);
+			$output = str_replace('{content}', $layout, $output);
 	}
 	
 	$output = str_replace('{content}', $content, $output);
