@@ -23,17 +23,24 @@
     aus dem Ordner mit den Dokumentationen).
 */
 
+include('settings.php');
+include('page.php');
+
+$template_button = file_get_contents('template_button.html');
+$template_heading = file_get_contents('template_heading.html');
+
 $title = 'Dokumentationen';
 $author = 'Max Bruckner';
 $heading = 'Dokumentationen';
 
-$docs_ordner = 'docs';			//Ordner, in dem die Dokumentationen gespeichert sind. Kann hier global verändert werden
-$ordner = opendir($docs_ordner);	//Ordner öffnen
+$output;
 
-include('header.php');
-include('heading.php');
 
-echo "<div align=\"center\">";	//Beginne zentrierten Kontainer
+$ordner = opendir($ordner_docs);	//Ordner öffnen
+
+$output = str_replace('{heading}', $heading, $template_heading);
+
+$output .= '<div align="center">';	//Beginne zentrierten Kontainer
 
 //Ordnerinhalt durchgehen
 while(TRUE)
@@ -41,12 +48,20 @@ while(TRUE)
 	$dateiname = readdir($ordner);
 	if($dateiname !== FALSE)	//Sind noch Dateien Übrig?
 	{
-		if($dateiname != '.' && $dateiname != '..')	//Ausfilterung der Ordner '.' und '..'
-			include('docs_button.php');	//Datei als Button darstellen
+		if($dateiname != '.' && $dateiname != '..')	{//Ausfilterung der Ordner '.' und '..'
+			$button = str_replace('{link}', $ordner_docs . '/' . $dateiname, $template_button);
+			$button = str_replace('{text}', $dateiname, $button);
+			
+			$output .= $button;
+		}
 	}
 	else break;
 }
-echo '</div>';			//Beende zentrierten Kontainer
+$output .= '</div>';			//Beende zentrierten Kontainer
 
-include('footer_sub.php');
+$button = str_replace('{link}', 'index.php', $template_button);
+$button = str_replace('{text}', 'Zurück zum Hauptmenü', $button);
+$output .= $button;
+
+draw_page($output, $title, $author, LAYOUT);
 ?>

@@ -28,7 +28,7 @@ function draw_page( $content, $title, $author, $type, $header = '') {
 	$page = file_get_contents('template_page.html');
 	$layout = file_get_contents('template_layout.html');
 	
-	$output = str_replace('{header}', $header, $output);
+	$output = str_replace('{header}', $header, $page);
 	$output = str_replace('{title}', $title, $output);
 	$output = str_replace('{author}', $author, $output);
 	
