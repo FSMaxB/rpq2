@@ -19,6 +19,8 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+include('settings.php');
+
 $author = 'Max Bruckner';
 $title = 'Einstellwerte übertragen';
 include('header.php');
@@ -55,9 +57,9 @@ function write($filename, $write_all) {
 }
 
 function set_tty() {
-	system("stty -F /dev/ttyUSB0 -echo");
-	system("stty -F /dev/ttyUSB0 115200");
-	system("stty -F /dev/ttyUSB0 raw");
+	system("stty -F $serial_interace -echo");
+	system("stty -F $serial_interface $serial_baudrate");
+	system("stty -F $serial_interface raw");
 }
 
 function run() {
