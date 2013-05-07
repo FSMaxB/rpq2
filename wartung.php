@@ -1,48 +1,50 @@
 <?php
-$title = 'Schnittstelle aufnehmen';
+/*
+    RPQ2-Webinterface
+    
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
+    Author: Max Bruckner
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see http://www.gnu.org/licenses/.
+*/
+
+include('page.php');
+include('settings.php');
+
+$title = 'Wartung';
 $author = 'Max Bruckner';
-$heading = 'Schnittstelle aufnehmen';
+$heading = 'Wartung';
 
-$ordner = 'tty-logs';		//Ordner, in dem CSV-Sollwerttabellen gespeichert werden. Kann hier global gesetzt werden
-$link = 'wartung_link.php';	//Datei mit den Links für die Auflistung der CSV-Sollwerttabellen
-$return = 'wartung.php'; 		//Der Name dieser Datei (wichtig für Skripte, die zurückkehren wollen)
+$send = $_POST['send'];
 
+$template_heading = file_get_contents('template_heading.html');
+$template_wartung = file_get_contents('template_wartung.html');
+$template_button = file_get_contents('template_button.html');
+$output = str_replace('{heading}', $heading, $template_heading);
+$output .= $template_wartung;
 
-include('header_raw.php');
-include('heading.php');
-?>
-<table width="49%" align="left">
- <tr>
-  <td>
-<?php
-include('wartung_form.php');	//Formular für das Starten der Aufnahme
-?>
-  </td>
- </tr>
-</table>
-<table width="49%" align="right">
- <tr>
-  <td>
-<?php
-include('list.php');
-
-//Läuft gerade eine Aufnahme?
-$result = exec("ps -ef | grep receive | grep -v grep");	//Abfragen einer Liste aller laufenden Prozesse mit receive
-if($result != '')	//Wenn ja, Button zum beenden anzeigen
-{
-	include('wartung_kill.php');	//Button zum Beenden der Aufnahme
+if( $send != '') {
+	exec("nativ/einstell wartung $serial_interface $send", $results);
+	
+	foreach ( $results as $result ) {
+		$received .= $result;
+	}
 }
-?>
-  </td>
- </tr>
-</table>
-     <br />
-     <div align="center">
-      <button onclick="window.location.href='index.php'" style="width:100%">
-        <h3 align="center">Zurück zum Hauptmenü</h3>
-      </button>
-     </div>
-<?php
-include('footer_raw.php');
-?>
 
+$output = str_replace('{received}', $received, $output);
+$output .= str_replace('{link}', 'index.php', $template_button);
+$output = str_replace('{text}', 'Zum Hauptmenü', $output);
+
+draw_page( $output, $title, $author, LAYOUT);
+?>

@@ -69,7 +69,7 @@ function run() {
 	} else {
 		$mode_param = $mode;
 	}
-	exec("nativ/einstell $mode_param /dev/ttyUSB0 $regleradresse einstell/send.csv $read", $outputs);
+	exec("nativ/einstell $mode_param $serial_interface $regleradresse einstell/send.csv $read", $outputs);
 	
 	foreach ($outputs as $output) {
 		$results .= $output . "\n";
