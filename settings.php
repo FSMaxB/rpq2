@@ -24,5 +24,7 @@ $serial_baudrate = '115200';
 
 $ordner_docs = 'docs';
 $ordner_regler = 'regler';
+$ordner_sollwert = 'csv';
+$ordner_einstellwert = 'einstell';
 
 ?>

@@ -1,0 +1,9 @@
+<form enctype="multipart/form-data" action="upload.php" method="POST">
+  <input type="hidden" name="MAX_FILE_SIZE" value="1000000" />
+  <input type="hidden" name="ordner" value="{ordner}" />
+  <input type="hidden" name="return_success" value="{return_success}" />
+  <input type="hidden" name="return_failure" value="{return_failure}" />
+  <input type="hidden" name="filetype" value="{filetype}" />
+  <input name="datei" type="file" />
+  <input type="submit" value="Hochladen" />
+</form>
