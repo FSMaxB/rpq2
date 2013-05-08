@@ -20,6 +20,7 @@
 
 /*
 	einstell read/write schnittstelle regleradresse input.csv [output.csv]
+	einstell wartung schnittstelle sdo
 */
 
 #include <iostream>
@@ -79,6 +80,9 @@ static thread_p params;
 signed long hex_to_int(string, bool);
 string int_to_hex(signed long, unsigned int);
 void handle_args(int, const char**);
+void wartung(string);
+void send(string);
+void *receive(void*);
 
 //testfunktionen etc
 const unsigned char ansi_color = 27;
@@ -171,18 +175,33 @@ void handle_args(int argc, const char* argv[]) {
 		cout << endl;
 		cout << "Verwendung:" << endl;
 		cout << "einstell write/read  schnittstelle regleradresse input.csv [output.csv]" << endl;
+		cout << "einstell wartung schnittstelle sdo" << endl;
 		cout << endl;
 		cout << "write: einspeichern der Einstellwerte in \"input.csv\" über \"schnittstelle\" in Regler unter \"regleradresse\"" << endl;
 		cout << "read: auslesen der Einstellwerte in \"input.csv\" über \"schnittstelle\" aus Regler unter \"regleradresse\" und speichern der Ergebnisse in \"output.csv\"" << endl;
 		exit(EXIT_SUCCESS);
 	}
 
-	if( (argc != 5) && (argc != 6) ) {
+	if( (argc != 4) && (argc != 5) && (argc != 6) ) {
 		throw Exception(Exception::BAD_PARAMS, "Falsche Anzahl an Parametern!");
 	}
 
-	//Lesen oder Schreiben?
-	if( !string("write").compare(argv[1]) ) {
+	//Lesen, Schreiben oder Wartung?
+	if( !string("wartung").compare(argv[1]) ) {
+		//Schnittstelle
+		tty_in.open(argv[2]);
+		tty_out.open(argv[2]);
+		if( (!tty_in.good()) || (!tty_out.good()) ) {
+			throw Exception(Exception::BAD_INTERFACE, string("Schnittstelle: ") + string(argv[2]));
+		}
+		
+		wartung(string(argv[3]));
+		
+		tty_in.close();
+		tty_out.close();
+		exit(EXIT_SUCCESS);
+		
+	} else if( !string("write").compare(argv[1]) ) {
 		if( argc != 5 ) {
 			throw Exception(Exception::BAD_PARAMS, "Falsche Anzahl an Parametern!");
 		}
@@ -212,6 +231,65 @@ void handle_args(int argc, const char* argv[]) {
 	}
 	
 	sscanf(argv[3], "%u", &g_regleradresse);
+}
+
+void wartung(string sdo) {
+	//Übergabeparameter für nanosleep
+	struct timespec timeout_step;
+	timeout_step.tv_sec = 0;
+	timeout_step.tv_nsec = 100 * 1000000;	//100 Milisekunden
+	//Übergabeparameter für nanosleep
+	struct timespec delay;
+	delay.tv_sec = (int) DELAY / 1000;			//Sekunden aus DELAY
+	delay.tv_nsec = (DELAY % 1000) * 1000000;	//Milisekunden aus DELAY
+	struct timespec block_delay;
+	block_delay.tv_sec = (int) BLOCK_DELAY / 1000;
+	delay.tv_nsec = (BLOCK_DELAY % 1000) * 1000000;	//Milisekunden aus DELAY
+	
+	string received;
+	params.s = &received;
+	params.fail = false;
+	pthread_t thread;
+	unsigned int i;
+
+	for(i = 0; i < 3; i++) {
+		received.clear();
+		send(sdo);
+		
+		if(testmode) {
+			send(string("\n"));
+		}
+
+		status = BUSY;
+		pthread_create(&thread, NULL, receive, (void*) &params);
+		pthread_detach(thread);
+
+		for(unsigned int j = 0; j <= (10*TIMEOUT); j++) {
+			nanosleep(&timeout_step, NULL);
+			if( status == READY ) {
+				break;
+			}
+		}
+
+		pthread_cancel(thread);
+		
+		send(string("csdo"));	//Clearen des Reglers
+		
+		if(testmode) {
+			send(string("\n"));
+		}
+		
+		nanosleep(&block_delay, NULL);
+
+	}
+
+	if( i == 3 ) {	//Wurde die Schleife dreimal ohne Ergebnis durchlaufen?
+		throw Exception(Exception::NO_RESPONSE);
+	} else {
+		cout << received;
+	}
+		
+		
 }
 
 void test_einstellwert_set() {
@@ -418,7 +496,7 @@ void Einstellwert::write(unsigned int regleradresse, unsigned int index) {
 	}
 }
 
-void Einstellwert::send(string s) {
+void send(string s) {
 	//Übergabeparameter für nanosleep
 	struct timespec delay;
 	delay.tv_sec = (int) DELAY / 1000;			//Sekunden aus DELAY
@@ -438,7 +516,7 @@ void Einstellwert::send(string s) {
 	}
 }
 
-void *Einstellwert::receive(void* parameter) {
+void *receive(void* parameter) {
 	signed char buffer;
 	for(unsigned int i = 0; i < 23; ) {
 			tty_in >> buffer;
