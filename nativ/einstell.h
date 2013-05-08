@@ -44,9 +44,6 @@ public:
 	void write(unsigned int, unsigned int);
 	void set(string);
 	string get();
-private:
-	void send(string);
-	static void *receive(void*);
 };
 
 class Einstelltabelle {

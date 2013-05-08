@@ -26,5 +26,5 @@ $ordner_docs = 'docs';
 $ordner_regler = 'regler';
 $ordner_sollwert = 'csv';
 $ordner_einstellwert = 'einstell';
-
+$ordner_temp = 'temp';
 ?>
