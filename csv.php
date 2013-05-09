@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
     
-    Copyright (C) 2012 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
     
     This program is free software: you can redistribute it and/or modify
@@ -22,18 +22,39 @@
     Stellt das Menü CSV-Sollwerttabellen dar.
 */
 
+include('settings.php');
+include('page.php');
+include('upload_form.php');
+include('file_list.php');
+
 $title = 'CSV-Sollwerttabellen';
 $author = 'Max Bruckner';
 $heading = 'CSV-Sollwerttabellen';
 
-$ordner = 'csv';		//Ordner, in dem CSV-Sollwerttabellen gespeichert werden. Kann hier global gesetzt werden
-$link = 'csv_link.php';	//Datei mit den Links für die Auflistung der CSV-Sollwerttabellen
-$return = 'csv.php'; 		//Der Name dieser Datei (wichtig für Skripte, die zurückkehren wollen)
-$include = 'upload_csv.php';	//Einzubindende Datei für die richtige Dateiendung beim hochladen.
+$file_list = '';
 
-include('header.php');
-include('heading.php');
-include('upload_form.php');	//Einbinden des Upload-Formulares
-include('list.php');		//Einbinden der Auflistung von CSV-Sollwerttabellen
-include('footer_sub.php');
+$template_link_csv = file_get_contents('template_link_csv.html');
+$template_container = file_get_contents('template_container.html');
+$template_heading = file_get_contents('template_heading.html');
+$template_button = file_get_contents('template_button.html');
+
+$return = 'csv.php';
+$extension = 'csv';
+//Dateiliste erstellen:
+foreach ( get_files($ordner_sollwert) as $file ) {
+	$link = str_replace('{ordner}', $ordner_sollwert, $template_link_csv);
+	$link = str_replace('{dateiname}', $file, $link);
+	$link = str_replace('{return}', $return, $link);
+	
+	$file_list .= $link;
+}
+
+$output = str_replace('{heading}', $heading, $template_heading);
+$output .= upload_form($ordner_sollwert, $extension, $return, $return);
+$output .= str_replace('{content}', $file_list, $template_container);
+$button = str_replace('{link}', 'index.php', $template_button);
+$button = str_replace('{text}', 'Zum Hauptmenü', $button);
+$output .= $button;
+
+draw_page($output, $title, $author, LAYOUT);
 ?>
