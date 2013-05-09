@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
     
-    Copyright (C) 2012 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
     
     This program is free software: you can redistribute it and/or modify
@@ -17,16 +17,10 @@
     
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see http://www.gnu.org/licenses/.
-    
-    --------------------convert_do.php----------------------------------
-    Diese Datei wird mit der zu konvertierenden Datei und den Einstellungen
-    zum Konvertieren von convert.php aufgerufen. Aufgabe ist es, das
-    native Programm zum konvertieren mit den richtigen Parametern aufzurufen.
 */
+
 include('settings.php');
 include('page.php');
-$ordner = $ordner_regler;
-$output;
 
 //Variablen aus URL holen
 //escapeshellcmd() erhöht die Sicherheit beim Aufrufen von nativen Programmen und korrigiert Pfadangaben

@@ -24,37 +24,26 @@
 
 include('settings.php');
 include('page.php');
-include('upload_form.php');
 include('file_list.php');
+include('templates.php');
 
 $title = 'CSV-Sollwerttabellen';
 $author = 'Max Bruckner';
 $heading = 'CSV-Sollwerttabellen';
 
-$file_list = '';
-
-$template_link_csv = file_get_contents('template_link_csv.html');
-$template_container = file_get_contents('template_container.html');
-$template_heading = file_get_contents('template_heading.html');
-$template_button = file_get_contents('template_button.html');
 
 $return = 'csv.php';
 $extension = 'csv';
+
 //Dateiliste erstellen:
 foreach ( get_files($ordner_sollwert) as $file ) {
-	$link = str_replace('{path}', "$ordner_sollwert/$file", $template_link_csv);
-	$link = str_replace('{filename}', $file, $link);
-	$link = str_replace('{return}', $return, $link);
-	
-	$file_list .= $link;
+	$file_list .= get_link_csv("$ordner_sollwert/$file", $file, $return);
 }
 
-$output = str_replace('{heading}', $heading, $template_heading);
-$output .= upload_form($ordner_sollwert, $extension, $return, $return);
-$output .= str_replace('{content}', $file_list, $template_container);
-$button = str_replace('{link}', 'index.php', $template_button);
-$button = str_replace('{text}', 'Zum Hauptmenü', $button);
-$output .= $button;
+$output = get_heading($heading);
+$output .= get_form_upload($ordner_sollwert, $extension, $return, $return);
+$output .= get_container($file_list);
+$output .= get_button('index.php', 'Zum Hauptmenü');
 
 draw_page($output, $title, $author, LAYOUT);
 ?>

@@ -59,7 +59,7 @@ function get_link_einstelltab($path, $filename, $return) {
 	return $output;
 }
 
-function get_link_csv($path, $return, $filename) {
+function get_link_csv($path, $filename, $return) {
 	$template_link_csv = file_get_contents('template_link_csv.html');
 	
 	$output = str_replace('{path}', $path, $template_link_csv);
@@ -100,10 +100,10 @@ function get_form_upload($directory, $extension, $return_success, $return_failur
 	return $output;
 }
 
-function get_convert_form($path) {
-	$template_convert_form = file_get_contents('template_convert_form.html');
+function get_form_convert($path) {
+	$template_form_convert = file_get_contents('template_form_convert.html');
 	
-	return str_replace('{path}', $path, $template_convert_form);
+	return str_replace('{path}', $path, $template_form_convert);
 }
 
 function get_container($content) {
@@ -118,6 +118,35 @@ function get_button($link, $text) {
 	$output = str_replace('{link}', $link, $template_button);
 	$output = str_replace('{text}', $text, $output);
 	return $output;
+}
+
+function get_form_einstell($comment, $index, $einstellwerte, $filename, $counter, $trenn) {
+	$template_form_einstell = file_get_contents('template_form_einstell.html');
+	
+	$output = str_replace('{comment}', $comment, $template_form_einstell);
+	$output = str_replace('{index}',$index, $output);
+	$output = str_replace('{einstellwerte}', $einstellwerte, $output);
+	$output = str_replace('{filename}', $filename, $output);
+	$output = str_replace('{counter}', $counter, $output);
+	$output = str_replace('{trenn}', $trenn, $output);
+	return $output;
+}
+
+function get_einstellzeile($form, $text, $id, $value, $min, $max) {
+	$template_einstellzeile = file_get_contents('template_einstellzeile.html');
+	
+	$output = str_replace('{form}', $form, $template_einstellzeile);
+	$output = str_replace('{text}', $text, $output);
+	$output = str_replace('{id}', $id, $output);
+	$output = str_replace('{value}', $value, $output);
+	$output = str_replace('{min}', $min, $output);
+	$output = str_replace('{max}', $max, $output);
+	return $output;
+	
+}
+
+function get_einstellzeile_trenn() {
+	
 }
 
 ?>

@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
     
-    Copyright (C) 2012 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
     
     This program is free software: you can redistribute it and/or modify
@@ -18,9 +18,11 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
-$einstell_template = file_get_contents('einstell.html'); //Vorlage für die Seite "Einstellwerte"
-$einstellzeile_template = file_get_contents('einstellzeile.html');	//Vorlage für die Listenelemente
-$einstellzeile_template_trenn = file_get_contents('einstellzeile_trenn.html');	//Vorlage für die Trennlinien
+
+include('settings.php');
+include('page.php');
+include('templates.php');
+
 $counter = 0;
 $linecounter = 1;		//Zählt die bearbeiteten CSV-Zeilen
 $trennlines;			//Array, das alle Zeilen enthält, in denen sich Trennlinien befinden.
@@ -28,10 +30,10 @@ $einstellwerte; //String, in den die Fertige Liste von Einstellwerten reinkommt.
 $trenn; //hidden formulare für den Array mit trennzeilen.
 
 function einstell_zeile( $csv_string ) {
-	global $einstellzeile_template, $einstellzeile_template_trenn, $counter, $linecounter, $trennlines, $einstellwerte;
+	global $counter, $linecounter, $trennlines, $einstellwerte;
 	
 	if( $csv_string == '*' ) {
-		$einstellwerte = $einstellwerte . "\n" . $einstellzeile_template_trenn;
+		$einstellwerte .= "\n" . get_einstellzeile_trenn();
 		$trennlines[] = $linecounter;
 		$linecounter++;
 	}
@@ -45,26 +47,14 @@ function einstell_zeile( $csv_string ) {
 		
 		$counter++;
 		
-		$output_line = $einstellzeile_template;
-		
 		$id = '<input type="text" size="3" maxlength="3" name="id' . $counter . '" value="' . $fields[0] . '">';
-		$output_line = str_replace('{id}',$id,$output_line);
-		
 		$value = '<input type="text" size="6" maxlength="6" name="value' . $counter . '" value="' . $fields[1] . '" tabindex="' . $counter . '">'; 
-		$output_line = str_replace('{value}',$value,$output_line);
-		
-		$output_line = str_replace('{min}',$fields[2],$output_line);
-		$output_line = str_replace('{max}',$fields[3],$output_line);
-		
+		$min = '<input type="text" size="6" maxlength="6" name="min' . $counter . '" value="' . $fields[2] . '">';
+		$max = '<input type="text" size="6" maxlength="6" name="value' . $counter . '" value="' . $fields[3] . '">';
 		$text = '<input type="text" size="50" maxlength="50" name="text' . $counter . '" value="' . $fields[4] . '">';
-		$output_line = str_replace('{text}',$text,$output_line);
-		
 		$form = '<input type="hidden" name="check' . $counter . '" value="false">'
-		      . '<input type="checkbox" name="check' . $counter . '" value="true" checked>'
-		      . '<input type="hidden" name="defv' . $counter . '" value="' . $fields[1] . '">'
-		      . '<input type="hidden" name="min' . $counter . '" value="' . $fields[2] . '">'
-		      . '<input type="hidden" name="max' . $counter . '" value="' . $fields[3] . '">';
-		$output_line = str_replace('{form}',$form,$output_line);
+		      . '<input type="checkbox" name="check' . $counter . '" value="true" checked>';
+		$output_line = get_einstellzeile($form, $text, $id, $value, $min, $max);
 		
 		$einstellwerte = $einstellwerte . "\n" . $output_line;
 		$linecounter++;
@@ -90,9 +80,6 @@ $comment = $lines[0];
 $index = explode(',',$lines[1]);
 $index = $index[1];
 
-include('header.php');
-include('heading.php');
-
 foreach($lines as $line) {
 	if($line !== '') {
 		einstell_zeile($line);
@@ -100,17 +87,12 @@ foreach($lines as $line) {
 }
 
 foreach($trennlines as $trennline) {
-	$trenn = $trenn . "\n" .  '<input type="hidden" name="trenn[]" value="' . $trennline . '">';
+	$trenn .= "\n" .  '<input type="hidden" name="trenn[]" value="' . $trennline . '">';
 }
 
-$einstell_template = str_replace('{comment}',$comment,$einstell_template);
-$einstell_template = str_replace('{index}',$index,$einstell_template);
-$einstell_template = str_replace('{einstellwerte}',$einstellwerte,$einstell_template);
-$einstell_template = str_replace('{counter}',$counter,$einstell_template);
-$einstell_template = str_replace('{trenn}',$trenn,$einstell_template);
-$einstell_template = str_replace('{filename}',$filename,$einstell_template);
+$output = get_heading($heading);
+$output .= get_form_einstell($comment, $index, $einstellwerte, $filename, $counter, $trenn);
+$output .= get_button('index.php', 'Zum Hauptmenü');
 
-echo $einstell_template;
-
-include('footer_sub.php');
+draw_page( $output, $title, $author, LAYOUT);
 ?>

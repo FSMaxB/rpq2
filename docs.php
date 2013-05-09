@@ -26,28 +26,19 @@
 include('settings.php');
 include('page.php');
 include('file_list.php');
+include('templates.php');
 
 $title = 'Dokumentationen';
 $author = 'Max Bruckner';
 $heading = 'Dokumentationen';
 
-$template_button = file_get_contents('template_button.html');
-$template_heading = file_get_contents('template_heading.html');
-$template_container = file_get_contents('template_container.html');
-
-$file_list = '';
-
 foreach ( get_files($ordner_docs) as $file) {
-	$button = str_replace('{link}', "$ordner_docs/$file", $template_button);
-	$button = str_replace('{text}', $file, $button);
-	$file_list .= $button;
+	$file_list .= get_button("$ordner_docs/$file", $file);
 }
 
-$output = str_replace('{heading}', $heading, $template_heading);
+$output = get_heading($heading);
 $output .= $file_list;
-$button = str_replace('{link}', 'index.php', $template_button);
-$button = str_replace('{text}', 'Zum Hauptmenü', $button);
-$output .= $button;
+$output .= get_button('index.php', 'Zum Hauptmenü');
 
 draw_page($output, $title, $author, LAYOUT);
 ?>
