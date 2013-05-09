@@ -42,8 +42,8 @@ $return = 'csv.php';
 $extension = 'csv';
 //Dateiliste erstellen:
 foreach ( get_files($ordner_sollwert) as $file ) {
-	$link = str_replace('{ordner}', $ordner_sollwert, $template_link_csv);
-	$link = str_replace('{dateiname}', $file, $link);
+	$link = str_replace('{path}', "$ordner_sollwert/$file", $template_link_csv);
+	$link = str_replace('{filename}', $file, $link);
 	$link = str_replace('{return}', $return, $link);
 	
 	$file_list .= $link;
