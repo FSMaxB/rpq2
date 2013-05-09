@@ -146,7 +146,9 @@ function get_einstellzeile($form, $text, $id, $value, $min, $max) {
 }
 
 function get_einstellzeile_trenn() {
+	$template_einstellzeile_trenn = file_get_contents('template_einstellzeile_trenn.html');
 	
+	return $template_einstellzeile_trenn;
 }
 
 ?>
