@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
     
-    Copyright (C) 2012 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
     
     This program is free software: you can redistribute it and/or modify
@@ -25,42 +25,28 @@
 
 include('settings.php');
 include('page.php');
-
-$template_button = file_get_contents('template_button.html');
-$template_heading = file_get_contents('template_heading.html');
+include('file_list.php');
 
 $title = 'Dokumentationen';
 $author = 'Max Bruckner';
 $heading = 'Dokumentationen';
 
-$output;
+$template_button = file_get_contents('template_button.html');
+$template_heading = file_get_contents('template_heading.html');
+$template_container = file_get_contents('template_container.html');
 
+$file_list = '';
 
-$ordner = opendir($ordner_docs);	//Ordner öffnen
+foreach ( get_files($ordner_docs) as $file) {
+	$button = str_replace('{link}', "$ordner_docs/$file", $template_button);
+	$button = str_replace('{text}', $file, $button);
+	$file_list .= $button;
+}
 
 $output = str_replace('{heading}', $heading, $template_heading);
-
-$output .= '<div align="center">';	//Beginne zentrierten Kontainer
-
-//Ordnerinhalt durchgehen
-while(TRUE)
-{
-	$dateiname = readdir($ordner);
-	if($dateiname !== FALSE)	//Sind noch Dateien Übrig?
-	{
-		if($dateiname != '.' && $dateiname != '..')	{//Ausfilterung der Ordner '.' und '..'
-			$button = str_replace('{link}', $ordner_docs . '/' . $dateiname, $template_button);
-			$button = str_replace('{text}', $dateiname, $button);
-			
-			$output .= $button;
-		}
-	}
-	else break;
-}
-$output .= '</div>';			//Beende zentrierten Kontainer
-
+$output .= $file_list;
 $button = str_replace('{link}', 'index.php', $template_button);
-$button = str_replace('{text}', 'Zurück zum Hauptmenü', $button);
+$button = str_replace('{text}', 'Zum Hauptmenü', $button);
 $output .= $button;
 
 draw_page($output, $title, $author, LAYOUT);
