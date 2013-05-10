@@ -19,10 +19,10 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-include('settings.php');
-include('page.php');
-include('templates.php');
-include('file_list.php');
+include_once('settings.php');
+include_once('page.php');
+include_once('templates.php');
+include_once('file_list.php');
 
 $title = 'Einstellwerttabellen verwalten';
 $author = 'Max Bruckner';

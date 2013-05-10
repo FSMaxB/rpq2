@@ -22,10 +22,10 @@
     Stellt das Menü CSV-Sollwerttabellen dar.
 */
 
-include('settings.php');
-include('page.php');
-include('file_list.php');
-include('templates.php');
+include_once('settings.php');
+include_once('page.php');
+include_once('file_list.php');
+include_once('templates.php');
 
 $title = 'CSV-Sollwerttabellen';
 $author = 'Max Bruckner';

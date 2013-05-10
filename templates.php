@@ -35,10 +35,12 @@ function get_redirect($time, $destination) {
 	return $output;
 }
 
-function get_page($content) {
+function get_page($content, $current) {
 	$template_page = file_get_contents('template_page.html');
 	
-	return str_replace('{content}', $content, $template_page);
+	$output = str_replace('{content}', $content, $template_page);
+	$output = str_replace('{current}', $current, $output);
+	return $output;
 }
 
 function get_link_sollwert($path, $filename, $return) {
@@ -106,10 +108,13 @@ function get_form_convert($path) {
 	return str_replace('{path}', $path, $template_form_convert);
 }
 
-function get_container($content) {
+function get_container($content, $height = '400px', $border = '1px') {
 	$template_container = file_get_contents('template_container.html');
 	
-	return str_replace('{content}', $content, $template_container);
+	$output = str_replace('{content}', $content, $template_container);
+	$output = str_replace('{height}', $height, $output);
+	$output = str_replace('{border}', $border, $output);
+	return $output;
 }
 
 function get_button($link, $text) {
@@ -175,6 +180,18 @@ function get_button_menu($link, $text) {
 	$output = str_replace('{link}', $link, $template_button_menu);
 	$output = str_replace('{text}', $text, $output);
 	return $output;
+}
+
+function get_license($license) {
+	$template_license = file_get_contents('template_license.html');
+	
+	return str_replace('{license}', $license, $template_license);
+}
+
+function get_license_gpl() {
+	$template_license_gpl = file_get_contents('template_license_gpl.html');
+	
+	return $template_license_gpl;
 }
 
 ?>

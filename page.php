@@ -23,28 +23,19 @@ define('NAKED', 0);
 define('RAW', 1);		//Verwende leere Seite mit Header und Footer
 define('LAYOUT', 2);		//Verwende Layout
 
-include('settings.php');
+include_once('settings.php');
+include_once('templates.php');
 
 function draw_page( $content, $title, $author, $type, $header = '') {
-	$html = file_get_contents('template_html.html');
-	$page = file_get_contents('template_page.html');
-	$layout = file_get_contents('template_layout.html');
-	
-	$output = str_replace('{header}', $header, $html);
-	$output = str_replace('{title}', $title, $output);
-	$output = str_replace('{author}', $author, $output);
+	$current = $_SERVER["REQUEST_URI"];
 	
 	switch ($type) {
 		case RAW:
-			$output = str_replace('{content}', $page, $output);
+			$output = get_page($content, $current);
 			break;
 		case LAYOUT:
-			$output = str_replace('{content}', $page, $output);
-			$output = str_replace('{content}', $layout, $output);
+			$output = get_page(get_layout($content), $current);
 	}
-	
-	$output = str_replace('{content}', $content, $output);
-	
-	echo $output;
+	echo get_html($output, $title, $author, $header);
 }
 ?>

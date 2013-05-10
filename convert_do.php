@@ -19,8 +19,8 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-include('settings.php');
-include('page.php');
+include_once('settings.php');
+include_once('page.php');
 
 //Variablen aus URL holen
 //escapeshellcmd() erhöht die Sicherheit beim Aufrufen von nativen Programmen und korrigiert Pfadangaben

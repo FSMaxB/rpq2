@@ -19,8 +19,8 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-include('page.php');
-include('templates.php');
+include_once('page.php');
+include_once('templates.php');
 
 
 $title = 'RPQ2 Webinterface';
