@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
     
-    Copyright (C) 2012 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
     
     This program is free software: you can redistribute it and/or modify
@@ -17,16 +17,21 @@
     
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see http://www.gnu.org/licenses/.
-    
-    --------------------index.php-----------------------------------
-    Zuständig für die Darstellung des Hauptmenüs.
 */
+
+include('page.php');
+include('templates.php');
 
 
 $title = 'RPQ2 Webinterface';
 $author = 'Max Bruckner';
 
-include('header.php');
-include('index_links.php');	//Einbinden der Liste von Links zu den verschiedenen Menüs
-include('footer.php')
+$output = get_button_menu('einstelltab.php', 'Einstellwerttabellen verwalten');
+$output .= get_button_menu('einstell.php?filename=default.csv', 'Einstellwerte');
+$output .= get_button_menu('mess.php', 'Messwerte');
+$output .= get_button_menu('docs.php', 'Innowatt-Dokumentationen');
+$output .= get_button_menu('owndocs.php', 'Eigene Dokumentationen');
+$output .= get_button_shutdown();
+
+draw_page($output, $title, $author, LAYOUT);
 ?>

@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
     
-    Copyright (C) 2012 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
     
     This program is free software: you can redistribute it and/or modify
@@ -19,19 +19,28 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+include('settings.php');
+include('page.php');
+include('templates.php');
+include('file_list.php');
+
 $title = 'Einstellwerttabellen verwalten';
 $author = 'Max Bruckner';
 $heading = 'Einstellwerttabellen verwalten';
 
-$ordner = 'einstell';			//Ordner, in dem die CSV-Einstellwerte gespeichert werden
-$link = 'einstelltab_link.php';	//Datei mit den Links für die Auflistung der CSV-Einstellwerte
-$return = 'einstelltab.php';		//Diese Seite, um hierher zurückkehren zu können
-$include = 'upload_csv.php';	//Datei, die in upload.php eingebunden werden soll (zum Verarbeiten der Dateiendungen)
 
+$return = 'einstelltab.php';
+$extension = 'csv';
 
-include('header.php');
-include('heading.php');
-include('upload_form.php');		//Einbinden des Upload-Formulars
-include('list.php');			//Auflistung der Dateien
-include('footer_sub.php');
+//Dateiliste erstellen:
+foreach ( get_files($ordner_einstellwert) as $file ) {
+	$file_list .= get_link_einstelltab("$ordner_einstellwert/$file", $file, $return);
+}
+
+$output = get_heading($heading);
+$output .= get_form_upload($ordner_einstellwert, $extension, $return, $return);
+$output .= get_container($file_list);
+$output .= get_button('index.php', 'Zum Hauptmenü');
+
+draw_page($output, $title, $author, LAYOUT);
 ?>

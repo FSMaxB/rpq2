@@ -54,7 +54,7 @@ function get_link_einstelltab($path, $filename, $return) {
 	$template_link_einstelltab = file_get_contents('template_link_einstelltab.html');
 	
 	$output = str_replace('{path}', $path, $template_link_einstelltab);
-	$output = str_replace('{filename}', $filename, $outpu);
+	$output = str_replace('{filename}', $filename, $output);
 	$output = str_replace('{return}', $return, $output);
 	return $output;
 }
@@ -149,6 +149,32 @@ function get_einstellzeile_trenn() {
 	$template_einstellzeile_trenn = file_get_contents('template_einstellzeile_trenn.html');
 	
 	return $template_einstellzeile_trenn;
+}
+
+function get_form_tty($content) {
+	$template_form_tty = file_get_contents('template_form_tty');
+	
+	return str_replace('{content}', $content, $template_form_tty);
+}
+
+function get_form_baud() {
+	$template_form_baud = file_get_contents('template_form_baud.html');
+	
+	return $template_form_baud;
+}
+
+function get_button_shutdown() {
+	$template_button_shutdown = file_get_contents('template_button_shutdown.html');
+	
+	return $template_button_shutdown;
+}
+
+function get_button_menu($link, $text) {
+	$template_button_menu = file_get_contents('template_button_menu.html');
+	
+	$output = str_replace('{link}', $link, $template_button_menu);
+	$output = str_replace('{text}', $text, $output);
+	return $output;
 }
 
 ?>

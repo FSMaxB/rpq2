@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
     
-    Copyright (C) 2012 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
     
     This program is free software: you can redistribute it and/or modify
@@ -17,10 +17,19 @@
     
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see http://www.gnu.org/licenses/.
-    
-    --------------------heading.php-----------------------------
-    Anzeigen von Überschriften.
 */
-?>
 
-<h2 align="center"><?php echo $heading;?></h2>
+// ttyS ttyAMA ttyUSB ttyACM
+
+function get_ttys() {
+	$devices = get_files('/dev');
+	
+	foreach ( $devices as $device ) {
+		if( (strpos($device, 'ttyS') === 0) || (strpos($device, 'ttyUSB') === 0) || (strpos($device, 'ttyS') === 0) || (strpos($device, 'ttyAMA') === 0) || (strpos($device, 'ttyACM') === 0))
+			$ttys[] = $device;
+	}
+	
+	return $ttys;
+}
+
+?>
