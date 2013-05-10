@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
     
-    Copyright (C) 2012 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
     
     This program is free software: you can redistribute it and/or modify
@@ -20,14 +20,14 @@
 */
 
 include('settings.php');
+include('templates.php');
+include('page.php');
 
 $author = 'Max Bruckner';
 $title = 'Einstellwerte übertragen';
-include('header.php');
 
 $filename = $_POST["filename"];
 $mode = $_POST["mode"];
-
 $comment = $_POST["comment"];
 $index = $_POST["index"];
 $count = $_POST["count"];
@@ -57,13 +57,14 @@ function write($filename, $write_all) {
 }
 
 function set_tty() {
-	system("stty -F $serial_interace -echo");
+	global $serial_interface, $serial_baudrate;
+	system("stty -F $serial_interface -echo");
 	system("stty -F $serial_interface $serial_baudrate");
 	system("stty -F $serial_interface raw");
 }
 
 function run() {
-	global $results, $mode, $read, $regleradresse;
+	global $results, $mode, $read, $regleradresse, $serial_interface;
 	if($mode == 'write_save') {
 		$mode_param = 'write';
 	} else {
@@ -77,8 +78,10 @@ function run() {
 }
 
 function redirect($adress, $text) {
-		echo '<h2 align="center">' . nl2br($text) . '</h2><br />';
-		echo "<button onclick=\"window.location.href='$adress'\" style=\"width:100%\"><h3 align=\"center\">weiter</h3></button>";
+		global $title, $author;
+		$output =  '<h2 align="center">' . nl2br($text) . '</h2><br />';
+		$output .= get_button($adress, $text);
+		draw_page( $output, $title, $author, LAYOUT);
 }
 
 
@@ -122,7 +125,5 @@ switch ($mode) {
 		}
 		break;
 }
-
-include('footer.php');
 
 ?>

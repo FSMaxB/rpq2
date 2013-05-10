@@ -50,7 +50,7 @@ function einstell_zeile( $csv_string ) {
 		$id = '<input type="text" size="3" maxlength="3" name="id' . $counter . '" value="' . $fields[0] . '">';
 		$value = '<input type="text" size="6" maxlength="6" name="value' . $counter . '" value="' . $fields[1] . '" tabindex="' . $counter . '">'; 
 		$min = '<input type="text" size="6" maxlength="6" name="min' . $counter . '" value="' . $fields[2] . '">';
-		$max = '<input type="text" size="6" maxlength="6" name="value' . $counter . '" value="' . $fields[3] . '">';
+		$max = '<input type="text" size="6" maxlength="6" name="max' . $counter . '" value="' . $fields[3] . '">';
 		$text = '<input type="text" size="50" maxlength="50" name="text' . $counter . '" value="' . $fields[4] . '">';
 		$form = '<input type="hidden" name="check' . $counter . '" value="false">'
 		      . '<input type="checkbox" name="check' . $counter . '" value="true" checked>';
