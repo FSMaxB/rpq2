@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
     
-    Copyright (C) 2012 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
     
     This program is free software: you can redistribute it and/or modify
@@ -57,13 +57,14 @@ function write($filename, $write_all) {
 }
 
 function set_tty() {
-	system("stty -F $serial_interace -echo");
+	global $serial_interface, $serial_baudrate;
+	system("stty -F $serial_interface -echo");
 	system("stty -F $serial_interface $serial_baudrate");
 	system("stty -F $serial_interface raw");
 }
 
 function run() {
-	global $results, $mode, $read, $regleradresse;
+	global $results, $mode, $read, $regleradresse, $serial_interface;
 	if($mode == 'write_save') {
 		$mode_param = 'write';
 	} else {
