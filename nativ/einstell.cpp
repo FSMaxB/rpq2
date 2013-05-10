@@ -69,7 +69,7 @@ unsigned int g_regleradresse;
 bool mode;
 bool status;
 bool testmode = false;		//Testmodus zu Debug-Zwecken
-bool wartung = false;
+bool b_wartung = false;
 
 struct thread_p {
 	string* s;
@@ -235,7 +235,7 @@ void handle_args(int argc, const char* argv[]) {
 }
 
 void wartung(string sdo) {
-	wartung = true;
+	b_wartung = true;
 	
 	//Übergabeparameter für nanosleep
 	struct timespec timeout_step;
@@ -494,7 +494,7 @@ void send(string s) {
 
 void *receive(void* parameter) {
 	signed char buffer;
-	if(wartung) {
+	if(b_wartung) {
 		while(true) {
 			tty_in >> buffer;
 			*(params.s) += buffer;
