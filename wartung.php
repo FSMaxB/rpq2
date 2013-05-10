@@ -22,6 +22,13 @@
 include('page.php');
 include('settings.php');
 
+function set_tty() {
+	global $serial_interface, $serial_baudrate;
+	system("stty -F $serial_interface -echo");
+	system("stty -F $serial_interface $serial_baudrate");
+	system("stty -F $serial_interface raw");
+}
+
 $title = 'Wartung';
 $author = 'Max Bruckner';
 $heading = 'Wartung';
@@ -34,15 +41,17 @@ $template_button = file_get_contents('template_button.html');
 $output = str_replace('{heading}', $heading, $template_heading);
 $output .= $template_wartung;
 
+set_tty();
+
 if( $send != '') {
 	exec("nativ/einstell wartung $serial_interface $send", $results);
 	
 	foreach ( $results as $result ) {
-		$received .= $result;
+		$received .= "$result\n";
 	}
 }
 
-$output = str_replace('{received}', $received, $output);
+$output = str_replace('{received}', nl2br($received), $output);
 $output .= str_replace('{link}', 'index.php', $template_button);
 $output = str_replace('{text}', 'Zum Hauptmenü', $output);
 
