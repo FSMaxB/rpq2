@@ -69,6 +69,7 @@ unsigned int g_regleradresse;
 bool mode;
 bool status;
 bool testmode = false;		//Testmodus zu Debug-Zwecken
+bool wartung = false;
 
 struct thread_p {
 	string* s;
@@ -234,6 +235,8 @@ void handle_args(int argc, const char* argv[]) {
 }
 
 void wartung(string sdo) {
+	wartung = true;
+	
 	//Übergabeparameter für nanosleep
 	struct timespec timeout_step;
 	timeout_step.tv_sec = 0;
@@ -252,44 +255,17 @@ void wartung(string sdo) {
 	pthread_t thread;
 	unsigned int i;
 
-	for(i = 0; i < 3; i++) {
-		received.clear();
-		send(sdo);
-		
-		if(testmode) {
-			send(string("\n"));
-		}
-
-		status = BUSY;
-		pthread_create(&thread, NULL, receive, (void*) &params);
-		pthread_detach(thread);
-
-		for(unsigned int j = 0; j <= (10*TIMEOUT); j++) {
+	received.clear();
+	send(sdo);
+	
+	pthread_create(&thread, NULL, receive, (void*) &params);
+	pthread_detach(thread);
+	
+	for(unsigned int j = 0; j <= (10*TIMEOUT); j++) {
 			nanosleep(&timeout_step, NULL);
-			if( status == READY ) {
-				break;
-			}
-		}
-
-		pthread_cancel(thread);
-		
-		send(string("csdo"));	//Clearen des Reglers
-		
-		if(testmode) {
-			send(string("\n"));
-		}
-		
-		nanosleep(&block_delay, NULL);
-
 	}
-
-	if( i == 3 ) {	//Wurde die Schleife dreimal ohne Ergebnis durchlaufen?
-		throw Exception(Exception::NO_RESPONSE);
-	} else {
-		cout << received;
-	}
-		
-		
+	
+	pthread_cancel(thread);
 }
 
 void test_einstellwert_set() {
@@ -518,14 +494,20 @@ void send(string s) {
 
 void *receive(void* parameter) {
 	signed char buffer;
-	for(unsigned int i = 0; i < 23; ) {
+	if(wartung) {
+		while(true) {
 			tty_in >> buffer;
-			if( isalnum(buffer) ) {
-				*(params.s) += buffer;
-				i++;
-			}
+			*(params.s) += buffer;
+		}
+	} else {
+		for(unsigned int i = 0; i < 23; ) {
+				tty_in >> buffer;
+				if( isalnum(buffer) ) {
+					*(params.s) += buffer;
+					i++;
+				}
+		}
 	}
-
 	status = READY;
 }
 

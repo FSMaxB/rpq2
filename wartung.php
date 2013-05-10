@@ -42,7 +42,7 @@ if( $send != '') {
 	}
 }
 
-$output = str_replace('{received}', $received, $output);
+$output = str_replace('{received}', nl2br($received), $output);
 $output .= str_replace('{link}', 'index.php', $template_button);
 $output = str_replace('{text}', 'Zum Hauptmenü', $output);
 
