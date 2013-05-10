@@ -28,7 +28,7 @@ $author = 'Max Bruckner';
 $ordner = $_POST['ordner'];
 $return_success = $_POST['return_success'];	//Seite, auf die im Erfolgsfall umgeleitet wird
 $return_failure = $_POST['return_failure'];	//Seite, auf die im Fehlerfall umgeleitet wird
-$extension = $_POST['extension'];
+$extension = $_POST['extension'];	//Wenn nicht angegeben geht alles außer PHP
 
 $template_redirect = file_get_contents('template_redirect.html');
 
@@ -39,6 +39,8 @@ $split = explode('.', $name);
 if( ($extension != '') && (strcmp(end($split), $extension) !== 0) ) {
 	$name .= ".$extension";
 }
+
+//TODO ausfiltern von PHP-Dateien
 
 $ziel = "$ordner/$name";
 

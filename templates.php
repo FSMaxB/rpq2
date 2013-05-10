@@ -19,8 +19,6 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-//TODO die mehrfachen Aufrufe von str_replace lassen sich vermeiden, indem man arrays verwendet
-
 function get_wartung($received) {
 	$template_wartung = file_get_contents('template_wartung.html');
 	
@@ -61,15 +59,6 @@ function get_link_einstelltab($path, $filename, $return) {
 	return $output;
 }
 
-function get_link_csv($path, $filename, $return) {
-	$template_link_csv = file_get_contents('template_link_csv.html');
-	
-	$output = str_replace('{path}', $path, $template_link_csv);
-	$output = str_replace('{filename}', $filename, $output);
-	$output = str_replace('{return}', $return, $output);
-	return $output;
-}
-
 function get_layout($content) {
 	$template_layout = file_get_contents('template_layout.html');
 	
@@ -96,7 +85,7 @@ function get_form_upload($directory, $extension, $return_success, $return_failur
 	$template_form_upload = file_get_contents('template_form_upload.html');
 	
 	$output = str_replace('{directory}', $directory, $template_form_upload);
-	$output = str_replace('{extensin}', $extension, $output);
+	$output = str_replace('{extension}', $extension, $output);
 	$output = str_replace('{return_success}', $return_success, $output);
 	$output = str_replace('{return_failure}', $return_failure, $output);
 	return $output;
@@ -192,6 +181,15 @@ function get_license_gpl() {
 	$template_license_gpl = file_get_contents('template_license_gpl.html');
 	
 	return $template_license_gpl;
+}
+
+function get_link_owndocs($path, $filename, $return) {
+	$template_link_owndocs = file_get_contents('template_link_owndocs.html');
+	
+	$output = str_replace('{path}', $path, $template_link_owndocs);
+	$output = str_replace('{filename}', $filename, $output);
+	$output = str_replace('{return}', $return, $output);
+	return $output;
 }
 
 ?>

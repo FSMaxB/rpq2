@@ -1,17 +1,43 @@
 <?php
+/*
+    RPQ2-Webinterface
+    
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
+    Author: Max Bruckner
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see http://www.gnu.org/licenses/.
+*/
+
+include_once('settings.php');
+include_once('templates.php');
+include_once('file_list.php');
+include_once('page.php');
+
 $title = 'Eigene Dokumentationen';
 $author = 'Max Bruckner';
 $heading = 'Eigene Dokumentationen';
 
-$ordner = 'owndocs';		//Ordner, in dem die eigenen Dokumentationen gespeichert werden. Kann hier global gesetzt werden.
-$link = 'owndocs_link.php';
-$return = 'owndocs.php';	//Der Name dieser Datei (wichtig für Skripte, die zurückkehren wollen)
+$return = 'owndocs.php';
 
-include('header.php');
-include('heading.php');
-include('owndocs_upload.php');	//Einbinden des Upload-Formulares
-include('list.php');		//Einbinden der Auflistung von Dokumentationen
+//Dateiliste erstellen:
+foreach ( get_files($ordner_owndocs) as $file ) {
+	$file_list .= get_link_owndocs("$ordner_owndocs/$file", $file, $return);
+}
 
-include('footer_sub.php');
-
+$output = get_heading($heading);
+$output .= get_form_upload($ordner_owndocs, '', $return, $return);
+$output .= get_container($file_list);
+$output .= get_button('index.php', 'Zum Hauptmenü');
+draw_page($output, $title, $author, LAYOUT);
 ?>

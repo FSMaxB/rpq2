@@ -23,6 +23,7 @@ $serial_interface = '/dev/ttyUSB0';
 $serial_baudrate = '115200';
 
 $ordner_docs = 'docs';
+$ordner_owndocs = 'owndocs';
 $ordner_regler = 'regler';
 $ordner_sollwert = 'csv';
 $ordner_einstellwert = 'einstell';
