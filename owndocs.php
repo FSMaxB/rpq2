@@ -32,7 +32,7 @@ $return = 'owndocs.php';
 
 //Dateiliste erstellen:
 foreach ( get_files($ordner_owndocs) as $file ) {
-	$file_list .= get_link_owndocs("$ordner_owndocs/$file", $file, $return);
+	$file_list .= get_link_owndocs("$ordner_owndocs/$file", $file, $return, $return);
 }
 
 $output = get_heading($heading);

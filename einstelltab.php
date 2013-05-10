@@ -34,7 +34,7 @@ $extension = 'csv';
 
 //Dateiliste erstellen:
 foreach ( get_files($ordner_einstellwert) as $file ) {
-	$file_list .= get_link_einstelltab("$ordner_einstellwert/$file", $file, $return);
+	$file_list .= get_link_einstelltab("$ordner_einstellwert/$file", $file, $return, $return);
 }
 
 $output = get_heading($heading);

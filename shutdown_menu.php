@@ -20,29 +20,13 @@
 */
 
 include_once('page.php');
+include_once('templates.php');
 
 $title = 'System herunterfahren';
 $author = 'Max Bruckner';
 
-$mode = $_GET['mode'];
-
-if($mode == 'reboot')
-{
-	$param = '-r';
-	$output = '<h1>Das System wird neu gestartet!</h1>';
-}
-else if($status == 'halt')
-{
-	$param = '-h';
-	$output = '<h1>Das System wird heruntergefahren</h1>';
-} else {
-	$output = '<h1>Ungültiger Parameter</h1>';
-	$output .= get_button('index.php', 'Zum Hauptmenü');
-	draw_page($output, $title, $author, LAYOUT);
-	exit(0);
-}
-
-system("/sbin/shutdown $param now");
-
+$output = get_button_menu('shutdown.php?mode=halt', 'Herunterfahren');
+$output .= get_button_menu('shutdown.php?mode=reboot', 'Neustarten');
+$output .= get_button('index.php', 'Zum Hauptmenü');
 draw_page($output, $title, $author, LAYOUT);
 ?>

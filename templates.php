@@ -41,21 +41,13 @@ function get_page($content, $current) {
 	return $output;
 }
 
-function get_link_sollwert($path, $filename, $return) {
-	$template_link_sollwert = file_get_contents('template_link_sollwert.html');
-	
-	$output = str_replace('{path}', $path, $template_link_sollwert);
-	$output = str_replace('{filename}', $filename, $output);
-	$output = str_replace('{return}', $return, $output);
-	return $output;
-}
-
-function get_link_einstelltab($path, $filename, $return) {
+function get_link_einstelltab($path, $filename, $return_success, $return_failure) {
 	$template_link_einstelltab = file_get_contents('template_link_einstelltab.html');
 	
 	$output = str_replace('{path}', $path, $template_link_einstelltab);
 	$output = str_replace('{filename}', $filename, $output);
-	$output = str_replace('{return}', $return, $output);
+	$output = str_replace('{return_success}', $return_success, $output);
+	$output = str_replace('{return_failure}', $return_failure, $output);
 	return $output;
 }
 
@@ -183,12 +175,13 @@ function get_license_gpl() {
 	return $template_license_gpl;
 }
 
-function get_link_owndocs($path, $filename, $return) {
+function get_link_owndocs($path, $filename, $return_success, $return_failure) {
 	$template_link_owndocs = file_get_contents('template_link_owndocs.html');
 	
 	$output = str_replace('{path}', $path, $template_link_owndocs);
 	$output = str_replace('{filename}', $filename, $output);
-	$output = str_replace('{return}', $return, $output);
+	$output = str_replace('{return_success}', $return_success, $output);
+	$output = str_replace('{return_failure}', $return_failure, $output);
 	return $output;
 }
 

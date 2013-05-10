@@ -19,8 +19,9 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-include('page.php');
-include('settings.php');
+include_once('page.php');
+include_once('settings.php');
+include_once('templates.php');
 
 function set_tty() {
 	global $serial_interface, $serial_baudrate;
@@ -35,12 +36,6 @@ $heading = 'Wartung';
 
 $send = $_POST['send'];
 
-$template_heading = file_get_contents('template_heading.html');
-$template_wartung = file_get_contents('template_wartung.html');
-$template_button = file_get_contents('template_button.html');
-$output = str_replace('{heading}', $heading, $template_heading);
-$output .= $template_wartung;
-
 set_tty();
 
 if( $send != '') {
@@ -51,9 +46,8 @@ if( $send != '') {
 	}
 }
 
-$output = str_replace('{received}', nl2br($received), $output);
-$output .= str_replace('{link}', 'index.php', $template_button);
-$output = str_replace('{text}', 'Zum Hauptmenü', $output);
-
+$output = get_heading($heading);
+$output .= get_wartung(nl2br($received));
+$output .= get_button('index.php', 'Zum Hauptmenü');
 draw_page( $output, $title, $author, LAYOUT);
 ?>
