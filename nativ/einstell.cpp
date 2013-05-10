@@ -251,9 +251,7 @@ void wartung(string sdo) {
 	
 	string received;
 	params.s = &received;
-	params.fail = false;
 	pthread_t thread;
-	unsigned int i;
 
 	received.clear();
 	send(sdo);
@@ -266,6 +264,8 @@ void wartung(string sdo) {
 	}
 	
 	pthread_cancel(thread);
+	
+	cout << received;
 }
 
 void test_einstellwert_set() {
