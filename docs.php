@@ -38,7 +38,7 @@ foreach ( get_files($ordner_docs) as $file) {
 
 $output = get_heading($heading);
 $output .= $file_list;
-$output .= get_button('index.php', 'Zum Hauptmenü');
+$output .= get_button_menu_back();
 
 draw_page($output, $title, $author, LAYOUT);
 ?>

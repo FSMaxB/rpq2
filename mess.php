@@ -28,7 +28,7 @@ $heading = 'Messwerte';
 
 $output = get_heading($heading);
 $output .= 'Noch in der Entwicklung';
-$output .= get_button('index.php', 'Zum Hauptmenü');
+$output .= get_button_menu_back();
 
 draw_page($output, $title, $author, LAYOUT);
 ?>

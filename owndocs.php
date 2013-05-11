@@ -38,6 +38,6 @@ foreach ( get_files($ordner_owndocs) as $file ) {
 $output = get_heading($heading);
 $output .= get_form_upload($ordner_owndocs, '', $return, $return);
 $output .= get_container($file_list);
-$output .= get_button('index.php', 'Zum Hauptmenü');
+$output .= get_button_menu_back();
 draw_page($output, $title, $author, LAYOUT);
 ?>

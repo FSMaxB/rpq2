@@ -27,6 +27,6 @@ $author = 'Max Bruckner';
 
 $output = get_button_menu('shutdown.php?mode=halt', 'Herunterfahren');
 $output .= get_button_menu('shutdown.php?mode=reboot', 'Neustarten');
-$output .= get_button('index.php', 'Zum Hauptmenü');
+$output .= get_button_menu_back();
 draw_page($output, $title, $author, LAYOUT);
 ?>

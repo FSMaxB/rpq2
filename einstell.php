@@ -92,7 +92,7 @@ foreach($trennlines as $trennline) {
 
 $output = get_heading($heading);
 $output .= get_form_einstell($comment, $index, $einstellwerte, $filename, $counter, $trenn);
-$output .= get_button('index.php', 'Zum Hauptmenü');
+$output .= get_button_menu_back();
 
 draw_page( $output, $title, $author, LAYOUT);
 ?>

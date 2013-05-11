@@ -30,11 +30,15 @@ function draw_page( $content, $title, $author, $type, $header = '') {
 	$current = $_SERVER["REQUEST_URI"];
 	
 	switch ($type) {
+		case NAKED:
+			$output = $content;
+			break;
 		case RAW:
 			$output = get_page($content, $current);
 			break;
 		case LAYOUT:
 			$output = get_page(get_layout($content), $current);
+			break;
 	}
 	echo get_html($output, $title, $author, $header);
 }

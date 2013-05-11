@@ -185,4 +185,10 @@ function get_link_owndocs($path, $filename, $return_success, $return_failure) {
 	return $output;
 }
 
+function get_button_menu_back() {
+	$template_button_menu_back = file_get_contents('template_button_menu_back.html');
+	
+	return $template_button_menu_back;
+}
+
 ?>

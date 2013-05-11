@@ -26,13 +26,10 @@ $author = 'Max Bruckner';
 
 $mode = $_GET['mode'];
 
-if($mode == 'reboot')
-{
+if($mode == 'reboot') {
 	$param = '-r';
 	$output = '<h1>Das System wird neu gestartet!</h1>';
-}
-else if($status == 'halt')
-{
+} else if($status == 'halt') {
 	$param = '-h';
 	$output = '<h1>Das System wird heruntergefahren</h1>';
 } else {

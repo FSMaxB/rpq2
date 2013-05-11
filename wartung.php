@@ -48,6 +48,6 @@ if( $send != '') {
 
 $output = get_heading($heading);
 $output .= get_wartung(nl2br($received));
-$output .= get_button('index.php', 'Zum Hauptmenü');
+$output .= get_button_menu_back();
 draw_page( $output, $title, $author, LAYOUT);
 ?>
