@@ -24,10 +24,10 @@ include_once('settings.php');
 include_once('templates.php');
 
 function set_tty() {
-	global $serial_interface, $serial_baudrate;
-	system("stty -F $serial_interface -echo");
-	system("stty -F $serial_interface $serial_baudrate");
-	system("stty -F $serial_interface raw");
+	global $settings;
+	system("stty -F $settings['serial_interface'] -echo");
+	system("stty -F $settings['serial_interface'] $settings['serial_baudrate']");
+	system("stty -F $settings['serial_interface'] raw");
 }
 
 $title = 'Wartung';
@@ -39,7 +39,7 @@ $send = $_POST['send'];
 set_tty();
 
 if( $send != '') {
-	exec("nativ/einstell wartung $serial_interface $send", $results);
+	exec("nativ/einstell wartung {$settings['serial_interface']} $send", $results);
 	
 	foreach ( $results as $result ) {
 		$received .= "$result\n";

@@ -35,7 +35,7 @@ $regleradresse = $_POST["regleradresse"];
 $results;
 
 function write($filename, $write_all) {
-	global $_POST, $comment, $index, $count;
+	global $_POST, $comment, $index, $count, $settings;
 	
 	$output = $comment . "\n";
 	$output .= 'Index,' . $index . "\n";
@@ -53,24 +53,24 @@ function write($filename, $write_all) {
 		}
 	}
 	
-	file_put_contents('einstell/' . $filename,$output);
+	file_put_contents($settings['ordner_einstellwert'] . $filename,$output);
 }
 
 function set_tty() {
-	global $serial_interface, $serial_baudrate;
-	system("stty -F $serial_interface -echo");
-	system("stty -F $serial_interface $serial_baudrate");
-	system("stty -F $serial_interface raw");
+	global $settings;
+	system("stty -F {$settings['serial_interface']} -echo");
+	system("stty -F {$settings['serial_interface']} {$settings['serial_baudrate']}");
+	system("stty -F {$settings['serial_interface']} raw");
 }
 
 function run() {
-	global $results, $mode, $read, $regleradresse, $serial_interface;
+	global $results, $mode, $read, $regleradresse, $settings;
 	if($mode == 'write_save') {
 		$mode_param = 'write';
 	} else {
 		$mode_param = $mode;
 	}
-	exec("nativ/einstell $mode_param $serial_interface $regleradresse einstell/send.csv $read", $outputs);
+	exec("nativ/einstell $mode_param {$settings['serial_interface']} $regleradresse {$settings['ordner_einstellwert']}/send.csv $read", $outputs);
 	
 	foreach ($outputs as $output) {
 		$results .= $output . "\n";
@@ -94,7 +94,7 @@ switch ($mode) {
 		break;
 	case 'read':
 		write('send.csv', false);
-		$read = 'einstell/antwort.csv';
+		$read = "{$settings['ordner_einstellwert']}/antwort.csv";
 		run();
 		$pos = strpos($results,'FEHLER');
 		if( $pos !== false )	{ //Enthält die Befehlsausgabe eine Fehlermeldung?

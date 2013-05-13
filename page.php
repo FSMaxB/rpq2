@@ -23,7 +23,6 @@ define('NAKED', 0);
 define('RAW', 1);		//Verwende leere Seite mit Header und Footer
 define('LAYOUT', 2);		//Verwende Layout
 
-include_once('settings.php');
 include_once('templates.php');
 
 function draw_page( $content, $title, $author, $type, $header = '') {

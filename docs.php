@@ -32,8 +32,8 @@ $title = 'Dokumentationen';
 $author = 'Max Bruckner';
 $heading = 'Dokumentationen';
 
-foreach ( get_files($ordner_docs) as $file) {
-	$file_list .= get_button("$ordner_docs/$file", $file);
+foreach ( get_files($settings['ordner_docs']) as $file) {
+	$file_list .= get_button("{$settings['ordner_docs']}/$file", $file);
 }
 
 $output = get_heading($heading);

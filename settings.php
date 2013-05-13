@@ -19,13 +19,28 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-$serial_interface = '/dev/ttyUSB0';
-$serial_baudrate = '115200';
+function get_settings() {
+	global $settings;
+	$settings = 
+		array(		//Setzen der Defaultwerte
+			'serial_interface' => '/dev/ttyUSB0',
+			'serial_baudrate' => '115200',
+			'ordner_docs' => 'docs',
+			'ordner_owndocs' => 'owndocs',
+			'ordner_einstellwert',
+		);
+	
+	$file = file_get_contents('settings.cfg');
+	$lines = explode("\n", $file);
+		
+	foreach( $lines as $line) {
+		if( (strpos($line, '#') !== 0) && ($line)) {	//Kommentarzeilen werden ignoriert
+			$setting = explode('=', $line);
+			if( ($setting[0]) && ($setting[1]) ) {
+				$settings[$setting[0]] = $setting[1];
+			}
+		}
+	}
+}
 
-$ordner_docs = 'docs';
-$ordner_owndocs = 'owndocs';
-$ordner_regler = 'regler';
-$ordner_sollwert = 'csv';
-$ordner_einstellwert = 'einstell';
-$ordner_temp = 'temp';
-?>
+get_settings();

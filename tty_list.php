@@ -19,8 +19,6 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-// ttyS ttyAMA ttyUSB ttyACM
-
 function get_ttys() {
 	$devices = get_files('/dev');
 	

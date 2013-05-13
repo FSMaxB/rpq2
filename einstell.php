@@ -65,14 +65,12 @@ $title = 'Einstellwerte';
 $author = 'Max Bruckner';
 $heading = 'Einstellwerte';
 
-$ordner = 'einstell';
-
 $filename = $_GET["filename"];
 if($filename == '') {
 	$filename = 'default.csv';
 }
 
-$path = $ordner . '/' . $filename;
+$path = "{$settings['ordner_einstellwert']}/$filename";
 $filecontent = file_get_contents($path);
 $lines = explode("\n", $filecontent);
 

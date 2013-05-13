@@ -31,12 +31,12 @@ $heading = 'Eigene Dokumentationen';
 $return = 'owndocs.php';
 
 //Dateiliste erstellen:
-foreach ( get_files($ordner_owndocs) as $file ) {
-	$file_list .= get_link_owndocs("$ordner_owndocs/$file", $file, $return, $return);
+foreach ( get_files($settings['ordner_owndocs']) as $file ) {
+	$file_list .= get_link_owndocs("{$settings['ordner_owndocs']}/$file", $file, $return, $return);
 }
 
 $output = get_heading($heading);
-$output .= get_form_upload($ordner_owndocs, '', $return, $return);
+$output .= get_form_upload($settings['ordner_owndocs'], '', $return, $return);
 $output .= get_container($file_list);
 $output .= get_button_menu_back();
 draw_page($output, $title, $author, LAYOUT);

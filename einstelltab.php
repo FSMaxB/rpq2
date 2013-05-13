@@ -33,12 +33,12 @@ $return = 'einstelltab.php';
 $extension = 'csv';
 
 //Dateiliste erstellen:
-foreach ( get_files($ordner_einstellwert) as $file ) {
-	$file_list .= get_link_einstelltab("$ordner_einstellwert/$file", $file, $return, $return);
+foreach ( get_files($settings['ordner_einstellwert']) as $file ) {
+	$file_list .= get_link_einstelltab("{$settings['ordner_einstellwert']}/$file", $file, $return, $return);
 }
 
 $output = get_heading($heading);
-$output .= get_form_upload($ordner_einstellwert, $extension, $return, $return);
+$output .= get_form_upload($settings['ordner_einstellwert'], $extension, $return, $return);
 $output .= get_container($file_list);
 $output .= get_button_menu_back();
 
