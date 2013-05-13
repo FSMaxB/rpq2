@@ -21,18 +21,36 @@
 
 include_once('page.php');
 include_once('templates.php');
+include_once('settings.php');
+include_once('tty.php');
 
-
-$title = 'RPQ2 Webinterface';
+$title = 'Einstellungen';
 $author = 'Max Bruckner';
+$heading = 'Einstellungen';
 
-$output = get_button_menu('einstelltab.php', 'Einstellwerttabellen verwalten');
-$output .= get_button_menu('einstell.php?filename=default.csv', 'Einstellwerte');
-$output .= get_button_menu('mess.php', 'Messwerte');
-$output .= get_button_menu('docs.php', 'Innowatt-Dokumentationen');
-$output .= get_button_menu('owndocs.php', 'Eigene Dokumentationen');
-$output .= get_button_menu('settings_menu.php', 'Einstellungen');
-$output .= get_button_shutdown();
+//Liste mit seriellen Schnittstellen erstellen
+$interfaces = '';
+foreach( get_ttys() as $tty ) {
+	if( $tty == $settings['serial_interface'] ) {
+		$interfaces .= "<option selected>$tty</option>\n";
+	} else {
+		$interfaces .= "<option>$tty</option>";
+	}
+}
 
+//Liste mit Baudraten erstellen
+$baudrates = '';
+foreach( explode("\n", get_baudrates()) as $baudrate ) {
+	if( $baudrate == $settings['serial_baudrate'] ) {
+		$baudrates .= "<option selected>$baudrate</option>\n";
+	} else {
+		$baudrates .= "<option>$baudrate</option>\n";
+	}
+}
+
+$output = get_heading($heading);
+$output .= get_form_settings($interfaces, $baudrates, $settings['ordner_docs'], $settings['ordner_owndocs'], $settings['ordner_einstellwert'], 'settings_menu.php', 'settings_menu.php');
+$output .= get_button_menu_back();
 draw_page($output, $title, $author, LAYOUT);
+
 ?>

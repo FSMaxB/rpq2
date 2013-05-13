@@ -19,6 +19,8 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+define('CONFIG_FILE','settings.cfg');
+
 function get_settings() {
 	global $settings;
 	$settings = 
@@ -30,7 +32,7 @@ function get_settings() {
 			'ordner_einstellwert',
 		);
 	
-	$file = file_get_contents('settings.cfg');
+	$file = file_get_contents(CONFIG_FILE);
 	$lines = explode("\n", $file);
 		
 	foreach( $lines as $line) {
@@ -43,4 +45,57 @@ function get_settings() {
 	}
 }
 
+function write_settings($settings) {
+	$config_lines = explode("\n", file_get_contents(CONFIG_FILE));
+	$output = '';
+	foreach( $config_lines as $config_line ) {
+		if( (strpos($config_line, '#') !== 0) && ($config_line) ) {	//Kommentarzeilen und leere Zeilen nicht bearbeiten
+			$setting = explode('=', $config_line);
+			if( $setting[0] && $setting[1] && $settings[$setting[0]] ) {
+				$output .= "{$setting[0]}={$settings[$setting[0]]}\n";
+				unset($settings[$setting[0]]);
+			}
+		} else {
+			$output .= "$config_line\n";
+		}
+	}
+	
+	foreach( array_keys($settings) as $key) {
+		$output .= "$key={$settings[$key]}\n";
+	}
+	
+	if( file_put_contents(CONFIG_FILE, $output) !== FALSE) {
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+	
+	
+	
+}
+
 get_settings();
+
+//Wenn diese Datei direkt aufgerufen und nicht eingebunden wurde!
+if( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) {
+	include_once('page.php');
+	include_once('templates.php');
+	
+	$title = 'Einstellungen speichern';
+	$author = 'Max Bruckner';
+	
+	$settings = $_POST['settings'];
+	$return_success = $_POST['return_success'];
+	$return_failure = $_POST['return_failure'];
+	
+	if( write_settings($settings) ) {
+		$header = get_redirect(1, $return_success);
+		$output = 'Einstellungen erfolgreich gespeichert';
+	} else {
+		$header = get_redirect(3, $return_failure);
+		$output = 'Beim speichern der Einstellungen ist ein Fehler aufgetreten!';
+	}
+	
+	draw_page($output, $title, $author, NAKED, $header);
+}
+?>

@@ -83,12 +83,6 @@ function get_form_upload($directory, $extension, $return_success, $return_failur
 	return $output;
 }
 
-function get_form_convert($path) {
-	$template_form_convert = file_get_contents('template_form_convert.html');
-	
-	return str_replace('{path}', $path, $template_form_convert);
-}
-
 function get_container($content, $height = '400px', $border = '1px') {
 	$template_container = file_get_contents('template_container.html');
 	
@@ -191,4 +185,22 @@ function get_button_menu_back() {
 	return $template_button_menu_back;
 }
 
+function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_owndocs, $ordner_einstellwert, $return_success, $return_failure) {
+	$template_form_settings = file_get_contents('template_form_settings.html');
+
+	$output = str_replace('{serial_interfaces}', $serial_interfaces, $template_form_settings);
+	$output = str_replace('{serial_baudrates}', $serial_baudrates, $output);
+	$output = str_replace('{ordner_docs}', $ordner_docs, $output);
+	$output = str_replace('{ordner_owndocs}', $ordner_owndocs, $output);
+	$output = str_replace('{ordner_einstellwert}', $ordner_einstellwert, $output);
+	$output = str_replace('{return_success}', $return_success, $output);
+	$output = str_replace('{return_failure}', $return_failure, $output);
+	return $output;
+}
+
+function get_baudrates() {
+	$template_baudrates = file_get_contents('template_baudrates.txt');
+	
+	return $template_baudrates;
+}
 ?>
