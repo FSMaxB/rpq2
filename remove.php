@@ -31,10 +31,10 @@ $return_failure = $_GET['return_failure'];
 
 if(unlink($path)) {
     $header = get_redirect(1, $return_sucess);
-    $output = 'Datei "' . $path . '" gelöscht.';
+    $output = get_success('Datei "' . $path . '" gelöscht.');
 } else {
     $header = get_redirect(3, $return_failure);
-    $output = 'Es ist ein Fehler aufgetreten, "' . $path . '" konnte nicht gelöscht werden.';
+    $output = get_failure('Es ist ein Fehler aufgetreten, "' . $path . '" konnte nicht gelöscht werden.');
 }
 
 draw_page($output, $title, $author, NAKED, $header);

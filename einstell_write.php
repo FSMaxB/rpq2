@@ -84,7 +84,7 @@ set_tty();
 switch ($mode) {
     case 'save':
         write($filename,false);
-        redirect('einstelltab.php', "Einstellwerte in $filename gespeichert!");
+        redirect('einstelltab.php', get_success("Einstellwerte in $filename gespeichert!"));
         break;
     case 'read':
         write('send.csv', false);
@@ -92,9 +92,9 @@ switch ($mode) {
         run();
         $pos = strpos($results,'FEHLER');
         if( $pos !== false )    { //Enthält die Befehlsausgabe eine Fehlermeldung?
-            redirect("einstell.php?filename=send.csv" ,$results);
+            redirect("einstell.php?filename=send.csv" , get_failure($results));
         }   else {
-                redirect("einstell.php?filename=antwort.csv", 'Lesen der Einstellwerte erfolgreich!');
+                redirect("einstell.php?filename=antwort.csv", get_success('Lesen der Einstellwerte erfolgreich!'));
         }
         break;
     case 'write':
@@ -102,9 +102,9 @@ switch ($mode) {
         run();
         $pos = strpos($results,'FEHLER');
         if( $pos !== false) { //Enthält die Befehlsausgabe eine Fehlermeldung?
-            redirect("einstell.php?filename=send.csv" ,$results);
+            redirect("einstell.php?filename=send.csv" , get_failure($results));
         }   else {
-                redirect("einstell.php?filename=$filename", 'Schreiben der Einstellwerte erfolgreich!');
+                redirect("einstell.php?filename=$filename", get_success('Schreiben der Einstellwerte erfolgreich!'));
         }
         break;
     case 'write_save':
@@ -112,9 +112,9 @@ switch ($mode) {
         run();
         $pos = strpos($results,'FEHLER');
         if( $pos !== false) { //Enthält die Befehlsausgabe eine Fehlermeldung?
-            redirect("einstell.php?filename=send.csv" ,$results);
+            redirect("einstell.php?filename=send.csv" ,get_failure($results));
         }   else {
-                redirect("einstell.php?filename=$filename", 'Schreiben der Einstellwerte erfolgreich!');
+                redirect("einstell.php?filename=$filename", get_success('Schreiben der Einstellwerte erfolgreich!'));
                 write($filename, true);
         }
         break;

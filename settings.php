@@ -90,13 +90,13 @@ if( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) {
 
     if( write_settings($settings) ) {
         $header = get_redirect(1, $return_success);
-        $output = 'Einstellungen erfolgreich gespeichert';
+        $output = get_success('Einstellungen erfolgreich gespeichert');
     } else {
         //Im fehlerfall werden die Einstellungen wieder zurückgegeben, sodass man sie nicht nochmal eingeben muss
         $settings_container = array( 'settings' => $settings);
         $query = http_build_query($settings_container);
         $header = get_redirect(3, "$return_failure?$query");
-        $output = 'Beim speichern der Einstellungen ist ein Fehler aufgetreten!';
+        $output = get_failure('Beim speichern der Einstellungen ist ein Fehler aufgetreten!');
     }
 
     draw_page($output, $title, $author, NAKED, $header);

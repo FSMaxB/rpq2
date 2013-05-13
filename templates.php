@@ -203,4 +203,18 @@ function get_baudrates() {
 
     return $template_baudrates;
 }
+
+function get_success($text) {
+    $template_success = file_get_contents('template_success.html');
+
+    $output = str_replace('{text}', $text, $template_success);
+    return $output;
+}
+
+function get_failure($text) {
+    $template_failure = file_get_contents('template_failure.html');
+
+    $output = str_replace('{text}', $text, $template_failure);
+    return $output;
+}
 ?>
