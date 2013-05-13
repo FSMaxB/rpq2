@@ -92,7 +92,10 @@ if( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) {
         $header = get_redirect(1, $return_success);
         $output = 'Einstellungen erfolgreich gespeichert';
     } else {
-        $header = get_redirect(3, $return_failure);
+        //Im fehlerfall werden die Einstellungen wieder zurückgegeben, sodass man sie nicht nochmal eingeben muss
+        $settings_container = array( 'settings' => $settings);
+        $query = http_build_query($settings_container);
+        $header = get_redirect(3, "$return_failure?$query");
         $output = 'Beim speichern der Einstellungen ist ein Fehler aufgetreten!';
     }
 

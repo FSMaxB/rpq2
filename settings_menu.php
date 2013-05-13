@@ -28,6 +28,11 @@ $title = 'Einstellungen';
 $author = 'Max Bruckner';
 $heading = 'Einstellungen';
 
+$settings_url = $_GET['settings'];
+if( $settings_url ) {
+    $settings = $settings_url;
+}
+
 //Liste mit seriellen Schnittstellen erstellen
 $interfaces = '';
 foreach( get_ttys() as $tty ) {
