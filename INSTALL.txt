@@ -11,7 +11,7 @@ INSTALLATION
 Hinweis: Einige der im folgenden beschriebenen Befehle müssen mit Root-Rechten ausgeführt werden. Auf den meisten GNU/Linux-Systemen lässt sich das durch voranstellen des Befehls "sudo" bewerkstelligen.
 
 1. Kopieren der Ordnerstruktur in den Ordner des Webservers (Auf Debian-Systemen normalerweise "/var/www")
-2. Folgenden Befehl als root ausführen: sh permissions.sh user grout (wobei user und groub mit Benutzername und Gruppe des Webservers ersetzt werden).
-3. Das Skript source.sh als root ausführen ("sudo ./source.sh")
+2. Folgenden Befehl als root ausführen: sh permissions.sh user group (wobei user und groub mit Benutzername und Gruppe des Webservers ersetzt werden).
+3. Das Skript source.sh als root ausführen ("./source.sh")
 4. Dem Benutzernamen des Webservers die Rechte für den Zugriff auf die seriellen Schnittstellen geben (normalerweise mit dem Befehl "usermod -a -G dialout www-data"[mit Root-Rechten] "usermod -a -G tty www-data"[mit Root-Rechten]).
 5. Falls man den Rechner per Webinterface herunterfahren können möchte: Dem Benutzernamen des Webservers die Berechtigung zum Ausführen des "shutdown"-Befehles geben (normalerweise mit dem Befehl "chmod +s /sbin/shutdown"[mit Root-Rechten]; ACHTUNG: Anschließend kann jeder Benutzer den Computer herunterfahren)
