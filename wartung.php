@@ -22,13 +22,7 @@
 include_once('page.php');
 include_once('settings.php');
 include_once('templates.php');
-
-function set_tty() {
-	global $settings;
-	system("stty -F $settings['serial_interface'] -echo");
-	system("stty -F $settings['serial_interface'] $settings['serial_baudrate']");
-	system("stty -F $settings['serial_interface'] raw");
-}
+include_once('tty.php');
 
 $title = 'Wartung';
 $author = 'Max Bruckner';

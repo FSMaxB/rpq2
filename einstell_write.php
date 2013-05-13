@@ -22,6 +22,7 @@
 include_once('settings.php');
 include_once('templates.php');
 include_once('page.php');
+include_once('tty.php');
 
 $author = 'Max Bruckner';
 $title = 'Einstellwerte übertragen';
@@ -54,13 +55,6 @@ function write($filename, $write_all) {
 	}
 	
 	file_put_contents($settings['ordner_einstellwert'] . $filename,$output);
-}
-
-function set_tty() {
-	global $settings;
-	system("stty -F {$settings['serial_interface']} -echo");
-	system("stty -F {$settings['serial_interface']} {$settings['serial_baudrate']}");
-	system("stty -F {$settings['serial_interface']} raw");
 }
 
 function run() {

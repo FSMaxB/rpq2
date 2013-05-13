@@ -19,6 +19,8 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+include_once('settings.php');
+
 function get_ttys() {
 	$devices = get_files('/dev');
 	
@@ -28,6 +30,13 @@ function get_ttys() {
 	}
 	
 	return $ttys;
+}
+
+function set_tty() {
+	global $settings;
+	system("stty -F {$settings['serial_interface']} -echo");
+	system("stty -F {$settings['serial_interface']} {$settings['serial_baudrate']}");
+	system("stty -F {$settings['serial_interface']} raw");
 }
 
 ?>
