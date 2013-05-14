@@ -31,9 +31,10 @@ $data = $_POST['data'];
 $mode = $_POST['mode'];
 $filename = $_POST['filename'];
 
-function get_csv($comment, $regler, $index, $einstellwerte, $take_trenn, $take_comment, $take_other) {
+function write_csv($filename, $comment, $regler, $index, $einstellwerte, $take_trenn, $take_comment, $take_other) {
+    global $settings;
     $first_value = false;       //Wurde schon der erste Wert geschrieben?
-    $output = "$comment\n";
+    $output = "$comment";
     $output .= "Regler,$regler\n";
     $output .= "Index,$index\n";
     foreach( $einstellwerte as $einstellwert) {
@@ -55,10 +56,12 @@ function get_csv($comment, $regler, $index, $einstellwerte, $take_trenn, $take_c
                     $output .= "{$einstellwert['line']}\n";
         }
     }
-    return $output;
+    rtrim($output);    //Leerzeile am Ende entfernen
+    return file_put_contents("{$settings['ordner_einstellwert']}/$filename", $output);
 }
 
 switch($mode) {
+    //TODO richtige Texte einfügen
     case 'read':
         $title = 'read';
         break;
@@ -74,11 +77,7 @@ switch($mode) {
 }
 $author = 'Max Bruckner';
 
-$output = "<p><b>Kommentar:</b>$comment</p>";
-$output .= "<p><b>Regler:</b>$regler</p>";
-$output .= "<p><b>Index:</b>$index</p>";
-$output .= "<p><b>Dateiname:</b>$filename</p>";
-$output .= nl2br(get_csv($comment, $regler, $index, $data, true, true, true));
-var_dump($data);
+write_csv('write.csv', $comment, $regler, $index, $data, true, true, true);
+$output = nl2br(file_get_contents("{$settings['ordner_einstellwert']}/write.csv"));
 draw_page($output, $title, $author, NAKED);
 ?>
