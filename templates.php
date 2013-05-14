@@ -100,27 +100,27 @@ function get_button($link, $text) {
     return $output;
 }
 
-function get_form_einstell($comment, $index, $einstellwerte, $filename, $counter, $trenn) {
+function get_form_einstell($comment, $regler, $index, $einstellwerte, $filename) {
     $template_form_einstell = file_get_contents('template_form_einstell.html');
 
     $output = str_replace('{comment}', $comment, $template_form_einstell);
+    $output = str_replace('{regler}', $regler, $output);
     $output = str_replace('{index}',$index, $output);
     $output = str_replace('{einstellwerte}', $einstellwerte, $output);
     $output = str_replace('{filename}', $filename, $output);
-    $output = str_replace('{counter}', $counter, $output);
-    $output = str_replace('{trenn}', $trenn, $output);
     return $output;
 }
 
-function get_einstellzeile($form, $text, $id, $value, $min, $max) {
+function get_einstellzeile($number, $form, $id, $value, $min, $max, $text) {
     $template_einstellzeile = file_get_contents('template_einstellzeile.html');
 
-    $output = str_replace('{form}', $form, $template_einstellzeile);
-    $output = str_replace('{text}', $text, $output);
+    $output = str_replace('{number}', $number, $template_einstellzeile);
+    $output = str_replace('{form}', $form, $output);
     $output = str_replace('{id}', $id, $output);
     $output = str_replace('{value}', $value, $output);
     $output = str_replace('{min}', $min, $output);
     $output = str_replace('{max}', $max, $output);
+    $output = str_replace('{text}', $text, $output);
     return $output;
 
 }
@@ -215,6 +215,15 @@ function get_failure($text) {
     $template_failure = file_get_contents('template_failure.html');
 
     $output = str_replace('{text}', $text, $template_failure);
+    return $output;
+}
+
+function get_form_einstellzeile($number, $line, $type) {
+    $template_form_einstellzeile = file_get_contents('template_form_einstellzeile.html');
+
+    $output = str_replace('{number}', $number, $template_form_einstellzeile);
+    $output = str_replace('{line}', $line, $output);
+    $output = str_replace('{type}', $type, $output);
     return $output;
 }
 ?>

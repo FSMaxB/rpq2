@@ -1,3 +1,21 @@
 <tr>
-    <td>{form}</td><td><b>{text}</b></td><td>({id})</td><td>{value}</td><td>Min:{min}</td><td>Max:{max}</td>
+    <td>
+      {form}
+      <input type="checkbox" name="data[{number}][checked]" value="true" checked>
+    </td>
+    <td>
+      <input type="text" size="50" maxlength="50" name="data[{number}][text]" value="{text}">
+    </td>
+    <td>
+      (<input type="text" size="3" maxlength="3" name="data[{number}][id]" value="{id}">)
+    </td>
+    <td>
+      <input type="text" size="6" maxlength="6" name="data[{number}][value]" value="{value}">
+    </td>
+    <td>
+      Min:<input type="text" size="6" maxlength="6" name="data[{number}][min]" value="{min}">
+    </td>
+    <td>
+      Max:<input type="text" size="6" maxlength="6" name="data[{number}][max]" value="{max}">
+    </td>
 </tr>

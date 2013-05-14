@@ -1,6 +1,6 @@
 
 <form action="einstell_write.php" method="post">
-    <input type="text" name="comment" value="{comment}"></br>
+    <textarea name="comment" cols="50" rows="5">{comment}</textarea></br>
     <input type="hidden" name="index" value="{index}">
     <div style="height:400px;width:100%;border:1px solid #ccc;overflow:auto;">
         <table>
@@ -8,15 +8,13 @@
         </table>
     </div>
     Dateiname:<input type="text" name="filename" value="{filename}"></br>
-    Regleradresse:<input type="text" size="3" maxlength="3" name="regleradresse">
+    Regleradresse:<input type="text" size="3" maxlength="3" name="regleradresse" value="{regler}">
     <select name="mode" size="1">
         <option value="read" selected>Werte auslesen</option>
         <option value="save">CSV speichern</option>
         <option value="write_save">Werte schreiben und speichern</option>
         <option value="write">Werte schreiben</option>
     </select>
-    <input type="hidden" name="count" value="{counter}">
     <input type="reset" value="Zurücksetzen">
     <input type="submit" value="Absenden">
-    {trenn}
 </form>

@@ -43,8 +43,6 @@ $author = 'Max Bruckner';
 $heading = 'Einstellwerte';
 
 $filename = $_GET['filename'];
-$einstell_csv = file_get_contents("{$settings['ordner_einstellwert']}/$filename");
-$einstell_lines = explode("\n", $einstell_csv);
 
 function get_comment($lines) {
     $comment = NULL;
@@ -81,7 +79,7 @@ function get_einstellwerte($lines) {
             $einstellwerte[$i]['type'] = 'trenn';
         } else {
             $split = explode(',', $line);
-            if( (count($split) == 5) && (strlen($split[0]) <= 2)  && ctype_xdigit($split[0]) ) {    //Einstellwert? ctype_xdigit: prüft auf hex
+            if( (count($split) == 5) && (strlen($split[0]) <= 3)  && is_numeric($split[0]) ) {    //Einstellwert?
                 $einstellwerte[$i]['type'] = 'value';
 
                 $einstellwerte[$i]['id'] = $split[0];
@@ -97,16 +95,46 @@ function get_einstellwerte($lines) {
     return $einstellwerte;
 }
 
-$output = $einstell_csv;
+//Liste der Einstellwerte
+function get_list($einstellwerte) {
+    $output = NULL;
+    for($i = 0; $i < count($einstellwerte); $i++) {
+        switch($einstellwerte[$i]['type']) {
+            case 'value':
+                $form = get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
+                $output .= get_einstellzeile(
+                                $i,
+                                $form,
+                                $einstellwerte[$i]['id'],
+                                $einstellwerte[$i]['value'],
+                                $einstellwerte[$i]['min'],
+                                $einstellwerte[$i]['max'],
+                                $einstellwerte[$i]['text']);
+                break;
+            case 'trenn':
+                $output .= get_einstellzeile_trenn();
+                break;
+            case 'comment':
+                $output .= get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
+                break;
+            case 'other':
+                $output .= get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
+                break;
+        }
+    }
+    return $output;
+}
+
+$einstell_csv = file_get_contents("{$settings['ordner_einstellwert']}/$filename");
+$einstell_lines = explode("\n", $einstell_csv);
 
 $comment = get_comment($einstell_lines);
-$output .= "<p>$comment</p>";
-
 $regler = get_value('Regler', $einstell_lines);
-$output .= "<p><b>Regler:</b>$regler</p>";
-
 $index = get_value('Index', $einstell_lines);
-$output .= "<p><b>Index:</b>$index</p>";
-var_dump(get_einstellwerte($einstell_lines));
+$einstellwerte = get_einstellwerte($einstell_lines);
+$einstell_list = get_list($einstellwerte);
+
+$output = get_heading($heading);
+$output .= get_container(get_form_einstell($comment, $regler, $index, $einstell_list, $filename));
 draw_page($output, $title, $author, LAYOUT);
 ?>
