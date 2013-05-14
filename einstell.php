@@ -42,6 +42,17 @@ function get_comment($lines) {
     return $comment;
 }
 
+function get_value($name, $lines) {
+    foreach($lines as $line) {
+        if( strpos($line, $name . ',') === 0 ) {
+            $split = explode(',', $line);
+            $value = $split[1];
+            break;
+        }
+    }
+    return $value;
+}
+
 function get_einstellwerte($lines) {
     $i = 0;
     $einstellwerte = NULL;
@@ -54,8 +65,15 @@ function get_einstellwerte($lines) {
 }
 
 $output = $einstell_csv;
+
 $comment = get_comment($einstell_lines);
 $output .= "<p>$comment</p>";
+
+$regler = get_value('Regler', $einstell_lines);
+$output .= "<p><b>Regler:</b>$regler</p>";
+
+$index = get_value('Index', $einstell_lines);
+$output .= "<p><b>Index:</b>$index</p>";
 var_dump(get_einstellwerte($einstell_lines));
 draw_page($output, $title, $author, LAYOUT);
 ?>
