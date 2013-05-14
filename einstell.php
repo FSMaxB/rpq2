@@ -23,74 +23,39 @@ include_once('settings.php');
 include_once('page.php');
 include_once('templates.php');
 
-$counter = 0;
-$linecounter = 1;       //Zählt die bearbeiteten CSV-Zeilen
-$trennlines;            //Array, das alle Zeilen enthält, in denen sich Trennlinien befinden.
-$einstellwerte; //String, in den die Fertige Liste von Einstellwerten reinkommt.
-$trenn; //hidden formulare für den Array mit trennzeilen.
-
-function einstell_zeile( $csv_string ) {
-    global $counter, $linecounter, $trennlines, $einstellwerte;
-
-    if( $csv_string == '*' ) {
-        $einstellwerte .= "\n" . get_einstellzeile_trenn();
-        $trennlines[] = $linecounter;
-        $linecounter++;
-    }
-    else {
-        $fields = explode(',', $csv_string);
-
-        if(!is_numeric($fields[0])) {
-            return;
-        }
-
-
-        $counter++;
-
-        $id = '<input type="text" size="3" maxlength="3" name="id' . $counter . '" value="' . $fields[0] . '">';
-        $value = '<input type="text" size="6" maxlength="6" name="value' . $counter . '" value="' . $fields[1] . '" tabindex="' . $counter . '">';
-        $min = '<input type="text" size="6" maxlength="6" name="min' . $counter . '" value="' . $fields[2] . '">';
-        $max = '<input type="text" size="6" maxlength="6" name="max' . $counter . '" value="' . $fields[3] . '">';
-        $text = '<input type="text" size="50" maxlength="50" name="text' . $counter . '" value="' . $fields[4] . '">';
-        $form = '<input type="hidden" name="check' . $counter . '" value="false">'
-              . '<input type="checkbox" name="check' . $counter . '" value="true" checked>';
-        $output_line = get_einstellzeile($form, $text, $id, $value, $min, $max);
-
-        $einstellwerte = $einstellwerte . "\n" . $output_line;
-        $linecounter++;
-    }
-}
-
 $title = 'Einstellwerte';
 $author = 'Max Bruckner';
 $heading = 'Einstellwerte';
 
-$filename = $_GET["filename"];
-if($filename == '') {
-    $filename = 'default.csv';
-}
+$filename = $_GET['filename'];
+$einstell_csv = file_get_contents("{$settings['ordner_einstellwert']}/$filename");
+$einstell_lines = explode("\n", $einstell_csv);
 
-$path = "{$settings['ordner_einstellwert']}/$filename";
-$filecontent = file_get_contents($path);
-$lines = explode("\n", $filecontent);
-
-$comment = $lines[0];
-$index = explode(',',$lines[1]);
-$index = $index[1];
-
-foreach($lines as $line) {
-    if($line !== '') {
-        einstell_zeile($line);
+function get_comment($lines) {
+    $comment = NULL;
+    foreach($lines as $line) {
+        if( (strpos($line, 'Index,') === 0) || (strpos($line, 'Regler,') === 0) || (strpos($line, '#')) ) {
+             break;
+        }
+        $comment .= "$line\n";
     }
+    return $comment;
 }
 
-foreach($trennlines as $trennline) {
-    $trenn .= "\n" .  '<input type="hidden" name="trenn[]" value="' . $trennline . '">';
+function get_einstellwerte($lines) {
+    $i = 0;
+    $einstellwerte = NULL;
+    foreach($lines as $line) {
+        $einstellwerte[$i]['line'] = $line;
+        //TODO so ziemlich alles
+        $i++;
+    }
+    return $einstellwerte;
 }
 
-$output = get_heading($heading);
-$output .= get_form_einstell($comment, $index, $einstellwerte, $filename, $counter, $trenn);
-$output .= get_button_menu_back();
-
-draw_page( $output, $title, $author, LAYOUT);
+$output = $einstell_csv;
+$comment = get_comment($einstell_lines);
+$output .= "<p>$comment</p>";
+var_dump(get_einstellwerte($einstell_lines));
+draw_page($output, $title, $author, LAYOUT);
 ?>
