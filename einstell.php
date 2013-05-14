@@ -112,6 +112,7 @@ function get_list($einstellwerte) {
                                 $einstellwerte[$i]['text']);
                 break;
             case 'trenn':
+                $output .= get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
                 $output .= get_einstellzeile_trenn();
                 break;
             case 'comment':
