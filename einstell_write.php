@@ -29,6 +29,34 @@ $regler = $_POST['regler'];
 $index = $_POST['index'];
 $data = $_POST['data'];
 $mode = $_POST['mode'];
+$filename = $_POST['filename'];
+
+function get_csv($comment, $regler, $index, $einstellwerte, $take_trenn, $take_comment, $take_other) {
+    $first_value = false;       //Wurde schon der erste Wert geschrieben?
+    $output = "$comment\n";
+    $output .= "Regler,$regler\n";
+    $output .= "Index,$index\n";
+    foreach( $einstellwerte as $einstellwert) {
+        switch($einstellwert['type']) {
+            case 'value':
+                $first_value = true;
+                $output .= "{$einstellwert['id']},{$einstellwert['value']},{$einstellwert['min']},{$einstellwert['max']},{$einstellwert['text']}\n";
+                break;
+            case 'trenn':
+                if( $take_trenn )
+                    $output .= "*\n";
+                break;
+            case 'comment':
+                if( $take_comment )
+                    $output .= "{$einstellwert['line']}\n";
+                break;
+            case 'other':
+                if( $take_other && $first_value )
+                    $output .= "{$einstellwert['line']}\n";
+        }
+    }
+    return $output;
+}
 
 switch($mode) {
     case 'read':
@@ -49,6 +77,8 @@ $author = 'Max Bruckner';
 $output = "<p><b>Kommentar:</b>$comment</p>";
 $output .= "<p><b>Regler:</b>$regler</p>";
 $output .= "<p><b>Index:</b>$index</p>";
+$output .= "<p><b>Dateiname:</b>$filename</p>";
+$output .= nl2br(get_csv($comment, $regler, $index, $data, true, true, true));
 var_dump($data);
 draw_page($output, $title, $author, NAKED);
 ?>
