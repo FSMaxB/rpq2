@@ -1,0 +1,1 @@
+Enthält eine Zeile des Kommentars am Anfang einer CSV-Datei mit Einstellwerten genau 4 Kommata und vor dem ersten Komma dieser Zeile sind maximal zwei Zeichen, die als Hexadezimalziffern interpretiert werden können, dann wird diese Kommentarzeile fälschlicherweise als Einstellwert verarbeitet.
