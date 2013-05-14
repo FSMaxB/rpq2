@@ -24,100 +24,31 @@ include_once('templates.php');
 include_once('page.php');
 include_once('tty.php');
 
-$author = 'Max Bruckner';
-$title = 'Einstellwerte übertragen';
+$comment = $_POST['comment'];
+$regler = $_POST['regler'];
+$index = $_POST['index'];
+$data = $_POST['data'];
+$mode = $_POST['mode'];
 
-$filename = $_POST["filename"];
-$mode = $_POST["mode"];
-$comment = $_POST["comment"];
-$index = $_POST["index"];
-$count = $_POST["count"];
-$regleradresse = $_POST["regleradresse"];
-$results = '';
-
-function write($filename, $write_all) {
-    global $_POST, $comment, $index, $count, $settings;
-
-    $output = $comment . "\n";
-    $output .= 'Index,' . $index . "\n";
-
-    $linecounter = 0;
-    for($counter = 1; $counter <= $count; $counter++) {
-        $linecounter++;
-        if(in_array($linecounter,$_POST["trenn"])) {
-            $output .= "*\n";
-            $linecounter++;
-        }
-
-        if( ($_POST["check$counter"] === "true") || $write_all ) {
-            $output .= $_POST["id$counter"] . ',' . $_POST["value$counter"] . ',' . $_POST["min$counter"] . ',' . $_POST["max$counter"] . ',' . $_POST["text$counter"] . "\n";
-        }
-    }
-
-    file_put_contents($settings['ordner_einstellwert'] . $filename,$output);
-}
-
-function run() {
-    global $results, $mode, $read, $regleradresse, $settings;
-    if($mode == 'write_save') {
-        $mode_param = 'write';
-    } else {
-        $mode_param = $mode;
-    }
-    exec("nativ/einstell $mode_param {$settings['serial_interface']} $regleradresse {$settings['ordner_einstellwert']}/send.csv $read", $outputs);
-
-    foreach ($outputs as $output) {
-        $results .= $output . "\n";
-    }
-}
-
-function redirect($adress, $text) {
-        global $title, $author;
-        $output =  '<h2 align="center">' . nl2br($text) . '</h2><br />';
-        $output .= get_button($adress, $text);
-        draw_page( $output, $title, $author, LAYOUT);
-}
-
-
-set_tty();
-
-switch ($mode) {
-    case 'save':
-        write($filename,false);
-        redirect('einstelltab.php', get_success("Einstellwerte in $filename gespeichert!"));
-        break;
+switch($mode) {
     case 'read':
-        write('send.csv', false);
-        $read = "{$settings['ordner_einstellwert']}/antwort.csv";
-        run();
-        $pos = strpos($results,'FEHLER');
-        if( $pos !== false )    { //Enthält die Befehlsausgabe eine Fehlermeldung?
-            redirect("einstell.php?filename=send.csv" , get_failure($results));
-        }   else {
-                redirect("einstell.php?filename=antwort.csv", get_success('Lesen der Einstellwerte erfolgreich!'));
-        }
+        $title = 'read';
         break;
     case 'write':
-        write('send.csv', false);
-        run();
-        $pos = strpos($results,'FEHLER');
-        if( $pos !== false) { //Enthält die Befehlsausgabe eine Fehlermeldung?
-            redirect("einstell.php?filename=send.csv" , get_failure($results));
-        }   else {
-                redirect("einstell.php?filename=$filename", get_success('Schreiben der Einstellwerte erfolgreich!'));
-        }
+        $title = 'write';
         break;
     case 'write_save':
-        write('send.csv', false);
-        run();
-        $pos = strpos($results,'FEHLER');
-        if( $pos !== false) { //Enthält die Befehlsausgabe eine Fehlermeldung?
-            redirect("einstell.php?filename=send.csv" ,get_failure($results));
-        }   else {
-                redirect("einstell.php?filename=$filename", get_success('Schreiben der Einstellwerte erfolgreich!'));
-                write($filename, true);
-        }
+        $title = 'write_save';
+        break;
+    case 'save':
+        $title = 'save';
         break;
 }
+$author = 'Max Bruckner';
 
+$output = "<p><b>Kommentar:</b>$comment</p>";
+$output .= "<p><b>Regler:</b>$regler</p>";
+$output .= "<p><b>Index:</b>$index</p>";
+var_dump($data);
+draw_page($output, $title, $author, NAKED);
 ?>
