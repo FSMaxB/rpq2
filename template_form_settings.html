@@ -25,35 +25,9 @@
     </table>
   </p>
   <p>
-    <h3>Ordner</h3>
-      <table>
-        <tr>
-          <td>
-            <b>Innowatt-Dokumentationen:</b>
-          </td>
-          <td>
-            <input type="text" name="settings[ordner_docs]" value="{ordner_docs}">
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>Eigene Dokumentationen:</b>
-          </td>
-          <td>
-            <input type="text" name="settings[ordner_owndocs]" value="{ordner_owndocs}">
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <b>Einstellwerttabellen:</b>
-          </td>
-          <td>
-            <input type="text" name="settings[ordner_einstellwert]" value="{ordner_einstellwert}">
-          </td>
-        </tr>
-      </table>
-  </p>
-  <p>
+    <input type="hidden" name="settings[ordner_docs]" value="{ordner_docs}">
+    <input type="hidden" name="settings[ordner_owndocs]" value="{ordner_owndocs}">
+    <input type="text" name="settings[ordner_einstellwert]" value="{ordner_einstellwert}">
     <input type="hidden" name="return_success" value="{return_success}">
     <input type="hidden" name="return_failure" value="{return_failure}">
     <input type="submit" value="Einstellungen speichern">
