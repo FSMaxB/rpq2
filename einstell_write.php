@@ -68,11 +68,10 @@ function run($mode, $file_send, $file_receive = '') {
     $outputs = NULL;
     switch($mode) {
         case 'read':
-            echo 'Lese!';
-            $result = exec("nativ/einstell {$settings['ordner_einstellwert']}/test.csv", $outputs);
+            $result = exec("nativ/einstell read {$settings['serial_interface']} {$settings['ordner_einstellwert']}/test.csv", $outputs);
             break;
         case 'write':
-            $result = exec("nativ/einstell write {$settings['ordner_einstellwert']}/test.csv {$settings['ordner_einstellwert']}/receive.csv", $outputs);
+            $result = exec("nativ/einstell write {$settings['serial_interface']} {$settings['ordner_einstellwert']}/test.csv {$settings['ordner_einstellwert']}/receive.csv", $outputs);
             break;
     }
 
@@ -94,6 +93,8 @@ function get_output($return, $text_success, $file_success, $text_fail, $file_fai
         }
     return $output;
 }
+
+set_tty();
 
 switch($mode) {
     //TODO vervollständigen
