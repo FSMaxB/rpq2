@@ -62,24 +62,79 @@ function write_csv($filename, $comment, $regler, $index, $einstellwerte, $take_t
     return file_put_contents("{$settings['ordner_einstellwert']}/$filename", $output);
 }
 
+function run($mode, $file_send, $file_receive = '') {
+    global $settings;
+
+    $outputs = NULL;
+    switch($mode) {
+        case 'read':
+            echo 'Lese!';
+            $result = exec("nativ/einstell {$settings['ordner_einstellwert']}/test.csv", $outputs);
+            break;
+        case 'write':
+            $result = exec("nativ/einstell write {$settings['ordner_einstellwert']}/test.csv {$settings['ordner_einstellwert']}/receive.csv", $outputs);
+            break;
+    }
+
+    $result = NULL;
+    foreach( $outputs as $output) {
+        $result .= "$output\n";
+    }
+
+    return $result;
+}
+
+function get_output($return, $text_success, $file_success, $text_fail, $file_fail) {
+    if( (strpos($return, 'FEHLER') !== FALSE) ) {
+            $output = get_failure($text_fail);
+            $output .= get_button("einstell.php?filename=$file_fail", 'Weiter');
+        } else {
+            $output = get_success($text_success);
+            $output .= get_button("einstell.php?filename=$file_success", 'Weiter');
+        }
+    return $output;
+}
+
 switch($mode) {
-    //TODO richtige Texte einfügen
+    //TODO vervollständigen
     case 'read':
-        $title = 'read';
+        $title = 'Einstellwerte lesen';
+        write_csv('send.csv', $comment, $regler, $index, $data, false, false, false);
+        $return = run('read', 'send.csv', 'receive.csv');
+        $output = get_output($return, 'Einstellwerte erfolgreich ausgelesen', 'receive.csv', nl2br($return), 'send.csv');
         break;
+
     case 'write':
-        $title = 'write';
+        $title = 'Einstellwerte schreiben';
+        write_csv('send.csv', $comment, $regler, $index, $data, false, false, false);
+        $return = run('write', 'send.csv');
+        $output = get_output($return, 'Einstellwerte erfolgreich geschrieben', 'send.csv', nl2br($return), 'send.csv');
         break;
+
     case 'write_save':
-        $title = 'write_save';
+        $title = 'Einstellwerte schreiben und speichern';
+        write_csv('send.csv', $comment, $regler, $index, $data, false, false, false);
+        $return = run('write', 'send.csv');
+        if(write_csv($filename, $comment, $regler, $index, $data, true, true, true)) {
+            $output = get_output($return, 'Einstellwerte erfolgreich geschrieben und gespeichert', $filename, nl2br($return), 'send.csv');
+        } else {
+            $output = get_failure('Speichern der Einstellwerte fehlgeschlagen!');
+            $output .= get_button_menu_back();
+        }
         break;
+
     case 'save':
         $title = 'save';
+        if(write_csv($filename, $comment, $regler, $index, $data, true, true, true)) {
+            $output = get_success('Einstellwerte erfolgreich gespeichert');
+            $output .= get_button("einstell.php?filename=$filename", 'Weiter');
+        } else {
+            $output = get_failure('Beim Speichern der Einstellwerte ist ein Fehler aufgetreten');
+            $output .= get_button_menu_back();
+        }
         break;
 }
 $author = 'Max Bruckner';
 
-write_csv('write.csv', $comment, $regler, $index, $data, true, true, true);
-$output = nl2br(file_get_contents("{$settings['ordner_einstellwert']}/write.csv"));
 draw_page($output, $title, $author, NAKED);
 ?>
