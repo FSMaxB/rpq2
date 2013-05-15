@@ -23,6 +23,7 @@ include_once('settings.php');
 include_once('templates.php');
 include_once('page.php');
 include_once('tty.php');
+include_once('file.php');
 
 $comment = $_POST['comment'];
 $regler = $_POST['regler'];
@@ -56,7 +57,8 @@ function write_csv($filename, $comment, $regler, $index, $einstellwerte, $take_t
                     $output .= "{$einstellwert['line']}\n";
         }
     }
-    rtrim($output);    //Leerzeile am Ende entfernen
+    rtrim($output);    //Leerzeilen am Ende entfernen
+    $filename = correct_filename($filename, 'csv');
     return file_put_contents("{$settings['ordner_einstellwert']}/$filename", $output);
 }
 

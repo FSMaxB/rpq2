@@ -19,6 +19,7 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 include_once('page.php');
+include_once('file.php');
 include_once('templates.php');
 
 $title = 'Datei hochladen';
@@ -33,18 +34,7 @@ $extension = $_POST['extension'];   //Wenn nicht angegeben geht alles außer PHP
 
 $name = $_FILES['datei']['name'];   //Ursprünglicher Dateiname der hochgeladenen Datei
 
-//Überprüfen und korrigieren der Dateiendung
-$split = explode('.', $name);
-if( ($extension != '') && (strcasecmp(end($split), $extension) !== 0) ) {
-    $name .= ".$extension";
-}
-
-if( strcasecmp(end($split), 'php') === 0  ) {
-    $output = '<h1>Es ist nicht gestattet, PHP-Dateien hochzuladen!</h1>';
-    $header = get_redirect(3, $return_failure);
-    draw_page($output, $title, $author, NAKED, $header);
-    exit(0);
-}
+$name = correct_filename($name, $extension);
 
 $ziel = "$ordner/$name";
 

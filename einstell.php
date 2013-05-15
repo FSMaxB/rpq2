@@ -136,6 +136,6 @@ $einstellwerte = get_einstellwerte($einstell_lines);
 $einstell_list = get_list($einstellwerte);
 
 $output = get_heading($heading);
-$output .= get_container(get_form_einstell($comment, $regler, $index, $einstell_list, $filename));
+$output .= get_form_einstell($comment, $regler, $index, $einstell_list, $filename);
 draw_page($output, $title, $author, LAYOUT);
 ?>

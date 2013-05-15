@@ -19,6 +19,25 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+include_once('templates.php');
+
+function correct_filename($filename, $extension) {
+    //Überprüfen und korrigieren der Dateiendung
+    $split = explode('.', $filename);
+    if( ($extension != '') && (strcasecmp(end($split), $extension) !== 0) ) {
+        $filename .= ".$extension";
+    }
+
+    if( strcasecmp(end($split), 'php') === 0  ) {
+        $output = get_failure('Es ist nicht gestattet, PHP-Dateien abzuspeichern!');
+        $header = get_redirect(3, 'index.php');     //TODO Das ist nicht die eleganteste Lösung
+        draw_page($output, $title, $author, NAKED, $header);
+        exit(1);
+    }
+
+    return $filename;
+}
+
 function get_files($ordner) {
     $file_list = scandir($ordner);
 
