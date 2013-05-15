@@ -28,13 +28,12 @@ $title = 'Einstellungen';
 $author = 'Max Bruckner';
 $heading = 'Einstellungen';
 
-$settings_url = $_GET['settings'];
-if( $settings_url ) {
-    $settings = $settings_url;
+if( isset($_GET['']) ) {
+    $settings = $_GET['settings'];
 }
 
 //Liste mit seriellen Schnittstellen erstellen
-$interfaces = '';
+$interfaces = NULL;
 foreach( get_ttys() as $tty ) {
     if( $tty == $settings['serial_interface'] ) {
         $interfaces .= "<option selected>$tty</option>\n";
@@ -57,5 +56,4 @@ $output = get_heading($heading);
 $output .= get_form_settings($interfaces, $baudrates, $settings['ordner_docs'], $settings['ordner_owndocs'], $settings['ordner_einstellwert'], 'settings_menu.php', 'settings_menu.php');
 $output .= get_button_menu_back();
 draw_page($output, $title, $author, LAYOUT);
-
 ?>
