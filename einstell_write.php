@@ -31,6 +31,8 @@ $index = $_POST['index'];
 $data = $_POST['data'];
 $mode = $_POST['mode'];
 $filename = $_POST['filename'];
+$take_trenn = ($_POST['take_trenn'] === 'true');
+$take_comments = ($_POST['take_comments'] === 'true');
 
 function write_csv($filename, $comment, $regler, $index, $einstellwerte, $take_trenn, $take_comment, $take_other) {
     global $settings;
@@ -41,8 +43,10 @@ function write_csv($filename, $comment, $regler, $index, $einstellwerte, $take_t
     foreach( $einstellwerte as $einstellwert) {
         switch($einstellwert['type']) {
             case 'value':
-                $first_value = true;
-                $output .= "{$einstellwert['id']},{$einstellwert['value']},{$einstellwert['min']},{$einstellwert['max']},{$einstellwert['text']}\n";
+                if( $einstellwert['checked'] === 'true') {
+                    $first_value = true;
+                    $output .= "{$einstellwert['id']},{$einstellwert['value']},{$einstellwert['min']},{$einstellwert['max']},{$einstellwert['text']}\n";
+                }
                 break;
             case 'trenn':
                 if( $take_trenn )
@@ -126,7 +130,7 @@ switch($mode) {
 
     case 'save':
         $title = 'save';
-        if(write_csv($filename, $comment, $regler, $index, $data, true, true, true)) {
+        if(write_csv($filename, $comment, $regler, $index, $data, $take_trenn, $take_comment, false)) {
             $output = get_success('Einstellwerte erfolgreich gespeichert');
             $output .= get_button("einstell.php?filename=$filename", 'Weiter');
         } else {
@@ -136,6 +140,5 @@ switch($mode) {
         break;
 }
 $author = 'Max Bruckner';
-
 draw_page($output, $title, $author, NAKED);
 ?>
