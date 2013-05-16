@@ -22,7 +22,7 @@
 include_once('settings.php');
 include_once('page.php');
 include_once('templates.php');
-include_once('file_list.php');
+include_once('file.php');
 
 $title = 'Einstellwerttabellen verwalten';
 $author = 'Max Bruckner';
