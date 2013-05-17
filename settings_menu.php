@@ -36,7 +36,7 @@ if( isset($_GET['']) ) {
 $interfaces = NULL;
 foreach( get_ttys() as $tty ) {
     if( "/dev/$tty" == $settings['serial_interface'] ) {
-        $interfaces .= "<option selected>$tty</option>\n";
+        $interfaces .= "<option selected>/dev/$tty</option>\n";
     } else {
         $interfaces .= "<option>/dev/$tty</option>";
     }
