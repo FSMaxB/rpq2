@@ -226,4 +226,10 @@ function get_form_einstellzeile($number, $line, $type) {
     $output = str_replace('{type}', $type, $output);
     return $output;
 }
+
+function get_vspace() {
+    $template_vspace = file_get_contents('template_vspace.html');
+
+    return $template_vspace;
+}
 ?>

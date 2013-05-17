@@ -24,9 +24,9 @@ include_once('settings.php');
 include_once('templates.php');
 include_once('tty.php');
 
-$title = 'Wartung';
+$title = 'Manuelle Geräteeinstellung';
 $author = 'Max Bruckner';
-$heading = 'Wartung';
+$heading = 'Manuelle Geräteeinstellung';
 
 $send = $_POST['send'];
 
