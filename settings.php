@@ -29,7 +29,7 @@ function get_settings() {
             'serial_baudrate' => '115200',
             'ordner_docs' => 'docs',
             'ordner_owndocs' => 'owndocs',
-            'ordner_einstellwert',
+            'ordner_einstellwert' => 'einstell',
         );
 
     $file = file_get_contents(CONFIG_FILE);
@@ -39,7 +39,7 @@ function get_settings() {
         if( (strpos($line, '#') !== 0) && ($line)) {    //Kommentarzeilen werden ignoriert
             $setting = explode('=', $line);
             if( ($setting[0]) && ($setting[1]) ) {
-                $settings[$setting[0]] = $setting[1];
+                $settings[$setting[0]] = trim($setting[1]);
             }
         }
     }
