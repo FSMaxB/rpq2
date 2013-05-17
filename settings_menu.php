@@ -35,10 +35,10 @@ if( isset($_GET['']) ) {
 //Liste mit seriellen Schnittstellen erstellen
 $interfaces = NULL;
 foreach( get_ttys() as $tty ) {
-    if( $tty == $settings['serial_interface'] ) {
+    if( "/dev/$tty" == $settings['serial_interface'] ) {
         $interfaces .= "<option selected>$tty</option>\n";
     } else {
-        $interfaces .= "<option>$tty</option>";
+        $interfaces .= "<option>/dev/$tty</option>";
     }
 }
 
