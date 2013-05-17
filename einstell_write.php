@@ -72,10 +72,10 @@ function run($mode, $file_send, $file_receive = '') {
     $outputs = NULL;
     switch($mode) {
         case 'read':
-            $result = exec("nativ/einstell read {$settings['serial_interface']} {$settings['ordner_einstellwert']}/test.csv", $outputs);
+            $result = exec("nativ/einstell read {$settings['serial_interface']} {$settings['ordner_einstellwert']}/$file_send  {$settings['ordner_einstellwert']}/$file_receive", $outputs);
             break;
         case 'write':
-            $result = exec("nativ/einstell write {$settings['serial_interface']} {$settings['ordner_einstellwert']}/test.csv {$settings['ordner_einstellwert']}/receive.csv", $outputs);
+            $result = exec("nativ/einstell write {$settings['serial_interface']} {$settings['ordner_einstellwert']}/$file_send", $outputs);
             break;
     }
 
@@ -120,7 +120,7 @@ switch($mode) {
         $title = 'Einstellwerte schreiben und speichern';
         write_csv('send.csv', $comment, $regler, $index, $data, false, false, false);
         $return = run('write', 'send.csv');
-        if(write_csv($filename, $comment, $regler, $index, $data, true, true, true)) {
+        if(write_csv($filename, $comment, $regler, $index, $data, $take_trenn, $take_comments, false)) {
             $output = get_output($return, 'Einstellwerte erfolgreich geschrieben und gespeichert', $filename, nl2br($return), 'send.csv');
         } else {
             $output = get_failure('Speichern der Einstellwerte fehlgeschlagen!');
