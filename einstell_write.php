@@ -88,12 +88,13 @@ function run($mode, $file_send, $file_receive = '') {
 }
 
 function get_output($return, $text_success, $file_success, $text_fail, $file_fail) {
+    global $header; //Das ist etwas gegen mein Konzept
     if( (strpos($return, 'FEHLER') !== FALSE) ) {
             $output = get_failure($text_fail);
-            $output .= get_button("einstell.php?filename=$file_fail", 'Weiter');
+            $header = get_redirect(3, "einstell.php?filename=$file_fail");
         } else {
             $output = get_success($text_success);
-            $output .= get_button("einstell.php?filename=$file_success", 'Weiter');
+            $header = get_redirect(1, "einstell.php?filename=$file_success");
         }
     return $output;
 }
@@ -132,13 +133,13 @@ switch($mode) {
         $title = 'save';
         if(write_csv($filename, $comment, $regler, $index, $data, $take_trenn, $take_comment, false)) {
             $output = get_success('Einstellwerte erfolgreich gespeichert');
-            $output .= get_button("einstell.php?filename=$filename", 'Weiter');
+            $header = get_redirect(1, "einstell.php?filename=$filename");
         } else {
             $output = get_failure('Beim Speichern der Einstellwerte ist ein Fehler aufgetreten');
-            $output .= get_button_menu_back();
+            $header = get_redirect(3, "index.php");
         }
         break;
 }
 $author = 'Max Bruckner';
-draw_page($output, $title, $author, NAKED);
+draw_page($output, $title, $author, NAKED, $header);
 ?>
