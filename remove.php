@@ -26,11 +26,11 @@ $title = 'Datei löschen';
 $author = 'Max Bruckner';
 
 $path = $_GET["path"];
-$return_sucess = $_GET['return_success'];
+$return_success = $_GET['return_success'];
 $return_failure = $_GET['return_failure'];
 
 if(unlink($path)) {
-    $header = get_redirect(1, $return_sucess);
+    $header = get_redirect(1, $return_success);
     $output = get_success('Datei "' . $path . '" gelöscht.');
 } else {
     $header = get_redirect(3, $return_failure);
