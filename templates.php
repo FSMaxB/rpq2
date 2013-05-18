@@ -185,14 +185,13 @@ function get_button_menu_back() {
     return $template_button_menu_back;
 }
 
-function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_einstellwert, $ornder_messwert, $return_success, $return_failure) {
+function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_einstell_mess, $return_success, $return_failure) {
     $template_form_settings = file_get_contents('template_form_settings.html');
 
     $output = str_replace('{serial_interfaces}', $serial_interfaces, $template_form_settings);
     $output = str_replace('{serial_baudrates}', $serial_baudrates, $output);
     $output = str_replace('{ordner_docs}', $ordner_docs, $output);
-    $output = str_replace('{ordner_einstellwert}', $ordner_einstellwert, $output);
-    $output = str_replace('{ordner_messwert}', $ordner_messwert, $output);
+    $output = str_replace('{ordner_einstell-mess}', $ordner_einstell_mess, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
     return $output;
