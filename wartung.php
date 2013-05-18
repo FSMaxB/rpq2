@@ -72,7 +72,7 @@ if( $filename_read != '' ) {
     $lines = file("{$settings['ordner_wartung']}/$filename_read", FILE_SKIP_EMPTY_LINES|FILE_IGNORE_NEW_LINES);
     foreach ( $lines as $line ) {
         if( strpos($line, '#') === 0 ) {
-            $coment .= substr($line, 1);
+            $comment .= substr($line, 1);
         } else {
             $send = $line;
         }
