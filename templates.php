@@ -185,13 +185,14 @@ function get_button_menu_back() {
     return $template_button_menu_back;
 }
 
-function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_einstellwert, $return_success, $return_failure) {
+function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_einstellwert, $ornder_messwert, $return_success, $return_failure) {
     $template_form_settings = file_get_contents('template_form_settings.html');
 
     $output = str_replace('{serial_interfaces}', $serial_interfaces, $template_form_settings);
     $output = str_replace('{serial_baudrates}', $serial_baudrates, $output);
     $output = str_replace('{ordner_docs}', $ordner_docs, $output);
     $output = str_replace('{ordner_einstellwert}', $ordner_einstellwert, $output);
+    $output = str_replace('{ordner_messwert}', $ordner_messwert, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
     return $output;
@@ -230,5 +231,15 @@ function get_vspace() {
     $template_vspace = file_get_contents('template_vspace.html');
 
     return $template_vspace;
+}
+
+function get_link_mess($path, $filename, $return_success, $return_failure) {
+    $template_link_mess = file_get_contents('template_link_mess.html');
+
+    $output = str_replace('{path}', $path, $template_link_mess);
+    $output = str_replace('{filename}', $filename, $output);
+    $output = str_replace('{return_success}', $return_success, $output);
+    $output = str_replace('{return_failure}', $return_failure, $output);
+    return $output;
 }
 ?>
