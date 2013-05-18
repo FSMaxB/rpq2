@@ -52,7 +52,7 @@ function get_file_list() {
 
     $file_list = NULL;
     foreach( get_files($settings['ordner_wartung']) as $file ) {
-        $file_list .= get_link_wartung($file, $settings['ordner_wartung'], 'wartung.php', 'wartung.php');
+        $file_list .= get_link_wartung($file, "{$settings['ordner_wartung']}/$file", 'wartung.php', 'wartung.php');
     }
     return $file_list;
 }
@@ -64,7 +64,6 @@ if( $send != '') {
 }
 
 if( $filename_save != '' ) {
-    var_dump($filename_save);
     file_put_contents("{$settings['ordner_wartung']}/$filename_save", "#$comment\n$send");
 }
 
@@ -80,9 +79,10 @@ if( $filename_read != '' ) {
     }
 }
 
+$file_list = get_file_list();
+
 $output = get_heading($heading);
 $output .= get_form_upload($settings['ordner_wartung'], '', 'wartung.php', 'wartung.php');
-$output .= get_file_list();
 $output .= get_wartung(get_container($file_list, '200px'), $comment, $send, $received);
 $output .= get_button_menu_back();
 draw_page( $output, $title, $author, LAYOUT);
