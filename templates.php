@@ -19,10 +19,14 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-function get_wartung($received) {
+function get_wartung($file_list, $comment, $send, $received) {
     $template_wartung = file_get_contents('template_wartung.html');
 
-    return str_replace('{received}', $received, $template_wartung);
+    $output = str_replace('{file_list}', $file_list, $template_wartung);
+    $output = str_replace('{comment}', $comment, $output);
+    $output = str_replace('{send}', $send, $output);
+    $output = str_replace('{received}', $received, $output);
+    return $output;
 }
 
 function get_redirect($time, $destination) {
@@ -185,13 +189,14 @@ function get_button_menu_back() {
     return $template_button_menu_back;
 }
 
-function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_einstell_mess, $return_success, $return_failure) {
+function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_einstell_mess, $ordner_wartung, $return_success, $return_failure) {
     $template_form_settings = file_get_contents('template_form_settings.html');
 
     $output = str_replace('{serial_interfaces}', $serial_interfaces, $template_form_settings);
     $output = str_replace('{serial_baudrates}', $serial_baudrates, $output);
     $output = str_replace('{ordner_docs}', $ordner_docs, $output);
     $output = str_replace('{ordner_einstell-mess}', $ordner_einstell_mess, $output);
+    $output = str_replace('{ordner_wartung}', $ordner_wartung, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
     return $output;
@@ -237,6 +242,16 @@ function get_link_mess($path, $filename, $return_success, $return_failure) {
 
     $output = str_replace('{path}', $path, $template_link_mess);
     $output = str_replace('{filename}', $filename, $output);
+    $output = str_replace('{return_success}', $return_success, $output);
+    $output = str_replace('{return_failure}', $return_failure, $output);
+    return $output;
+}
+
+function get_link_wartung($filename, $path, $return_success, $return_failure) {
+    $template_link_wartung = file_get_contents('template_link_wartung.html');
+
+    $output = str_replace('{filename}', $filename, $template_link_wartung);
+    $output = str_replace('{path}', $path, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
     return $output;
