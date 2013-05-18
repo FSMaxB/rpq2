@@ -62,8 +62,8 @@ function write_csv($filename, $comment, $regler, $index, $einstellwerte, $take_t
         }
     }
     rtrim($output);    //Leerzeilen am Ende entfernen
-    $filename = correct_filename($filename, 'csv');
-    return file_put_contents("{$settings['ordner_einstellwert']}/$filename", $output);
+    $filename = correct_filename($filename, '');
+    return file_put_contents("{$settings['ordner_einstell-mess']}/$filename", $output);
 }
 
 function run($mode, $file_send, $file_receive = '') {
@@ -72,10 +72,10 @@ function run($mode, $file_send, $file_receive = '') {
     $outputs = NULL;
     switch($mode) {
         case 'read':
-            $result = exec("nativ/einstell read {$settings['serial_interface']} {$settings['ordner_einstellwert']}/$file_send  {$settings['ordner_einstellwert']}/$file_receive", $outputs);
+            $result = exec("nativ/einstell read {$settings['serial_interface']} {$settings['ordner_einstell-mess']}/$file_send  {$settings['ordner_einstell-mess']}/$file_receive", $outputs);
             break;
         case 'write':
-            $result = exec("nativ/einstell write {$settings['serial_interface']} {$settings['ordner_einstellwert']}/$file_send", $outputs);
+            $result = exec("nativ/einstell write {$settings['serial_interface']} {$settings['ordner_einstell-mess']}/$file_send", $outputs);
             break;
     }
 

@@ -28,7 +28,7 @@ function get_settings() {
             'serial_interface' => '/dev/ttyUSB0',
             'serial_baudrate' => '115200',
             'ordner_docs' => 'docs',
-            'ordner_einstellwert' => 'einstell',
+            'ordner_einstell-mess' => 'einstell-mess',
             'ordner_wartung' => 'wartung',
         );
 
