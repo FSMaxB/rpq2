@@ -20,25 +20,28 @@
 */
 
 include_once('settings.php');
+include_once('page.php');
 include_once('templates.php');
 include_once('file.php');
-include_once('page.php');
 
-$title = 'Eigene Dokumentationen';
+$title = 'Einstellwerttabellen verwalten';
 $author = 'Max Bruckner';
-$heading = 'Eigene Dokumentationen';
+$heading = 'Einstellwerttabellen verwalten';
 
-$return = 'owndocs.php';
+
+$return = 'einstell-mess.php';
+$extension = '';
 
 //Dateiliste erstellen:
 $file_list = '';
-foreach ( get_files($settings['ordner_owndocs']) as $file ) {
-    $file_list .= get_link_owndocs("{$settings['ordner_owndocs']}/$file", $file, $return, $return);
+foreach ( get_files($settings['ordner_einstellwert']) as $file ) {
+    $file_list .= get_link_einstell("{$settings['ordner_einstellwert']}/$file", $file, $return, $return);
 }
 
 $output = get_heading($heading);
-$output .= get_form_upload($settings['ordner_owndocs'], '', $return, $return);
+$output .= get_form_upload($settings['ordner_einstellwert'], $extension, $return, $return);
 $output .= get_container($file_list);
 $output .= get_button_menu_back();
+
 draw_page($output, $title, $author, LAYOUT);
 ?>

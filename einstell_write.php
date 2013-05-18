@@ -105,24 +105,24 @@ switch($mode) {
     //TODO vervollständigen
     case 'read':
         $title = 'Einstellwerte lesen';
-        write_csv('send.csv', $comment, $regler, $index, $data, false, false, false);
-        $return = run('read', 'send.csv', 'receive.csv');
-        $output = get_output($return, 'Einstellwerte erfolgreich ausgelesen', 'receive.csv', nl2br($return), 'send.csv');
+        write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
+        $return = run('read', 'send.ew', 'receive.ew');
+        $output = get_output($return, 'Einstellwerte erfolgreich ausgelesen', 'receive.ew', nl2br($return), 'send.ew');
         break;
 
     case 'write':
         $title = 'Einstellwerte schreiben';
-        write_csv('send.csv', $comment, $regler, $index, $data, false, false, false);
-        $return = run('write', 'send.csv');
-        $output = get_output($return, 'Einstellwerte erfolgreich geschrieben', 'send.csv', nl2br($return), 'send.csv');
+        write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
+        $return = run('write', 'send.ew');
+        $output = get_output($return, 'Einstellwerte erfolgreich geschrieben', 'send.ew', nl2br($return), 'send.ew');
         break;
 
     case 'write_save':
         $title = 'Einstellwerte schreiben und speichern';
-        write_csv('send.csv', $comment, $regler, $index, $data, false, false, false);
-        $return = run('write', 'send.csv');
+        write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
+        $return = run('write', 'send.ew');
         if(write_csv($filename, $comment, $regler, $index, $data, $take_trenn, $take_comments, false)) {
-            $output = get_output($return, 'Einstellwerte erfolgreich geschrieben und gespeichert', $filename, nl2br($return), 'send.csv');
+            $output = get_output($return, 'Einstellwerte erfolgreich geschrieben und gespeichert', $filename, nl2br($return), 'send.ew');
         } else {
             $output = get_failure('Speichern der Einstellwerte fehlgeschlagen!');
             $output .= get_button_menu_back();

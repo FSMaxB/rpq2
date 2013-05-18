@@ -1,6 +1,6 @@
 #!/bin/sh
 rm source.zip
-rm owndocs/*
+rm docs/*
 rm einstell/*
 zip -r source *
 chmod a+rw source.zip

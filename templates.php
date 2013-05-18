@@ -41,10 +41,10 @@ function get_page($content, $current) {
     return $output;
 }
 
-function get_link_einstelltab($path, $filename, $return_success, $return_failure) {
-    $template_link_einstelltab = file_get_contents('template_link_einstelltab.html');
+function get_link_einstell($path, $filename, $return_success, $return_failure) {
+    $template_link_einstell = file_get_contents('template_link_einstell.html');
 
-    $output = str_replace('{path}', $path, $template_link_einstelltab);
+    $output = str_replace('{path}', $path, $template_link_einstell);
     $output = str_replace('{filename}', $filename, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
@@ -169,10 +169,10 @@ function get_license_gpl() {
     return $template_license_gpl;
 }
 
-function get_link_owndocs($path, $filename, $return_success, $return_failure) {
-    $template_link_owndocs = file_get_contents('template_link_owndocs.html');
+function get_link_docs($path, $filename, $return_success, $return_failure) {
+    $template_link_docs = file_get_contents('template_link_docs.html');
 
-    $output = str_replace('{path}', $path, $template_link_owndocs);
+    $output = str_replace('{path}', $path, $template_link_docs);
     $output = str_replace('{filename}', $filename, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
@@ -185,13 +185,12 @@ function get_button_menu_back() {
     return $template_button_menu_back;
 }
 
-function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_owndocs, $ordner_einstellwert, $return_success, $return_failure) {
+function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_einstellwert, $return_success, $return_failure) {
     $template_form_settings = file_get_contents('template_form_settings.html');
 
     $output = str_replace('{serial_interfaces}', $serial_interfaces, $template_form_settings);
     $output = str_replace('{serial_baudrates}', $serial_baudrates, $output);
     $output = str_replace('{ordner_docs}', $ordner_docs, $output);
-    $output = str_replace('{ordner_owndocs}', $ordner_owndocs, $output);
     $output = str_replace('{ordner_einstellwert}', $ordner_einstellwert, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);

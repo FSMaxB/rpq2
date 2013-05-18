@@ -26,12 +26,11 @@ include_once('templates.php');
 $title = 'RPQ2 Webinterface';
 $author = 'Max Bruckner';
 
-$output = get_button_menu('einstelltab.php', 'Einstellwerttabellen verwalten');
-$output .= get_button_menu('einstell.php?filename=default.csv', 'Einstellwerte');
+$output = get_button_menu('einstell-mess.php', 'Einstell-/Messwerttabellen verwalten');
+$output .= get_button_menu('einstell.php?filename=default.ew', 'Einstellwerte');
 $output .= get_button_menu('mess.php', 'Messwerte');
 $output .= get_button_menu('wartung.php', 'Manuelle Geräteeinstellung');
-$output .= get_button_menu('docs.php', 'Innowatt-Dokumentationen');
-$output .= get_button_menu('owndocs.php', 'Eigene Dokumentationen');
+$output .= get_button_menu('docs.php', 'Dokumentationen');
 $output .= get_button_menu('settings_menu.php', 'Einstellungen');
 $output .= get_vspace();
 $output .= get_button_shutdown();
