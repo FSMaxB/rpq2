@@ -30,27 +30,60 @@ $author = 'Max Bruckner';
 $heading = 'Manuelle Geräteeinstellung';
 
 $send = $_POST['send'];
-$filename = $_POST['filename'];
-$comment = $_POST['comment']
+$filename_save = $_POST['filename'];
+$comment = $_POST['comment'];
+$filename_read = $_GET['filename'];
 
-set_tty();
+function send($send) {
+    global $settings;
 
-$received = '';
-if( $send != '') {
+    $received = NULL;
+
     exec("nativ/einstell wartung {$settings['serial_interface']} $send", $results);
 
     foreach ( $results as $result ) {
-        $received .= "$result\n";
+         $received .= "$result\n";
+    }
+    return $received;
+}
+
+function get_file_list() {
+    global $settings;
+
+    $file_list = NULL;
+    foreach( get_files($settings['ordner_wartung']) as $file ) {
+        $file_list .= get_link_wartung($file, $settings['ordner_wartung'], 'wartung.php', 'wartung.php');
+    }
+    return $file_list;
+}
+
+set_tty();
+
+if( $send != '') {
+    $received = send($send);
+}
+
+if( $filename_save != '' ) {
+    var_dump($filename_save);
+    file_put_contents("{$settings['ordner_wartung']}/$filename_save", "#$comment\n$send");
+}
+
+if( $filename_read != '' ) {
+    $comment = NULL;
+    $lines = file("{$settings['ordner_wartung']}/$filename_read", FILE_SKIP_EMPTY_LINES|FILE_IGNORE_NEW_LINES);
+    foreach ( $lines as $line ) {
+        if( strpos($line, '#') === 0 ) {
+            $coment .= substr($line, 1);
+        } else {
+            $send = $line;
+        }
     }
 }
 
-if($filename != '') {
-    $filename = correct_filename($filename, '');
-    file_put_contents("{$settings['ordner_wartung']}/$filename", $send);
-}
-
 $output = get_heading($heading);
-$output .= get_wartung(nl2br($received));
+$output .= get_form_upload($settings['ordner_wartung'], '', 'wartung.php', 'wartung.php');
+$output .= get_file_list();
+$output .= get_wartung(get_container($file_list, '200px'), $comment, $send, $received);
 $output .= get_button_menu_back();
 draw_page( $output, $title, $author, LAYOUT);
 ?>
