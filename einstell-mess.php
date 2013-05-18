@@ -45,7 +45,7 @@ $mess_list = NULL;
 foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
     $split = explode('.', $file);
     if(end($split) === 'mw') {
-        $messwert_list .= get_link_mess("{$settings['ordner_einstell-mess']}/$file", $file, $return, $return);
+        $mess_list .= get_link_mess("{$settings['ordner_einstell-mess']}/$file", $file, $return, $return);
     }
 }
 
