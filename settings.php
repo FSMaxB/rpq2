@@ -31,8 +31,7 @@ function get_settings() {
             'ordner_einstell-mess' => 'einstell-mess',
         );
 
-    $file = file_get_contents(CONFIG_FILE);
-    $lines = explode("\n", $file);
+    $lines = file(CONFIG_FILE, FILE_IGNORE_NEW_LINES);
 
     foreach( $lines as $line) {
         if( (strpos($line, '#') !== 0) && ($line)) {    //Kommentarzeilen werden ignoriert
@@ -45,7 +44,7 @@ function get_settings() {
 }
 
 function write_settings($settings) {
-    $config_lines = explode("\n", file_get_contents(CONFIG_FILE));
+    $config_linse = file(CONFIG_FILE, FILE_IGNORE_NEW_LINES);
     $output = '';
     foreach( $config_lines as $config_line ) {
         if( (strpos($config_line, '#') !== 0) && ($config_line) ) { //Kommentarzeilen und leere Zeilen nicht bearbeiten

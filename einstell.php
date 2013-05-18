@@ -126,8 +126,7 @@ function get_list($einstellwerte) {
     return $output;
 }
 
-$einstell_csv = file_get_contents("{$settings['ordner_einstell-mess']}/$filename");
-$einstell_lines = explode("\n", $einstell_csv);
+$einstell_lines = file("{$settings['ordner_einstell-mess']}/$filename", FILE_IGNORE_NEW_LINES);
 
 $comment = get_comment($einstell_lines);
 $regler = get_value('Regler', $einstell_lines);
