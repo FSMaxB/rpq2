@@ -29,6 +29,7 @@ function get_settings() {
             'serial_baudrate' => '115200',
             'ordner_docs' => 'docs',
             'ordner_einstellwert' => 'einstell',
+            'ordner_wartung' => 'wartung',
         );
 
     $file = file_get_contents(CONFIG_FILE);

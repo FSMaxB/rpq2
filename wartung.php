@@ -22,6 +22,7 @@
 include_once('page.php');
 include_once('settings.php');
 include_once('templates.php');
+include_once('file.php');
 include_once('tty.php');
 
 $title = 'Manuelle Geräteeinstellung';
@@ -29,6 +30,8 @@ $author = 'Max Bruckner';
 $heading = 'Manuelle Geräteeinstellung';
 
 $send = $_POST['send'];
+$filename = $_POST['filename'];
+$comment = $_POST['comment']
 
 set_tty();
 
@@ -39,6 +42,11 @@ if( $send != '') {
     foreach ( $results as $result ) {
         $received .= "$result\n";
     }
+}
+
+if($filename != '') {
+    $filename = correct_filename($filename, '');
+    file_put_contents("{$settings['ordner_wartung']}/$filename", $send);
 }
 
 $output = get_heading($heading);
