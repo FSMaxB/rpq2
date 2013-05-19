@@ -265,12 +265,29 @@ function get_script_mess($filename) {
     return $output;
 }
 
-function get_mess($regler, $comment, $container) {
+function get_mess($comment, $container) {
     $template_mess = file_get_contents('template_mess.html');
 
-    $output = str_replace('{regler}', $regler, $template_mess);
     $output = str_replace('{comment}', $comment, $output);
     $output = str_replace('{container}', $container, $output);
+    return $output;
+}
+
+function get_zeile_mess_get($text, $skal, $proz, $hex, $bin) {
+    $template_zeile_mess_get = file_get_contents('template_zeile_mess_get.html');
+
+    $output = str_replace('{text}', $text, $template_zeile_mess_get);
+    $output = str_replace('{skal}', $skal, $output);
+    $output = str_replace('{proz}', $proz, $output);
+    $output = str_replace('{hex}', $hex, $output);
+    $output = str_replace('{bin}', $bin, $output);
+    return $output;
+}
+
+function get_mess_get($contents) {
+    $template_mess_get = file_get_contents('template_mess_get.html');
+
+    $output = str_replace('{contents}', $contents, $template_mess_get);
     return $output;
 }
 ?>

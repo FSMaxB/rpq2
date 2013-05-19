@@ -1,4 +1,5 @@
-<?php /*
+<?php
+/*
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
@@ -34,8 +35,8 @@ $regler = get_value('Regler', $lines);
 $comment = get_comment($lines);
 $container = get_container('', '400px', '1px', 'messwerte');
 
-$output = get_heading($heading);
-$output .= get_mess($regler, $comment, $container);
+$output = get_heading("$heading $regler");
+$output .= get_mess($comment, $container);
 $output .= get_button_menu_back();
-draw_page($output, $title, $author, LAYOUT, get_script_mess($filename));
+draw_page($output, "$title $regler", $author, LAYOUT, get_script_mess($filename));
 ?>
