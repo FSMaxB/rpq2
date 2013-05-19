@@ -100,7 +100,7 @@ $mess_format = get_mess_format($lines);
 $regler = get_value('Regler', $lines);
 $messwerte = get_messwerte($regler);
 
-$output = get_zeile_mess_get('<b>Beschreibung:</b>', '&nbsp;<b>Wert:</b>', '&nbsp;<b>Prozesswert:</b>', '&nbsp;<b>HEX-Wert:</b>', '&nbsp;<b>Binär-Wert:</b>');
+$output = get_zeile_mess_get('<b>Beschreibung:</b>', '&nbsp;<b>Istwert:</b>', '&nbsp;<b>Prozesswert:</b>', '&nbsp;<b>HEX-Wert:</b>', '&nbsp;<b>Binär-Wert:</b>');
 $output .= get_mess_lines($messwerte, $mess_format);
 echo get_mess_get($output);
 ?>

@@ -33,7 +33,7 @@ $filename = $_GET['filename'];
 $lines = file("{$settings['ordner_einstell-mess']}/$filename", FILE_IGNORE_NEW_LINES);
 $regler = get_value('Regler', $lines);
 $comment = get_comment($lines);
-$container = get_container('', '', '0px', 'messwerte');
+$container = get_container('', '450px', '0px', 'messwerte');
 
 $output = get_heading("$heading $regler");
 $output .= get_mess($comment, $container);
