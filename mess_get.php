@@ -49,7 +49,7 @@ function get_mess_format($lines) {
 function get_messwerte($regler) {
     global $settings;
 
-    exec("nativ/mess {$settings['ordner_einstell-mess']} $regler", $results);
+    exec("nativ/mess {$settings['serial_interface']} $regler", $results);
 
     $i = 0;
     foreach ($results as $result) {
