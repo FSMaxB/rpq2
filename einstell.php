@@ -37,34 +37,13 @@
 include_once('settings.php');
 include_once('page.php');
 include_once('templates.php');
+include_once('csv.php');
 
 $title = 'Einstellwerte';
 $author = 'Max Bruckner';
 $heading = 'Einstellwerte';
 
 $filename = $_GET['filename'];
-
-function get_comment($lines) {
-    $comment = NULL;
-    foreach($lines as $line) {
-        if( (strpos($line, 'Index,') === 0) || (strpos($line, 'Regler,') === 0) || (strpos($line, '#')) ) {
-             break;
-        }
-        $comment .= "$line\n";
-    }
-    return $comment;
-}
-
-function get_value($name, $lines) {
-    foreach($lines as $line) {
-        if( strpos($line, $name . ',') === 0 ) {
-            $split = explode(',', $line);
-            $value = $split[1];
-            break;
-        }
-    }
-    return $value;
-}
 
 function get_einstellwerte($lines) {
     $i = 0;

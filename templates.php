@@ -87,12 +87,13 @@ function get_form_upload($directory, $extension, $return_success, $return_failur
     return $output;
 }
 
-function get_container($content, $height = '400px', $border = '1px') {
+function get_container($content, $height = '400px', $border = '1px', $id = 'div') {
     $template_container = file_get_contents('template_container.html');
 
     $output = str_replace('{content}', $content, $template_container);
     $output = str_replace('{height}', $height, $output);
     $output = str_replace('{border}', $border, $output);
+    $output = str_replace('{id}', $id, $output);
     return $output;
 }
 
@@ -254,6 +255,22 @@ function get_link_wartung($filename, $path, $return_success, $return_failure) {
     $output = str_replace('{path}', $path, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
+    return $output;
+}
+
+function get_script_mess($filename) {
+    $template_script_mess = file_get_contents('template_script_mess.html');
+
+    $output = str_replace('{filename}', $filename, $template_script_mess);
+    return $output;
+}
+
+function get_mess($regler, $comment, $container) {
+    $template_mess = file_get_contents('template_mess.html');
+
+    $output = str_replace('{regler}', $regler, $template_mess);
+    $output = str_replace('{comment}', $comment, $output);
+    $output = str_replace('{container}', $container, $output);
     return $output;
 }
 ?>

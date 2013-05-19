@@ -1,5 +1,4 @@
-<?php
-/*
+<?php /*
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
@@ -20,15 +19,23 @@
 */
 
 include_once('page.php');
+include_once('settings.php');
 include_once('templates.php');
+include_once('csv.php');
 
-$title = 'Messwerte';
-$author = 'Max Bruckner';
 $heading = 'Messwerte';
+$author = 'Max Bruckner';
+$title = 'Messwerte';
+
+$filename = $_GET['filename'];
+
+$lines = file($filename, FILE_IGNORE_NEW_LINES);
+$regler = get_value('Regler', $lines);
+$comment = get_comment($lines);
+$container = get_container('', '400px', '1px', 'messwerte');
 
 $output = get_heading($heading);
-$output .= 'Noch in der Entwicklung';
+$output .= get_mess($regler, $comment, $container);
 $output .= get_button_menu_back();
-
-draw_page($output, $title, $author, LAYOUT);
+draw_page($output, $title, $author, LAYOUT, get_script_mess($filename));
 ?>

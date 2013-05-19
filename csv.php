@@ -19,21 +19,25 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-include_once('page.php');
-include_once('templates.php');
+function get_comment($lines) {
+    $comment = NULL;
+    foreach($lines as $line) {
+        if( (strpos($line, 'Index,') === 0) || (strpos($line, 'Regler,') === 0) || (strpos($line, '#')) ) {
+             break;
+        }
+        $comment .= "$line\n";
+    }
+    return $comment;
+}
 
-
-$title = 'RPQ2 Webinterface';
-$author = 'Max Bruckner';
-
-$output = get_button_menu('einstell-mess.php', 'Einstell-/Messwerttabellen verwalten');
-$output .= get_button_menu('einstell.php?filename=default.ew', 'Einstellwerte');
-$output .= get_button_menu('mess.php?filename=default.mw', 'Messwerte');
-$output .= get_button_menu('wartung.php', 'Manuelle Geräteeinstellung');
-$output .= get_button_menu('docs.php', 'Dokumentationen');
-$output .= get_button_menu('settings_menu.php', 'Einstellungen');
-$output .= get_vspace();
-$output .= get_button_shutdown();
-
-draw_page($output, $title, $author, LAYOUT);
+function get_value($name, $lines) {
+    foreach($lines as $line) {
+        if( strpos($line, $name . ',') === 0 ) {
+            $split = explode(',', $line);
+            $value = $split[1];
+            break;
+        }
+    }
+    return $value;
+}
 ?>

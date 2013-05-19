@@ -1,0 +1,19 @@
+<script>
+    function getMesswerte() {
+        if( (document.vars.run.value == 1) && (parseInt(document.vars.counter.value) >= parseInt(document.vars.refresh.value)) ) {
+            var ajax;
+            ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function() {
+                if ( (ajax.readyState == 4) && (ajax.status == 200) ) {
+                    document.getElementById("messwerte").innerHTML = ajax.responseText;
+                }
+            }
+            ajax.open("GET","mess_get.php?filename={filename}",true);
+            ajax.send();
+            document.vars.counter.value = 0;
+        }
+        document.vars.counter.value++;
+    }
+
+    setInterval(getMesswerte, 100);
+</script>
