@@ -22,7 +22,7 @@
 function get_comment($lines) {
     $comment = NULL;
     foreach($lines as $line) {
-        if( (strpos($line, 'Index,') === 0) || (strpos($line, 'Regler,') === 0) || (strpos($line, '#')) ) {
+        if( (strpos($line, 'Index,') === 0) || (strpos($line, 'Regler,') === 0) || (strpos($line, '#') === 0) ) {
              break;
         }
         $comment .= "$line\n";
