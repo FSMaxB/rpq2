@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+    function getDate() {
+        if( (document.Formular.exec.value == 1) && (parseInt(document.Formular.i.value) >= parseInt(document.Formular.Refresh.value)) ) {
+
+        var ajax;
+        ajax=new XMLHttpRequest();
+        ajax.onreadystatechange=function()
+        {
+            if ((ajax.readyState==4) && (ajax.status==200))
+            {
+                document.getElementById("div").innerHTML=ajax.responseText;
+            } else {
+                document.getElementById("div").innerHTML= "Verbindung fehlgeschlagen!";
+            }
+        }
+        ajax.open("GET","ajax.php",true);
+        ajax.send();
+        document.Formular.i.value = 0;
+    }
+    document.Formular.i.value++;
+    }
+
+        setInterval(getDate, 100);
+</script>
+</head>
+<body>
+<form name="Formular" action="">
+    <input type="text" value="10" name="Refresh">
+    <input type="hidden" name="exec" value="0">
+    <input type="hidden" name="i" value="0">
+</form>
+<button onclick="document.Formular.exec.value = 1">Start</button>
+<button onclick="document.Formular.exec.value = 0">Stop</button>
+<button onclick="document.getElementById('div').innerHTML = ''">Clear</button>
+<div id="div"></div>
+
+</body>
+</html>
