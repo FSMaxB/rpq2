@@ -140,7 +140,7 @@ int main(int argc, char** argv) {
     pthread_cancel(thread);
 
     for(unsigned int i = 0; i < 16; i++) {
-        string hex = thread_data.received.substr(2 + i*4, 4);
+        string hex = thread_data.received.substr(3 + i*4, 4);
         signed int wert = hex_to_int(hex, SIGNED);
         cout << wert << "," << hex << "," << int_to_bin( wert, 16) << endl;
     }
