@@ -26,7 +26,6 @@
 #include <algorithm>
 #include <sstream>
 #include <pthread.h>
-#include <cctype>
 #include <time.h>
 
 using std::string;
@@ -79,6 +78,18 @@ string int_to_hex(signed long value, unsigned int length) {
     return result;
 }
 
+string int_to_bin(unsigned int value, unsigned int bits) {
+    string result;
+    for(signed int i = bits - 1; i >= 0; i--) {
+        if( ((unsigned int) pow(2,i)) & value) {
+            result += "1";
+        } else {
+            result += "0";
+        }
+    }
+    return result;
+}
+
 void *receive(void* parameter) {
     thread_p* params = (thread_p*) parameter;
     signed char buffer;
@@ -126,6 +137,11 @@ int main(int argc, char** argv) {
             if(thread_data.status == true)
                 break;
     }
+    pthread_cancel(thread);
 
-    cout << thread_data.received << endl;
+    for(unsigned int i = 0; i < 16; i++) {
+        string hex = thread_data.received.substr(2 + i*4, 4);
+        signed int wert = hex_to_int(hex, SIGNED);
+        cout << wert << "," << hex << "," << int_to_bin( wert, 16) << endl;
+    }
 }
