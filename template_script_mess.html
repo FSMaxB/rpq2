@@ -1,10 +1,10 @@
 <script>
     function getMesswerte() {
-        if( (document.vars.run.value == 1) && (parseInt(document.vars.counter.value) >= parseInt(document.vars.refresh.value)) ) {
+        if( (document.vars.run.value == 1) && (document.vars.counter.value >= document.vars.refresh.value) ) {
             var ajax;
             ajax = new XMLHttpRequest();
             ajax.onreadystatechange = function() {
-                if ( (ajax.readyState == 4) && (ajax.status == 200) ) {
+                if ( (ajax.readyState == 4) && (ajax.status == 200) && (document.vars.run.value == 1) ) {
                     document.getElementById("messwerte").innerHTML = ajax.responseText;
                 }
             }
