@@ -268,7 +268,7 @@ function get_script_mess($filename) {
 function get_mess($comment, $container) {
     $template_mess = file_get_contents('template_mess.html');
 
-    $output = str_replace('{comment}', $comment, $output);
+    $output = str_replace('{comment}', $comment, $template_mess);
     $output = str_replace('{container}', $container, $output);
     return $output;
 }
