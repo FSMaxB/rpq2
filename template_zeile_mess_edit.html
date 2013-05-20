@@ -1,3 +1,30 @@
 <tr>
-  <td>{pos}</td><td>{skal}</td><td>{komma}</td><td>{skalproz}</td><td>{proz}</td><td>{hex}</td><td>{bin}</td><td>{text}</td>
+  <td>
+    <input type="text" size="3" maxlength="3" name="data[{number}][pos]" value="{pos}">
+  </td>
+  <td>
+    <input type="text" size="50" maxlength="50" name="data[{number}][text]" value="{text}">
+  </td>
+  <td>
+    <input type="text" size="4" maxlength="4" name="data[{number}][skal]" value="{skal}">
+  </td>
+  <td>
+    <input type="text" size="1" maxlength="1" name="data[{number}][komma]" value="{komma}">
+  </td>
+  <td>
+    <input type="hidden" name="data[{number}][skalproz]" value="false">
+    <input type="checkbox" name="data[{number}][skalproz]" value=true {skalproz}>
+  </td>
+  <td>
+    <input type="hidden" name="data[{number}][proz]" value="false">
+    <input type="checkbox" name="data[{number}][proz]" value="true" {proz}>
+  </td>
+  <td>
+    <input type="hidden" name="data[{number}][hex]" value="false">
+    <input type="checkbox" name="data[{number}][hex]" value="true" {hex}>
+  </td>
+  <td>
+    <input type="hidden" name="data[{number}][bin]" value="false">
+    <input type="checkbox" name="data[{number}][bin]" value="true" {bin}>
+  </td>
 </tr>

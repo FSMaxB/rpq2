@@ -301,14 +301,15 @@ function get_mess_edit($comment, $regler, $messwerte, $filename) {
     return $output;
 }
 
-function get_zeile_mess_edit($pos, $skal, $komma, $skalproz, $proz, $hex, $bin, $text) {
+function get_zeile_mess_edit($number, $pos, $skal, $komma, $skalproz, $proz, $hex, $bin, $text) {
     $template_zeile_mess_edit = file_get_contents('template_zeile_mess_edit.html');
 
-    $output = str_replace('{pos}', $pos, $template_zeile_mess_edit);
+    $output = str_replace('{number}', $number, $template_zeile_mess_edit);
+    $output = str_replace('{pos}', $pos, $output);
     $output = str_replace('{skal}', $skal, $output);
     $output = str_replace('{komma}', $komma, $output);
     $output = str_replace('{skalproz}', $skalproz, $output);
-    $output = str_replace('{proz}'. $proz, $output);
+    $output = str_replace('{proz}', $proz, $output);
     $output = str_replace('{hex}', $hex, $output);
     $output = str_replace('{bin}', $bin, $output);
     $output = str_replace('{text}', $text, $output);
