@@ -1,0 +1,6 @@
+Dies ist ein
+mehrzeiliger Kommentar
+#Subid, Wert, Min, Max, Beschreibung
+Index,2014
+Regler,2
+1,100,0,200,Einstellwert 1

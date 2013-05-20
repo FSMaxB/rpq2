@@ -24,6 +24,30 @@ include_once('templates.php');
 include_once('page.php');
 include_once('file.php');
 
+function write_csv($filename, $comment, $regler, $data, $take_comments, $take_others) {
+    global $settings;
+    $first_value = FALSE;
+    $output = $comment;
+    $output .= "Regler,$regler\n";
+    foreach( $data as $line) {
+        switch($line['type']) {
+            case 'value':
+                $first_value = TRUE;
+                $output .= "{$line['pos']},{$line['skal']},{$line['komma']},{$line['skalproz']},{$line['proz']},{$line['hex']},{$line['bin']},{$line['text']}";
+                break;
+            case 'comment':
+                if($take_comments)
+                    $output .= $line['line'];
+                break;
+            case 'other':
+                if($take_others && $first_value )
+                    $output .= $line['line'];
+        }
+    }
+    $filename = correct_filename($filename, '');
+    return file_put_contents("{$settings['ordner_einstell-mess']}/$filename", $output);
+}
+
 $title = "Messwerttabelle speichern";
 $author = "Max Bruckner";
 
@@ -33,5 +57,13 @@ $regler = $_POST['regler'];
 $data = $_POST['data'];
 $take_comments = $_POST['take_comments'];
 
-var_dump($data);
+if(write_csv($filename, $comment, $regler, $data, $take_comments, FALSE)) {
+    $output = get_success('Messwerttabelle erfolgreich gespeichert!');
+    $header = get_redirect(1, 'einstell-mess.php');
+} else {
+    $output = get_failure('Messwerttabelle konnte nicht gespeichert werden!');
+    $header = get_redirect(3, 'einstell-mess.php');
+}
+
+draw_page($output, $title, $author, NAKED, $header);
 ?>

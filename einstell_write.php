@@ -37,7 +37,7 @@ $take_comments = ($_POST['take_comments'] === 'true');
 function write_csv($filename, $comment, $regler, $index, $einstellwerte, $take_trenn, $take_comment, $take_other) {
     global $settings;
     $first_value = false;       //Wurde schon der erste Wert geschrieben?
-    $output = "$comment";
+    $output = $comment;
     $output .= "Regler,$regler\n";
     $output .= "Index,$index\n";
     foreach( $einstellwerte as $einstellwert) {
