@@ -290,4 +290,28 @@ function get_mess_get($contents) {
     $output = str_replace('{contents}', $contents, $template_mess_get);
     return $output;
 }
+
+function get_mess_edit($comment, $regler, $messwerte, $filename) {
+    $template_mess_edit = file_get_contents('template_mess_edit.html');
+
+    $output = str_replace('{comment}', $comment, $template_mess_edit);
+    $output = str_replace('{regler}', $regler, $output);
+    $output = str_replace('{messwerte}', $messwerte, $output);
+    $output = str_replace('{filename}', $filename, $output);
+    return $output;
+}
+
+function get_zeile_mess_edit($pos, $skal, $komma, $skalproz, $proz, $hex, $bin, $text) {
+    $template_zeile_mess_edit = file_get_contents('template_zeile_mess_edit.html');
+
+    $output = str_replace('{pos}', $pos, $template_zeile_mess_edit);
+    $output = str_replace('{skal}', $skal, $output);
+    $output = str_replace('{komma}', $komma, $output);
+    $output = str_replace('{skalproz}', $skalproz, $output);
+    $output = str_replace('{proz}'. $proz, $output);
+    $output = str_replace('{hex}', $hex, $output);
+    $output = str_replace('{bin}', $bin, $output);
+    $output = str_replace('{text}', $text, $output);
+    return $output;
+}
 ?>
