@@ -45,10 +45,10 @@ if(isset($_GET['ordner'])) {
     $get = TRUE;
 } else {
     $ordner = $_POST['ordner'];
-    $get = TRUE;
 }
 if(isset($_GET['filename'])) {
     $filename = correct_filename($_GET['filename'], '');
+    $get = TRUE;
 } else {
     $filename = correct_filename($_POST['filename'], '');
 }
