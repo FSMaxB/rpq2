@@ -217,4 +217,13 @@ function get_failure($text) {
     $output = str_replace('{text}', $text, $template_failure);
     return $output;
 }
+
+function get_form_editor($text, $ordnerlist, $filename) {
+    $template_form_editor = file_get_contents('template_form_editor.html');
+
+    $output = str_replace('{text}', $text, $template_form_editor);
+    $output = str_replace('{ordnerlist}', $ordnerlist, $output);
+    $output = str_replace('{filename}', $filename, $output);
+    return $output;
+}
 ?>

@@ -1,8 +1,8 @@
 <form action="editor.php" method="post">
   <textarea name="text" cols="80" rows="100">{text}</textarea></br>
   <select name="ordner" size="1">
-    {ordnerliste}
+    {ordnerlist}
   </select>
-  <input type="text" length="30" maxlength="30" value="{filename}"></br>
+  <input type="text" name="filename" length="30" maxlength="30" value="{filename}"></br>
   <input type="submit" value="Speichern">
 </form>
