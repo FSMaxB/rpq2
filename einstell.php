@@ -77,7 +77,7 @@ function get_einstellwerte($lines) {
 
 //Liste der Einstellwerte
 function get_list($einstellwerte) {
-    $output = NULL;
+    $output = '<tr><td></td><td><b>S-Index</b></td><td><b>Beschreibung</b></td><td><b>Soll</b></td><td><b>Teiler</b></td><td><b>KS</b></td></tr>';
     for($i = 0; $i < count($einstellwerte); $i++) {
         switch($einstellwerte[$i]['type']) {
             case 'value':
