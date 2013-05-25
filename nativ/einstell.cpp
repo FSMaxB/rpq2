@@ -319,7 +319,7 @@ Einstellwert::Einstellwert(string line) {
     set(line);
 }
 
-Einstellwert::Einstellwert(unsigned int p_id, signed int p_value, signed int p_min, signed int p_max, string p_text) {
+Einstellwert::Einstellwert(unsigned int p_id, signed int p_value, double p_min, signed int p_max, string p_text) {
     id = p_id;
     value = p_value;
     min = p_min;
@@ -515,21 +515,20 @@ void Einstellwert::set(string line) {
     if( line.length() > (BUFFER - 1) ) {
         throw Exception(Exception::BUFFER_OVERFLOW);
     }
-    sscanf(line.c_str(), "%i,%i,%i,%i,%[^,]s", &id, &value, &min, &max, temp);
+    double temp_value;
+    sscanf(line.c_str(), "%i,%f,%f,%i,%[^,]s", &id, &temp_value, &min, &max, temp);
 
-    //Überprüfen ob Wert in gültigem bereich, sonst korrigieren.
-    if( value > max ) {
-        value = max;
-    } else if( value < min )  {
-        value = min;
-    }
+    if(min == 0)
+        min = 1;
+    value = (unsigned int) temp_value / min;
+
     text = temp;
 }
 
 //Gibt eine CSV-Zeile mit den Objekteigenschaften zurück
 string Einstellwert::get() {
     char temp[BUFFER];
-    sprintf( temp, "%i,%i,%i,%i,%s", id, value, min, max, text.c_str() );
+    sprintf( temp, "%i,%f,%f,%i,%s", id, value * min, min, max, text.c_str() );
     return string(temp);
 }
 
