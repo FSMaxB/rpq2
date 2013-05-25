@@ -271,8 +271,8 @@ void test_einstellwert_set() {
     Einstellwert test("1,100,0,200,Dies ist eine Beschreibung!");
     cout << "id: " << test.id << endl;
     cout << "value: " << test.value << endl;
-    cout << "min: " << test.min << endl;
-    cout << "max: " << test.max << endl;
+    cout << "skal: " << test.skal << endl;
+    cout << "komma: " << test.komma << endl;
     cout << "text: " << test.text << endl;
 }
 
@@ -319,11 +319,11 @@ Einstellwert::Einstellwert(string line) {
     set(line);
 }
 
-Einstellwert::Einstellwert(unsigned int p_id, signed int p_value, double p_min, signed int p_max, string p_text) {
+Einstellwert::Einstellwert(unsigned int p_id, signed int p_value, double p_skal, signed int p_komma, string p_text) {
     id = p_id;
     value = p_value;
-    min = p_min;
-    max = p_max;
+    skal = p_skal;
+    komma = p_komma;
     text = p_text;
 }
 
@@ -516,11 +516,11 @@ void Einstellwert::set(string line) {
         throw Exception(Exception::BUFFER_OVERFLOW);
     }
     double temp_value;
-    sscanf(line.c_str(), "%i,%f,%f,%i,%[^,]s", &id, &temp_value, &min, &max, temp);
+    sscanf(line.c_str(), "%i,%f,%f,%i,%[^,]s", &id, &temp_value, &skal, &komma, temp);
 
-    if(min == 0)
-        min = 1;
-    value = (unsigned int) temp_value / min;
+    if(skal == 0)
+        skal = 1;
+    value = (unsigned int) temp_value / skal;
 
     text = temp;
 }
@@ -528,7 +528,7 @@ void Einstellwert::set(string line) {
 //Gibt eine CSV-Zeile mit den Objekteigenschaften zurück
 string Einstellwert::get() {
     char temp[BUFFER];
-    sprintf( temp, "%i,%f,%f,%i,%s", id, value * min, min, max, text.c_str() );
+    sprintf( temp, "%i,%f,%f,%i,%s", id, value * skal, skal, komma, text.c_str() );
     return string(temp);
 }
 

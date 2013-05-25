@@ -38,8 +38,8 @@ public:
     Einstellwert(string);
     Einstellwert(unsigned int, signed int, double, signed int, string);
     unsigned int id;
-    signed int value, max;
-    double min;
+    signed int value, komma;
+    double skal;
     string text;
     void read(unsigned int, unsigned int);
     void write(unsigned int, unsigned int);
