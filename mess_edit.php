@@ -26,7 +26,7 @@ include_once('csv.php');
 
 function get_mess_lines($lines) {
     if($lines != '') {
-        $output = '<tr><td><b>S-Index&nbsp;</b></td><td><b>Beschreibung&nbsp;</b></td><td><b>Faktor&nbsp;</b></td><td><b>Kommastellen&nbsp;</b></td><td><b>Ist&nbsp;</b></td><td><b>Prozess&nbsp;</b></td><td><b>HEX&nbsp;</b></td><td><b>BIN&nbsp;</b></td></tr>';
+        $output = '<tr><td><b>S-Index&nbsp;</b></td><td><b>Beschreibung&nbsp;</b></td><td><b>Faktor&nbsp;</b></td><td><b>KS&nbsp;</b></td><td><b>Ist&nbsp;</b></td><td><b>Prozess&nbsp;</b></td><td><b>Hex&nbsp;</b></td><td><b>Bin&nbsp;</b></td></tr>';
 
         $i = 0;
         foreach( $lines as $line) {
