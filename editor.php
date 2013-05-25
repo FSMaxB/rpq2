@@ -53,6 +53,7 @@ if(isset($_GET['filename'])) {
     $filename = correct_filename($_POST['filename'], '');
 }
 $text = $_POST['text'];
+$return = $_GET['return'];
 
 $title = "Bearbeiten von \"$ordner/$filename\"";
 $author = 'Max Bruckner';
@@ -71,9 +72,13 @@ if( ($ordner != '') && ($filename != '')) {
 }
 
 $ordnerlist = ordner_list($ordner);
+if($return == '') {
+    $return = 'index.php';
+}
 
 $output = get_heading($heading);
 $output .= $message;
 $output .= get_form_editor($text, $ordnerlist, $filename);
+$output .= get_button($return, 'Zurück');
 draw_page($output, $title, $author, LAYOUT);
 ?>

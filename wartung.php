@@ -52,7 +52,7 @@ function get_file_list() {
 
     $file_list = '<table>';
     foreach( get_files($settings['ordner_wartung']) as $file ) {
-        $file_list .= get_link_wartung($file, "{$settings['ordner_wartung']}/$file", 'wartung.php', 'wartung.php');
+        $file_list .= get_link_wartung($file, $settings['ordner_wartung'], 'wartung.php', 'wartung.php');
     }
     $file_list .= '</table>';
     return $file_list;
@@ -75,7 +75,7 @@ if( $filename_read != '' ) {
         if( strpos($line, '#') === 0 ) {
             $comment .= substr($line, 1);
         } else {
-            $send = $line;
+            $send .= $line;
         }
     }
 }

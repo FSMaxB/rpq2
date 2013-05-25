@@ -37,7 +37,7 @@ $einstell_list = '<table>';
 foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
     $split = explode('.', $file);
     if(end($split) !== 'mw') {
-        $einstell_list .= get_link_einstell("{$settings['ordner_einstell-mess']}/$file", $file, $return, $return);
+        $einstell_list .= get_link_einstell($settings['ordner_einstell-mess'], $file, $return, $return);
     }
 }
 $einstell_list .= '</table>';
@@ -46,13 +46,14 @@ $mess_list = '<table>';
 foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
     $split = explode('.', $file);
     if(end($split) === 'mw') {
-        $mess_list .= get_link_mess("{$settings['ordner_einstell-mess']}/$file", $file, $return, $return);
+        $mess_list .= get_link_mess($settings['ordner_einstell-mess'], $file, $return, $return);
     }
 }
 $mess_list .= '</table>';
 
 $output = get_heading($heading);
 $output .= get_form_upload($settings['ordner_einstell-mess'], $extension, $return, $return);
+$output .= get_button_inline("editor.php?ordner={$settings['ordner_einstell-mess']}&return=einstell-mess.php", 'Neue Datei');
 $output .= '<br><b>Einstellwerte:</b></br>';
 $output .= get_container($einstell_list, "200px");
 $output .= '<br><b>Messwerte:</b></br>';
