@@ -33,21 +33,23 @@ $return = 'einstell-mess.php';
 $extension = '';
 
 //Dateiliste erstellen:
-$einstell_list = NULL;
+$einstell_list = '<table>';
 foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
     $split = explode('.', $file);
     if(end($split) !== 'mw') {
         $einstell_list .= get_link_einstell("{$settings['ordner_einstell-mess']}/$file", $file, $return, $return);
     }
 }
+$einstell_list .= '</table>';
 
-$mess_list = NULL;
+$mess_list = '<table>';
 foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
     $split = explode('.', $file);
     if(end($split) === 'mw') {
         $mess_list .= get_link_mess("{$settings['ordner_einstell-mess']}/$file", $file, $return, $return);
     }
 }
+$mess_list .= '</table>';
 
 $output = get_heading($heading);
 $output .= get_form_upload($settings['ordner_einstell-mess'], $extension, $return, $return);

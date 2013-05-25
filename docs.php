@@ -31,10 +31,11 @@ $heading = 'Eigene Dokumentationen';
 $return = 'docs.php';
 
 //Dateiliste erstellen:
-$file_list = '';
+$file_list = '<table>';
 foreach ( get_files($settings['ordner_docs']) as $file ) {
     $file_list .= get_link_docs("{$settings['ordner_docs']}/$file", $file, $return, $return);
 }
+$file_list .= '</table>';
 
 $output = get_heading($heading);
 $output .= get_form_upload($settings['ordner_docs'], '', $return, $return);
