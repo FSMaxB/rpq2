@@ -24,9 +24,9 @@ include_once('templates.php');
 include_once('file.php');
 include_once('page.php');
 
-$title = 'Eigene Dokumentationen';
+$title = 'Dokumentationen';
 $author = 'Max Bruckner';
-$heading = 'Eigene Dokumentationen';
+$heading = 'Dokumentationen';
 
 $return = 'docs.php';
 
