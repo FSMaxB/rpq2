@@ -21,16 +21,59 @@
 
 include_once('page.php');
 include_once('settings.php');
+include_once('file.php');
 
-$ordner = $_POST['ordner'];
-$filename = $_POST['filename'];
+function ordner_list($ordner) {
+    global $settings;
+
+    $output = NULL;
+    foreach (array_keys($settings) as $key) {
+        if( strpos($key, 'ordner') === 0) {
+            if($settings[$key] === $ordner) {
+                $output .= "<option value=\"{$settings[$key]}\" selected>{$settings[$key]}</option>\n";
+            } else {
+                $output .= "<option value=\"{$settings[$key]}\">{$settings[$key]}</option>\n";
+            }
+        }
+    }
+    return $output;
+}
+
+$get = FALSE;
+if(isset($_GET['ordner'])) {
+    $ordner = $_GET['ordner'];
+    $get = TRUE;
+} else {
+    $ordner = $_POST['ordner'];
+    $get = TRUE;
+}
+if(isset($_GET['filename'])) {
+    $filename = correct_filename($_GET['filename'], '');
+} else {
+    $filename = correct_filename($_POST['filename'], '');
+}
 $text = $_POST['text'];
 
 $title = "Bearbeiten von \"$ordner/$filename\"";
 $author = 'Max Bruckner';
 $heading = "Bearbeiten von \"$ordner/$filename\"";
 
+if( ($ordner != '') && ($filename != '')) {
+    if($get === TRUE) {
+        $text = file_get_contents("$ordner/$filename");
+    } else {
+        if(file_put_contents("$ordner/$filename", $text)) {
+            $message = get_success('Speichern Erfolgreich');
+        } else {
+            $message = get_failure('Speichern Fehlgeschlagen');
+        }
+    }
+}
+
+$ordnerlist = ordner_list($ordner);
+
 $output = get_heading($heading);
+$output .= $message;
 $output .= get_form_editor($text, $ordnerlist, $filename);
 draw_page($output, $title, $author, LAYOUT);
 ?>
