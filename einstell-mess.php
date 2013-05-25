@@ -53,11 +53,11 @@ $mess_list .= '</table>';
 
 $output = get_heading($heading);
 $output .= get_form_upload($settings['ordner_einstell-mess'], $extension, $return, $return);
-$output .= get_button_inline("editor.php?ordner={$settings['ordner_einstell-mess']}&return=einstell-mess.php", 'Neue Datei');
 $output .= '<br><b>Einstellwerte:</b></br>';
 $output .= get_container($einstell_list, "200px");
 $output .= '<br><b>Messwerte:</b></br>';
 $output .= get_container($mess_list, "100px");
+$output .= get_button_inline("editor.php?ordner={$settings['ordner_einstell-mess']}&return=einstell-mess.php", 'Neue Datei');
 $output .= get_button_menu_back();
 
 draw_page($output, $title, $author, LAYOUT);
