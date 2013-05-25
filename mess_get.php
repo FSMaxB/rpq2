@@ -23,6 +23,7 @@ include_once('settings.php');
 include_once('csv.php');
 include_once('templates.php');
 include_once('tty.php');
+include_once('file.php');
 
 $filename = $_GET['filename'];
 $log = $_GET['log'];
@@ -100,6 +101,15 @@ $lines = file("{$settings['ordner_einstell-mess']}/$filename", FILE_IGNORE_NEW_L
 $mess_format = get_mess_format($lines);
 $regler = get_value('Regler', $lines);
 $messwerte = get_messwerte($regler);
+
+if($log === 'true') {
+    $log_line = "\n";
+    foreach($messwerte as $messwert) {
+        $log_line .= $messwert['proz'] . ',';
+    }
+    $filename = correct_filename($filename, 'log');
+    file_put_contents("{$settings['ordner_log']}/", $log_line, FILE_APPEND);
+}
 
 $output = get_zeile_mess_get('<b>Beschreibung:</b>', '&nbsp;<b>Istwert:</b>', '&nbsp;<b>Prozesswert:</b>', '&nbsp;<b>HEX-Wert:</b>', '&nbsp;<b>Binär-Wert:</b>');
 $output .= get_mess_lines($messwerte, $mess_format);

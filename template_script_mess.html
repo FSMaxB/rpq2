@@ -26,11 +26,11 @@
     }
 
     function log_toggle() { //Der Name kommt daher, dass log als Funktionsname nicht erlaubt ist
-        if(document.vars.log.value == 1) {
-            document.vars.log.value = 0;
+        if(document.vars.log.value == "true") {
+            document.vars.log.value = "false";
             document.getElementById("log").innerHTML = "Aufzeichnen";
         } else {
-            document.vars.log.value = 1;
+            document.vars.log.value = "true";
             document.getElementById("log").innerHTML = "Aufzeichnung stoppen";
         }
     }
