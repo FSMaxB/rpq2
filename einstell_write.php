@@ -45,7 +45,8 @@ function write_csv($filename, $comment, $regler, $index, $einstellwerte, $take_t
             case 'value':
                 if( $einstellwert['checked'] === 'true') {
                     $first_value = true;
-                    $output .= "{$einstellwert['id']},{$einstellwert['value']},{$einstellwert['min']},{$einstellwert['max']},{$einstellwert['text']}\n";
+                    $value = number_format($einstellwert['value'], $einstellwert['komma'], '.', '');
+                    $output .= "{$einstellwert['id']},$value,{$einstellwert['skal']},{$einstellwert['komma']},{$einstellwert['text']}\n";
                 }
                 break;
             case 'trenn':

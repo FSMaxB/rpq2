@@ -116,15 +116,15 @@ function get_form_einstell($comment, $regler, $index, $einstellwerte, $filename)
     return $output;
 }
 
-function get_einstellzeile($number, $form, $id, $value, $min, $max, $text) {
+function get_einstellzeile($number, $form, $id, $value, $skal, $komma, $text) {
     $template_einstellzeile = file_get_contents('template_einstellzeile.html');
 
     $output = str_replace('{number}', $number, $template_einstellzeile);
     $output = str_replace('{form}', $form, $output);
     $output = str_replace('{id}', $id, $output);
     $output = str_replace('{value}', $value, $output);
-    $output = str_replace('{min}', $min, $output);
-    $output = str_replace('{max}', $max, $output);
+    $output = str_replace('{skal}', $skal, $output);
+    $output = str_replace('{komma}', $komma, $output);
     $output = str_replace('{text}', $text, $output);
     return $output;
 
