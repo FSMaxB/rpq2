@@ -45,10 +45,10 @@ function get_page($content, $current) {
     return $output;
 }
 
-function get_link_einstell($path, $filename, $return_success, $return_failure) {
+function get_link_einstell($ordner, $filename, $return_success, $return_failure) {
     $template_link_einstell = file_get_contents('template_link_einstell.html');
 
-    $output = str_replace('{path}', $path, $template_link_einstell);
+    $output = str_replace('{ordner}', $ordner, $template_link_einstell);
     $output = str_replace('{filename}', $filename, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
@@ -174,10 +174,10 @@ function get_license_gpl() {
     return $template_license_gpl;
 }
 
-function get_link_docs($path, $filename, $return_success, $return_failure) {
+function get_link_docs($ordner, $filename, $return_success, $return_failure) {
     $template_link_docs = file_get_contents('template_link_docs.html');
 
-    $output = str_replace('{path}', $path, $template_link_docs);
+    $output = str_replace('{ordner}', $ordner, $template_link_docs);
     $output = str_replace('{filename}', $filename, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
@@ -223,6 +223,15 @@ function get_failure($text) {
     return $output;
 }
 
+function get_form_editor($text, $ordnerlist, $filename) {
+    $template_form_editor = file_get_contents('template_form_editor.html');
+
+    $output = str_replace('{text}', $text, $template_form_editor);
+    $output = str_replace('{ordnerlist}', $ordnerlist, $output);
+    $output = str_replace('{filename}', $filename, $output);
+    return $output;
+}
+
 function get_form_einstellzeile($number, $line, $type) {
     $template_form_einstellzeile = file_get_contents('template_form_einstellzeile.html');
 
@@ -238,21 +247,21 @@ function get_vspace() {
     return $template_vspace;
 }
 
-function get_link_mess($path, $filename, $return_success, $return_failure) {
+function get_link_mess($ordner, $filename, $return_success, $return_failure) {
     $template_link_mess = file_get_contents('template_link_mess.html');
 
-    $output = str_replace('{path}', $path, $template_link_mess);
+    $output = str_replace('{ordner}', $ordner, $template_link_mess);
     $output = str_replace('{filename}', $filename, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
     return $output;
 }
 
-function get_link_wartung($filename, $path, $return_success, $return_failure) {
+function get_link_wartung($filename, $ordner, $return_success, $return_failure) {
     $template_link_wartung = file_get_contents('template_link_wartung.html');
 
     $output = str_replace('{filename}', $filename, $template_link_wartung);
-    $output = str_replace('{path}', $path, $output);
+    $output = str_replace('{ordner}', $ordner, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
     return $output;
@@ -312,6 +321,14 @@ function get_zeile_mess_edit($number, $pos, $skal, $komma, $skalproz, $proz, $he
     $output = str_replace('{proz}', $proz, $output);
     $output = str_replace('{hex}', $hex, $output);
     $output = str_replace('{bin}', $bin, $output);
+    $output = str_replace('{text}', $text, $output);
+    return $output;
+}
+
+function get_button_inline($link, $text) {
+    $template_button_inline = file_get_contents('template_button_inline.html');
+
+    $output = str_replace('{link}', $link, $template_button_inline);
     $output = str_replace('{text}', $text, $output);
     return $output;
 }
