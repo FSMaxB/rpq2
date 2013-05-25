@@ -25,6 +25,7 @@ include_once('templates.php');
 include_once('tty.php');
 
 $filename = $_GET['filename'];
+$log = $_GET['log'];
 
 function get_mess_format($lines) {
     $i = 0;
