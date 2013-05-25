@@ -28,8 +28,9 @@
  *          'line': Enthält die Ursprüngliche Zeile
  *          'type': Art des Zeileninhalts, eins von 'value', 'comment', 'trenn' und 'other'
  *          'id': Subindex
- *          'value': Einstellwert
- *          'min', 'max': Minimal- und Maximalwert
+ *          'value': Istwert
+ *          'skal': Skalierungsfaktor
+ *          'komma': Anzahl der Anzuzeigenden Kommastellen
  *          'text': Beschreibungstext zum Einstellwert
  *          'checked': Boolean, ob das Häkchen im Webinterface gesetzt wurde
  * */
@@ -62,9 +63,9 @@ function get_einstellwerte($lines) {
                 $einstellwerte[$i]['type'] = 'value';
 
                 $einstellwerte[$i]['id'] = $split[0];
-                $einstellwerte[$i]['value'] = $split[1];
-                $einstellwerte[$i]['min'] = $split[2];
-                $einstellwerte[$i]['max'] = $split[3];
+                $einstellwerte[$i]['value'] = number_format($split[1], $split[3], '.','');
+                $einstellwerte[$i]['skal'] = $split[2];
+                $einstellwerte[$i]['komma'] = $split[3];
                 $einstellwerte[$i]['text'] = $split[4];
             }
         }
@@ -76,7 +77,7 @@ function get_einstellwerte($lines) {
 
 //Liste der Einstellwerte
 function get_list($einstellwerte) {
-    $output = NULL;
+    $output = '<tr><td></td><td><b>S-Index</b></td><td><b>Beschreibung</b></td><td><b>Soll</b></td><td><b>Teiler</b></td><td><b>KS</b></td></tr>';
     for($i = 0; $i < count($einstellwerte); $i++) {
         switch($einstellwerte[$i]['type']) {
             case 'value':
@@ -86,8 +87,8 @@ function get_list($einstellwerte) {
                                 $form,
                                 $einstellwerte[$i]['id'],
                                 $einstellwerte[$i]['value'],
-                                $einstellwerte[$i]['min'],
-                                $einstellwerte[$i]['max'],
+                                $einstellwerte[$i]['skal'],
+                                $einstellwerte[$i]['komma'],
                                 $einstellwerte[$i]['text']);
                 break;
             case 'trenn':

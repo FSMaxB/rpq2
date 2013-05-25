@@ -77,8 +77,8 @@ if($return == '') {
 }
 
 $output = get_heading($heading);
-$output .= $message;
 $output .= get_form_editor($text, $ordnerlist, $filename);
+$output .= $message;
 $output .= get_button($return, 'Zurück');
 draw_page($output, $title, $author, LAYOUT);
 ?>
