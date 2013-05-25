@@ -516,7 +516,7 @@ void Einstellwert::set(string line) {
         throw Exception(Exception::BUFFER_OVERFLOW);
     }
     double temp_value;
-    sscanf(line.c_str(), "%i,%f,%f,%i,%[^,]s", &id, &temp_value, &skal, &komma, temp);
+    sscanf(line.c_str(), "%i,%lf,%lf,%i,%[^,]s", &id, &temp_value, &skal, &komma, temp);
 
     if(skal == 0)
         skal = 1;
@@ -528,7 +528,7 @@ void Einstellwert::set(string line) {
 //Gibt eine CSV-Zeile mit den Objekteigenschaften zurück
 string Einstellwert::get() {
     char temp[BUFFER];
-    sprintf( temp, "%i,%f,%f,%i,%s", id, value * skal, skal, komma, text.c_str() );
+    sprintf( temp, "%i,%lf,%lf,%i,%s", id, value * skal, skal, komma, text.c_str() );
     return string(temp);
 }
 
