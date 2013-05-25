@@ -25,9 +25,8 @@ include_once('page.php');
 include_once('csv.php');
 
 function get_mess_lines($lines) {
-    $output = NULL;
     if($lines != '') {
-        //$output = get_zeile_mess_edit('<b>Position:</b>', '<b>Skalierungsfaktor:</b>', '<b>Kommastellen:</b>', '<b>Istwert:</b>', '<b>Prozesswert:</b>', '<b>Hex:</b>', '<b>Bin:</b>', '<b>Beschreibung:</b>');
+        $output = '<tr><td><b>S-Index&nbsp;</b></td><td><b>Beschreibung&nbsp;</b></td><td><b>Faktor&nbsp;</b></td><td><b>Kommastellen&nbsp;</b></td><td><b>Ist&nbsp;</b></td><td><b>Prozess&nbsp;</b></td><td><b>HEX&nbsp;</b></td><td><b>BIN&nbsp;</b></td></tr>';
 
         $i = 0;
         foreach( $lines as $line) {

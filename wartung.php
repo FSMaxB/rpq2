@@ -50,10 +50,11 @@ function send($send) {
 function get_file_list() {
     global $settings;
 
-    $file_list = NULL;
+    $file_list = '<table>';
     foreach( get_files($settings['ordner_wartung']) as $file ) {
         $file_list .= get_link_wartung($file, "{$settings['ordner_wartung']}/$file", 'wartung.php', 'wartung.php');
     }
+    $file_list .= '</table>';
     return $file_list;
 }
 
