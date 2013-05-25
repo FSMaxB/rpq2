@@ -64,7 +64,7 @@ function get_einstellwerte($lines) {
 
                 $einstellwerte[$i]['id'] = $split[0];
                 $einstellwerte[$i]['value'] = number_format($split[1], $split[3], '.','');
-                $einstellwerte[$i]['skal'] = $split[2];
+                $einstellwerte[$i]['skal'] = (double) $split[2];
                 $einstellwerte[$i]['komma'] = $split[3];
                 $einstellwerte[$i]['text'] = $split[4];
             }
