@@ -104,11 +104,13 @@ $messwerte = get_messwerte($regler);
 
 if($log === 'true') {
     $log_line = "\n";
-    foreach($messwerte as $messwert) {
-        $log_line .= $messwert['proz'] . ',';
+    foreach($mess_format as $format) {
+        if($format['proz'] === '1') {
+            $log_line .= $messwerte[$format['pos']-1]['proz'] . ',';
+        }
     }
     $filename = correct_filename($filename, 'log');
-    file_put_contents("{$settings['ordner_log']}/", $log_line, FILE_APPEND);
+    file_put_contents("{$settings['ordner_log']}/$filename", $log_line, FILE_APPEND);
 }
 
 $output = get_zeile_mess_get('<b>Beschreibung:</b>', '&nbsp;<b>Istwert:</b>', '&nbsp;<b>Prozesswert:</b>', '&nbsp;<b>HEX-Wert:</b>', '&nbsp;<b>Binär-Wert:</b>');
