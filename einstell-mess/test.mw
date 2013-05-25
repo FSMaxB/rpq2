@@ -1,9 +1,0 @@
-Dies ist ein
-mehrzeiliger Kommentar
-#Position, Skalierungsfaktor, Kommastellen, Istwert (0/1), Prozesswert (0/1), Hex (0/1), Bin (0/1), Beschreibung
-Regler,2
-1,2,3,1,1,1,1,Messwert 1
-2,0.1,0,0,1,1,1,Messwert 2
-3,1,0,1,0,1,1,Messwert 3
-4,0.5,0,1,1,0,1,Messwert 4
-5,1.5,0,1,1,1,0,Messwert 5

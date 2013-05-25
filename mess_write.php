@@ -33,15 +33,15 @@ function write_csv($filename, $comment, $regler, $data, $take_comments, $take_ot
         switch($line['type']) {
             case 'value':
                 $first_value = TRUE;
-                $output .= "{$line['pos']},{$line['skal']},{$line['komma']},{$line['skalproz']},{$line['proz']},{$line['hex']},{$line['bin']},{$line['text']}";
+                $output .= "{$line['pos']},{$line['skal']},{$line['komma']},{$line['skalproz']},{$line['proz']},{$line['hex']},{$line['bin']},{$line['text']}\n";
                 break;
             case 'comment':
                 if($take_comments)
-                    $output .= $line['line'];
+                    $output .= $line['line'] . "\n";
                 break;
             case 'other':
                 if($take_others && $first_value )
-                    $output .= $line['line'];
+                    $output .= $line['line'] . "\n";
         }
     }
     $filename = correct_filename($filename, '');
