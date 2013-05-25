@@ -35,10 +35,10 @@ if( isset($_GET['']) ) {
 //Liste mit seriellen Schnittstellen erstellen
 $interfaces = NULL;
 foreach( get_ttys() as $tty ) {
-    if( $tty == $settings['serial_interface'] ) {
-        $interfaces .= "<option selected>$tty</option>\n";
+    if( "/dev/$tty" == $settings['serial_interface'] ) {
+        $interfaces .= "<option selected>/dev/$tty</option>\n";
     } else {
-        $interfaces .= "<option>$tty</option>";
+        $interfaces .= "<option>/dev/$tty</option>";
     }
 }
 
@@ -53,7 +53,7 @@ foreach( explode("\n", get_baudrates()) as $baudrate ) {
 }
 
 $output = get_heading($heading);
-$output .= get_form_settings($interfaces, $baudrates, $settings['ordner_docs'], $settings['ordner_owndocs'], $settings['ordner_einstellwert'], 'settings_menu.php', 'settings_menu.php');
+$output .= get_form_settings($interfaces, $baudrates, $settings['ordner_docs'], $settings['ordner_einstell-mess'], 'settings_menu.php', 'settings_menu.php');
 $output .= get_button_menu_back();
 draw_page($output, $title, $author, LAYOUT);
 ?>

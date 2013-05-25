@@ -19,10 +19,14 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-function get_wartung($received) {
+function get_wartung($file_list, $comment, $send, $received) {
     $template_wartung = file_get_contents('template_wartung.html');
 
-    return str_replace('{received}', $received, $template_wartung);
+    $output = str_replace('{file_list}', $file_list, $template_wartung);
+    $output = str_replace('{comment}', $comment, $output);
+    $output = str_replace('{send}', $send, $output);
+    $output = str_replace('{received}', $received, $output);
+    return $output;
 }
 
 function get_redirect($time, $destination) {
@@ -41,10 +45,10 @@ function get_page($content, $current) {
     return $output;
 }
 
-function get_link_einstelltab($path, $filename, $return_success, $return_failure) {
-    $template_link_einstelltab = file_get_contents('template_link_einstelltab.html');
+function get_link_einstell($path, $filename, $return_success, $return_failure) {
+    $template_link_einstell = file_get_contents('template_link_einstell.html');
 
-    $output = str_replace('{path}', $path, $template_link_einstelltab);
+    $output = str_replace('{path}', $path, $template_link_einstell);
     $output = str_replace('{filename}', $filename, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
@@ -83,12 +87,13 @@ function get_form_upload($directory, $extension, $return_success, $return_failur
     return $output;
 }
 
-function get_container($content, $height = '400px', $border = '1px') {
+function get_container($content, $height = '400px', $border = '1px', $id = 'div') {
     $template_container = file_get_contents('template_container.html');
 
     $output = str_replace('{content}', $content, $template_container);
     $output = str_replace('{height}', $height, $output);
     $output = str_replace('{border}', $border, $output);
+    $output = str_replace('{id}', $id, $output);
     return $output;
 }
 
@@ -100,27 +105,27 @@ function get_button($link, $text) {
     return $output;
 }
 
-function get_form_einstell($comment, $index, $einstellwerte, $filename, $counter, $trenn) {
+function get_form_einstell($comment, $regler, $index, $einstellwerte, $filename) {
     $template_form_einstell = file_get_contents('template_form_einstell.html');
 
     $output = str_replace('{comment}', $comment, $template_form_einstell);
+    $output = str_replace('{regler}', $regler, $output);
     $output = str_replace('{index}',$index, $output);
     $output = str_replace('{einstellwerte}', $einstellwerte, $output);
     $output = str_replace('{filename}', $filename, $output);
-    $output = str_replace('{counter}', $counter, $output);
-    $output = str_replace('{trenn}', $trenn, $output);
     return $output;
 }
 
-function get_einstellzeile($form, $text, $id, $value, $min, $max) {
+function get_einstellzeile($number, $form, $id, $value, $min, $max, $text) {
     $template_einstellzeile = file_get_contents('template_einstellzeile.html');
 
-    $output = str_replace('{form}', $form, $template_einstellzeile);
-    $output = str_replace('{text}', $text, $output);
+    $output = str_replace('{number}', $number, $template_einstellzeile);
+    $output = str_replace('{form}', $form, $output);
     $output = str_replace('{id}', $id, $output);
     $output = str_replace('{value}', $value, $output);
     $output = str_replace('{min}', $min, $output);
     $output = str_replace('{max}', $max, $output);
+    $output = str_replace('{text}', $text, $output);
     return $output;
 
 }
@@ -169,10 +174,10 @@ function get_license_gpl() {
     return $template_license_gpl;
 }
 
-function get_link_owndocs($path, $filename, $return_success, $return_failure) {
-    $template_link_owndocs = file_get_contents('template_link_owndocs.html');
+function get_link_docs($path, $filename, $return_success, $return_failure) {
+    $template_link_docs = file_get_contents('template_link_docs.html');
 
-    $output = str_replace('{path}', $path, $template_link_owndocs);
+    $output = str_replace('{path}', $path, $template_link_docs);
     $output = str_replace('{filename}', $filename, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
@@ -185,14 +190,14 @@ function get_button_menu_back() {
     return $template_button_menu_back;
 }
 
-function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_owndocs, $ordner_einstellwert, $return_success, $return_failure) {
+function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_einstell_mess, $ordner_wartung, $return_success, $return_failure) {
     $template_form_settings = file_get_contents('template_form_settings.html');
 
     $output = str_replace('{serial_interfaces}', $serial_interfaces, $template_form_settings);
     $output = str_replace('{serial_baudrates}', $serial_baudrates, $output);
     $output = str_replace('{ordner_docs}', $ordner_docs, $output);
-    $output = str_replace('{ordner_owndocs}', $ordner_owndocs, $output);
-    $output = str_replace('{ordner_einstellwert}', $ordner_einstellwert, $output);
+    $output = str_replace('{ordner_einstell-mess}', $ordner_einstell_mess, $output);
+    $output = str_replace('{ordner_wartung}', $ordner_wartung, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
     return $output;
@@ -224,6 +229,99 @@ function get_form_editor($text, $ordnerlist, $filename) {
     $output = str_replace('{text}', $text, $template_form_editor);
     $output = str_replace('{ordnerlist}', $ordnerlist, $output);
     $output = str_replace('{filename}', $filename, $output);
+    return $output;
+}
+
+function get_form_einstellzeile($number, $line, $type) {
+    $template_form_einstellzeile = file_get_contents('template_form_einstellzeile.html');
+
+    $output = str_replace('{number}', $number, $template_form_einstellzeile);
+    $output = str_replace('{line}', $line, $output);
+    $output = str_replace('{type}', $type, $output);
+    return $output;
+}
+
+function get_vspace() {
+    $template_vspace = file_get_contents('template_vspace.html');
+
+    return $template_vspace;
+}
+
+function get_link_mess($path, $filename, $return_success, $return_failure) {
+    $template_link_mess = file_get_contents('template_link_mess.html');
+
+    $output = str_replace('{path}', $path, $template_link_mess);
+    $output = str_replace('{filename}', $filename, $output);
+    $output = str_replace('{return_success}', $return_success, $output);
+    $output = str_replace('{return_failure}', $return_failure, $output);
+    return $output;
+}
+
+function get_link_wartung($filename, $path, $return_success, $return_failure) {
+    $template_link_wartung = file_get_contents('template_link_wartung.html');
+
+    $output = str_replace('{filename}', $filename, $template_link_wartung);
+    $output = str_replace('{path}', $path, $output);
+    $output = str_replace('{return_success}', $return_success, $output);
+    $output = str_replace('{return_failure}', $return_failure, $output);
+    return $output;
+}
+
+function get_script_mess($filename) {
+    $template_script_mess = file_get_contents('template_script_mess.html');
+
+    $output = str_replace('{filename}', $filename, $template_script_mess);
+    return $output;
+}
+
+function get_mess($comment, $container) {
+    $template_mess = file_get_contents('template_mess.html');
+
+    $output = str_replace('{comment}', $comment, $template_mess);
+    $output = str_replace('{container}', $container, $output);
+    return $output;
+}
+
+function get_zeile_mess_get($text, $skal, $proz, $hex, $bin) {
+    $template_zeile_mess_get = file_get_contents('template_zeile_mess_get.html');
+
+    $output = str_replace('{text}', $text, $template_zeile_mess_get);
+    $output = str_replace('{skal}', $skal, $output);
+    $output = str_replace('{proz}', $proz, $output);
+    $output = str_replace('{hex}', $hex, $output);
+    $output = str_replace('{bin}', $bin, $output);
+    return $output;
+}
+
+function get_mess_get($contents) {
+    $template_mess_get = file_get_contents('template_mess_get.html');
+
+    $output = str_replace('{contents}', $contents, $template_mess_get);
+    return $output;
+}
+
+function get_mess_edit($comment, $regler, $messwerte, $filename) {
+    $template_mess_edit = file_get_contents('template_mess_edit.html');
+
+    $output = str_replace('{comment}', $comment, $template_mess_edit);
+    $output = str_replace('{regler}', $regler, $output);
+    $output = str_replace('{messwerte}', $messwerte, $output);
+    $output = str_replace('{filename}', $filename, $output);
+    return $output;
+}
+
+function get_zeile_mess_edit($number, $pos, $skal, $komma, $skalproz, $proz, $hex, $bin, $text) {
+    $template_zeile_mess_edit = file_get_contents('template_zeile_mess_edit.html');
+
+    $output = str_replace('{number}', $number, $template_zeile_mess_edit);
+    $output = str_replace('{pos}', $pos, $output);
+    $output = str_replace('{skal}', $skal, $output);
+    $output = str_replace('{komma}', $komma, $output);
+    $output = str_replace('{skalproz}', $skalproz, $output);
+    $output = str_replace('{proz}', $proz, $output);
+    $output = str_replace('{hex}', $hex, $output);
+    $output = str_replace('{bin}', $bin, $output);
+    $output = str_replace('{text}', $text, $output);
     return $output;
 }
 ?>

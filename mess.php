@@ -20,15 +20,23 @@
 */
 
 include_once('page.php');
+include_once('settings.php');
 include_once('templates.php');
+include_once('csv.php');
 
-$title = 'Messwerte';
+$heading = 'Messwerte Regler';
 $author = 'Max Bruckner';
-$heading = 'Messwerte';
+$title = 'Messwerte Regler';
 
-$output = get_heading($heading);
-$output .= 'Noch in der Entwicklung';
+$filename = $_GET['filename'];
+
+$lines = file("{$settings['ordner_einstell-mess']}/$filename", FILE_IGNORE_NEW_LINES);
+$regler = get_value('Regler', $lines);
+$comment = get_comment($lines);
+$container = get_container('', '450px', '0px', 'messwerte');
+
+$output = get_heading("$heading $regler");
+$output .= get_mess($comment, $container);
 $output .= get_button_menu_back();
-
-draw_page($output, $title, $author, LAYOUT);
+draw_page($output, "$title $regler", $author, LAYOUT, get_script_mess($filename));
 ?>

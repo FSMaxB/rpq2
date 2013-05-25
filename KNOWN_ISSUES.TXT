@@ -1,0 +1,1 @@
+Enthält eine Zeile des Kommentars am Anfang einer CSV-Datei mit Einstellwerten genau 4 Kommata und vor dem ersten Komma dieser Zeile sind maximal drei Zeichen, die Dezimalziffern sind, so wird diese Kommentarzeile fälschlicherweise als Einstellwert verarbeitet.

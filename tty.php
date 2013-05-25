@@ -20,7 +20,7 @@
 */
 
 include_once('settings.php');
-include_once('file_list.php');
+include_once('file.php');
 
 function get_ttys() {
     $devices = get_files('/dev');

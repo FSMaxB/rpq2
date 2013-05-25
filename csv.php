@@ -19,26 +19,25 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-include_once('settings.php');
-include_once('templates.php');
-include_once('file_list.php');
-include_once('page.php');
-
-$title = 'Eigene Dokumentationen';
-$author = 'Max Bruckner';
-$heading = 'Eigene Dokumentationen';
-
-$return = 'owndocs.php';
-
-//Dateiliste erstellen:
-$file_list = '';
-foreach ( get_files($settings['ordner_owndocs']) as $file ) {
-    $file_list .= get_link_owndocs("{$settings['ordner_owndocs']}/$file", $file, $return, $return);
+function get_comment($lines) {
+    $comment = NULL;
+    foreach($lines as $line) {
+        if( (strpos($line, 'Index,') === 0) || (strpos($line, 'Regler,') === 0) || (strpos($line, '#') === 0) ) {
+             break;
+        }
+        $comment .= "$line\n";
+    }
+    return $comment;
 }
 
-$output = get_heading($heading);
-$output .= get_form_upload($settings['ordner_owndocs'], '', $return, $return);
-$output .= get_container($file_list);
-$output .= get_button_menu_back();
-draw_page($output, $title, $author, LAYOUT);
+function get_value($name, $lines) {
+    foreach($lines as $line) {
+        if( strpos($line, $name . ',') === 0 ) {
+            $split = explode(',', $line);
+            $value = $split[1];
+            break;
+        }
+    }
+    return $value;
+}
 ?>

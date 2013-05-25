@@ -22,25 +22,39 @@
 include_once('settings.php');
 include_once('page.php');
 include_once('templates.php');
-include_once('file_list.php');
+include_once('file.php');
 
-$title = 'Einstellwerttabellen verwalten';
+$title = 'Einstell-/Messwerttabellen verwalten';
 $author = 'Max Bruckner';
-$heading = 'Einstellwerttabellen verwalten';
+$heading = 'Einstell-/Messwerttabellen verwalten';
 
 
-$return = 'einstelltab.php';
-$extension = 'csv';
+$return = 'einstell-mess.php';
+$extension = '';
 
 //Dateiliste erstellen:
-$file_list = '';
-foreach ( get_files($settings['ordner_einstellwert']) as $file ) {
-    $file_list .= get_link_einstelltab("{$settings['ordner_einstellwert']}/$file", $file, $return, $return);
+$einstell_list = NULL;
+foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
+    $split = explode('.', $file);
+    if(end($split) !== 'mw') {
+        $einstell_list .= get_link_einstell("{$settings['ordner_einstell-mess']}/$file", $file, $return, $return);
+    }
+}
+
+$mess_list = NULL;
+foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
+    $split = explode('.', $file);
+    if(end($split) === 'mw') {
+        $mess_list .= get_link_mess("{$settings['ordner_einstell-mess']}/$file", $file, $return, $return);
+    }
 }
 
 $output = get_heading($heading);
-$output .= get_form_upload($settings['ordner_einstellwert'], $extension, $return, $return);
-$output .= get_container($file_list);
+$output .= get_form_upload($settings['ordner_einstell-mess'], $extension, $return, $return);
+$output .= '<br><b>Einstellwerte:</b></br>';
+$output .= get_container($einstell_list, "200px");
+$output .= '<br><b>Messwerte:</b></br>';
+$output .= get_container($mess_list, "100px");
 $output .= get_button_menu_back();
 
 draw_page($output, $title, $author, LAYOUT);

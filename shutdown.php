@@ -29,7 +29,7 @@ $mode = $_GET['mode'];
 if($mode == 'reboot') {
     $param = '-r';
     $output = '<h1>Das System wird neu gestartet!</h1>';
-} else if($status == 'halt') {
+} else if($mode == 'halt') {
     $param = '-h';
     $output = '<h1>Das System wird heruntergefahren</h1>';
 } else {

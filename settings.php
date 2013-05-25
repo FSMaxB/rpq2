@@ -28,25 +28,24 @@ function get_settings() {
             'serial_interface' => '/dev/ttyUSB0',
             'serial_baudrate' => '115200',
             'ordner_docs' => 'docs',
-            'ordner_owndocs' => 'owndocs',
-            'ordner_einstellwert',
+            'ordner_einstell-mess' => 'einstell-mess',
+            'ordner_wartung' => 'wartung',
         );
 
-    $file = file_get_contents(CONFIG_FILE);
-    $lines = explode("\n", $file);
+    $lines = file(CONFIG_FILE, FILE_IGNORE_NEW_LINES);
 
     foreach( $lines as $line) {
         if( (strpos($line, '#') !== 0) && ($line)) {    //Kommentarzeilen werden ignoriert
             $setting = explode('=', $line);
             if( ($setting[0]) && ($setting[1]) ) {
-                $settings[$setting[0]] = $setting[1];
+                $settings[$setting[0]] = trim($setting[1]);
             }
         }
     }
 }
 
 function write_settings($settings) {
-    $config_lines = explode("\n", file_get_contents(CONFIG_FILE));
+    $config_linse = file(CONFIG_FILE, FILE_IGNORE_NEW_LINES);
     $output = '';
     foreach( $config_lines as $config_line ) {
         if( (strpos($config_line, '#') !== 0) && ($config_line) ) { //Kommentarzeilen und leere Zeilen nicht bearbeiten

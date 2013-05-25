@@ -1,0 +1,13 @@
+<form action="mess_write.php" method="post">
+  <textarea name="comment" cols="80" rows="2">{comment}</textarea>
+    <div style="height:400px;width:100%;border:1px solid #ccc;overflow:auto;">
+      <table>
+        {messwerte}
+      </table>
+    </div>
+    Dateiname:<input type="text" name="filename" value="{filename}"></br>
+    Regleradresse:<input type="text" size="3" maxlength="3" name="regler" value="{regler}">
+    <input type="hidden" name="take_comments" value="true">
+    <input type="reset" value="Zurücksetzen">
+    <input type="submit" value="Speichern">
+</form>

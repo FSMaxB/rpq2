@@ -19,78 +19,102 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+/*
+ * Allgemeiner Hinweis:
+ * Die eingelesene CSV-Datei wird in einem Array folgender Form übergeben:
+ *  $einstellwerte[Zeilennummer][Name] = Wert;
+ *      Zeilennummer: Nummer der Zeile in der CSV-Datei beginnend mit 0
+ *      Name: Einer der Folgenden
+ *          'line': Enthält die Ursprüngliche Zeile
+ *          'type': Art des Zeileninhalts, eins von 'value', 'comment', 'trenn' und 'other'
+ *          'id': Subindex
+ *          'value': Einstellwert
+ *          'min', 'max': Minimal- und Maximalwert
+ *          'text': Beschreibungstext zum Einstellwert
+ *          'checked': Boolean, ob das Häkchen im Webinterface gesetzt wurde
+ * */
+
 include_once('settings.php');
 include_once('page.php');
 include_once('templates.php');
-
-$counter = 0;
-$linecounter = 1;       //Zählt die bearbeiteten CSV-Zeilen
-$trennlines;            //Array, das alle Zeilen enthält, in denen sich Trennlinien befinden.
-$einstellwerte; //String, in den die Fertige Liste von Einstellwerten reinkommt.
-$trenn; //hidden formulare für den Array mit trennzeilen.
-
-function einstell_zeile( $csv_string ) {
-    global $counter, $linecounter, $trennlines, $einstellwerte;
-
-    if( $csv_string == '*' ) {
-        $einstellwerte .= "\n" . get_einstellzeile_trenn();
-        $trennlines[] = $linecounter;
-        $linecounter++;
-    }
-    else {
-        $fields = explode(',', $csv_string);
-
-        if(!is_numeric($fields[0])) {
-            return;
-        }
-
-
-        $counter++;
-
-        $id = '<input type="text" size="3" maxlength="3" name="id' . $counter . '" value="' . $fields[0] . '">';
-        $value = '<input type="text" size="6" maxlength="6" name="value' . $counter . '" value="' . $fields[1] . '" tabindex="' . $counter . '">';
-        $min = '<input type="text" size="6" maxlength="6" name="min' . $counter . '" value="' . $fields[2] . '">';
-        $max = '<input type="text" size="6" maxlength="6" name="max' . $counter . '" value="' . $fields[3] . '">';
-        $text = '<input type="text" size="50" maxlength="50" name="text' . $counter . '" value="' . $fields[4] . '">';
-        $form = '<input type="hidden" name="check' . $counter . '" value="false">'
-              . '<input type="checkbox" name="check' . $counter . '" value="true" checked>';
-        $output_line = get_einstellzeile($form, $text, $id, $value, $min, $max);
-
-        $einstellwerte = $einstellwerte . "\n" . $output_line;
-        $linecounter++;
-    }
-}
+include_once('csv.php');
 
 $title = 'Einstellwerte';
 $author = 'Max Bruckner';
 $heading = 'Einstellwerte';
 
-$filename = $_GET["filename"];
-if($filename == '') {
-    $filename = 'default.csv';
-}
+$filename = $_GET['filename'];
 
-$path = "{$settings['ordner_einstellwert']}/$filename";
-$filecontent = file_get_contents($path);
-$lines = explode("\n", $filecontent);
+function get_einstellwerte($lines) {
+    $i = 0;
+    $einstellwerte = NULL;
+    foreach($lines as $line) {
+        $einstellwerte[$i]['line'] = $line;
+        $einstellwerte[$i]['type'] = 'other';
 
-$comment = $lines[0];
-$index = explode(',',$lines[1]);
-$index = $index[1];
+        if( strpos($line, '#') === 0 ) {    //Kommentarzeile?
+            $einstellwerte[$i]['type'] = 'comment';
+        } else if( strpos($line, '*') === 0 ) { //Trennzeile?
+            $einstellwerte[$i]['type'] = 'trenn';
+        } else {
+            $split = explode(',', $line);
+            if( (count($split) == 5) && (strlen($split[0]) <= 3)  && is_numeric($split[0]) ) {    //Einstellwert?
+                $einstellwerte[$i]['type'] = 'value';
 
-foreach($lines as $line) {
-    if($line !== '') {
-        einstell_zeile($line);
+                $einstellwerte[$i]['id'] = $split[0];
+                $einstellwerte[$i]['value'] = $split[1];
+                $einstellwerte[$i]['min'] = $split[2];
+                $einstellwerte[$i]['max'] = $split[3];
+                $einstellwerte[$i]['text'] = $split[4];
+            }
+        }
+
+        $i++;
     }
+    return $einstellwerte;
 }
 
-foreach($trennlines as $trennline) {
-    $trenn .= "\n" .  '<input type="hidden" name="trenn[]" value="' . $trennline . '">';
+//Liste der Einstellwerte
+function get_list($einstellwerte) {
+    $output = NULL;
+    for($i = 0; $i < count($einstellwerte); $i++) {
+        switch($einstellwerte[$i]['type']) {
+            case 'value':
+                $form = get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
+                $output .= get_einstellzeile(
+                                $i,
+                                $form,
+                                $einstellwerte[$i]['id'],
+                                $einstellwerte[$i]['value'],
+                                $einstellwerte[$i]['min'],
+                                $einstellwerte[$i]['max'],
+                                $einstellwerte[$i]['text']);
+                break;
+            case 'trenn':
+                $output .= get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
+                $output .= get_einstellzeile_trenn();
+                break;
+            case 'comment':
+                $output .= get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
+                break;
+            case 'other':
+                $output .= get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
+                break;
+        }
+    }
+    return $output;
 }
+
+$einstell_lines = file("{$settings['ordner_einstell-mess']}/$filename", FILE_IGNORE_NEW_LINES);
+
+$comment = get_comment($einstell_lines);
+$regler = get_value('Regler', $einstell_lines);
+$index = get_value('Index', $einstell_lines);
+$einstellwerte = get_einstellwerte($einstell_lines);
+$einstell_list = get_list($einstellwerte);
 
 $output = get_heading($heading);
-$output .= get_form_einstell($comment, $index, $einstellwerte, $filename, $counter, $trenn);
+$output .= get_form_einstell($comment, $regler, $index, $einstell_list, $filename);
 $output .= get_button_menu_back();
-
-draw_page( $output, $title, $author, LAYOUT);
+draw_page($output, $title, $author, LAYOUT);
 ?>
