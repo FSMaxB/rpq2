@@ -333,4 +333,14 @@ function get_button_inline($link, $text) {
     $output = str_replace('{text}', $text, $output);
     return $output;
 }
+
+function get_link_logs($filename, $ordner, $return_success, $return_failure) {
+    $template_link_logs = file_get_contents('template_link_logs.html');
+
+    $output = str_replace('{filename}', $filename, $template_link_logs);
+    $output = str_replace('{ordner}', $ordner, $output);
+    $output = str_replace('{return_success}', $return_success, $output);
+    $output = str_replace('{return_failure}', $return_failure, $output);
+    return $output;
+}
 ?>
