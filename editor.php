@@ -63,6 +63,8 @@ if( ($ordner != '') && ($filename != '')) {
     if($get === TRUE) {
         $text = file_get_contents("$ordner/$filename");
     } else {
+        if($text == '') //Verhindert einen Bug, dass man leere Dateien nicht speichern kann
+            $text = ' ';
         if(file_put_contents("$ordner/$filename", $text)) {
             $message = get_success('Speichern Erfolgreich');
         } else {
