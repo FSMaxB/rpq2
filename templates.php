@@ -190,7 +190,7 @@ function get_button_menu_back() {
     return $template_button_menu_back;
 }
 
-function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_einstell_mess, $ordner_wartung, $return_success, $return_failure) {
+function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_einstell_mess, $ordner_wartung, $ordner_log, $return_success, $return_failure) {
     $template_form_settings = file_get_contents('template_form_settings.html');
 
     $output = str_replace('{serial_interfaces}', $serial_interfaces, $template_form_settings);
@@ -198,6 +198,7 @@ function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, 
     $output = str_replace('{ordner_docs}', $ordner_docs, $output);
     $output = str_replace('{ordner_einstell-mess}', $ordner_einstell_mess, $output);
     $output = str_replace('{ordner_wartung}', $ordner_wartung, $output);
+    $output = str_replace('{ordner_log}', $ordner_log, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
     return $output;
@@ -330,6 +331,16 @@ function get_button_inline($link, $text) {
 
     $output = str_replace('{link}', $link, $template_button_inline);
     $output = str_replace('{text}', $text, $output);
+    return $output;
+}
+
+function get_link_logs($filename, $ordner, $return_success, $return_failure) {
+    $template_link_logs = file_get_contents('template_link_logs.html');
+
+    $output = str_replace('{filename}', $filename, $template_link_logs);
+    $output = str_replace('{ordner}', $ordner, $output);
+    $output = str_replace('{return_success}', $return_success, $output);
+    $output = str_replace('{return_failure}', $return_failure, $output);
     return $output;
 }
 ?>

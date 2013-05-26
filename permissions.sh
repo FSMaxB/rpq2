@@ -2,7 +2,7 @@
 USER=$1
 GROUP=$2
 chown -R root:root ./
-chown -R $USER:$GROUP einstell-mess docs wartung
+chown -R $USER:$GROUP einstell-mess docs wartung log
 chown $USER:$GROUP settings.cfg
 find -type d -exec chmod 755 {} \;
 find -type f -exec chmod 644 {} \;

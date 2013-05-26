@@ -30,6 +30,7 @@ function get_settings() {
             'ordner_docs' => 'docs',
             'ordner_einstell-mess' => 'einstell-mess',
             'ordner_wartung' => 'wartung',
+            'ordner_log' => 'log',
         );
 
     $lines = file(CONFIG_FILE, FILE_IGNORE_NEW_LINES);
