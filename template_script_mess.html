@@ -1,36 +1,49 @@
 <script>
+    var i = 0;
+    var run = false;
+    var b_log = false;
+    var requests = 0;
     function getMesswerte() {
-        if( (document.vars.run.value == 1) && (document.vars.counter.value >= document.vars.refresh.value) ) {
+        if( run && (i >= document.vars.refresh.value) && (requests == 0) ) {
             var ajax;
             ajax = new XMLHttpRequest();
             ajax.onreadystatechange = function() {
-                if ( (ajax.readyState == 4) && (ajax.status == 200) && (document.vars.run.value == 1) ) {
-                    document.getElementById("messwerte").innerHTML = ajax.responseText;
+                if( ajax.readyState == 4) {
+                    requests--;
+                    if ( (ajax.status == 200) && run ) {
+                        document.getElementById("messwerte").innerHTML = ajax.responseText;
+                    }
                 }
             }
-            ajax.open("GET","mess_get.php?filename={filename}&log=" + document.vars.log.value,true);
+            if(b_log) {
+                s_log = "true";
+            } else {
+                s_log = "false";
+            }
+            ajax.open("GET","mess_get.php?filename={filename}&log=" + s_log,true);
             ajax.send();
-            document.vars.counter.value = 0;
+            requests++;
+            i = 0;
         }
-        document.vars.counter.value++;
+        i++;
     }
 
     function run() {
-        if(document.vars.run.value == 1) {
-            document.vars.run.value = 0;
+        if(run) {
+            run = false;
             document.getElementById("run").innerHTML = "Start";
         } else {
-            document.vars.run.value = 1;
+            run = true;
             document.getElementById("run").innerHTML = "Stop";
         }
     }
 
     function log_toggle() { //Der Name kommt daher, dass log als Funktionsname nicht erlaubt ist
-        if(document.vars.log.value == "true") {
-            document.vars.log.value = "false";
+        if(b_log) {
+            b_log = false;
             document.getElementById("log").innerHTML = "Aufzeichnen";
         } else {
-            document.vars.log.value = "true";
+            b_log = true;
             document.getElementById("log").innerHTML = "Aufzeichnung stoppen";
         }
     }
