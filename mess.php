@@ -37,6 +37,7 @@ $container = get_container('', '450px', '0px', 'messwerte');
 
 $output = get_heading("$heading $regler");
 $output .= get_mess(nl2br($comment), $container);
+$output .= get_button('einstell.php?filename=default.ew', 'Zu Einstellwerten');
 $output .= get_button_menu_back();
 draw_page($output, "$title $regler", $author, LAYOUT, get_script_mess($filename));
 ?>

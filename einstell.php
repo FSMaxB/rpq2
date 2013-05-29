@@ -116,6 +116,7 @@ $einstell_list = get_list($einstellwerte);
 
 $output = get_heading($heading);
 $output .= get_form_einstell($comment, $regler, $index, $einstell_list, $filename);
+$output .= get_button('mess.php?filename=default.mw', 'Zu Messwerten');
 $output .= get_button_menu_back();
 draw_page($output, $title, $author, LAYOUT);
 ?>
