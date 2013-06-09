@@ -53,7 +53,7 @@ foreach( explode("\n", get_baudrates()) as $baudrate ) {
 }
 
 $output = get_heading($heading);
-$output .= get_form_settings($interfaces, $baudrates, $settings['ordner_docs'], $settings['ordner_einstell-mess'], 'settings_menu.php', 'settings_menu.php');
+$output .= get_form_settings($interfaces, $baudrates, $settings['ordner_docs'], $settings['ordner_einstell-mess'], $settings['ordner_wartung'], $settings['ordner_log'], $settings['ordner_pdo'], 'settings_menu.php', 'settings_menu.php');
 $output .= get_button_menu_back();
-draw_page($output, $title, $author, LAYOUT);
+draw_page($output, $title, $author, HEAD);
 ?>

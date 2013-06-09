@@ -80,7 +80,15 @@ if($return == '') {
 
 $output = get_heading($heading);
 $output .= get_form_editor($text, $ordnerlist, $filename);
+$output .= '</br>';
 $output .= $message;
-$output .= get_button($return, 'Zurück');
-draw_page($output, $title, $author, LAYOUT);
+$output .= '</br>';
+$output .= '</br>';
+//$output .= get_button($return, 'Zurück');
+$output .= get_button_inline('index.php', 'Zum Hauptmenu');
+$output .= ' ';
+$output .= get_button_inline('einstell-mess.php', 'Verwaltung Einstellwerte');
+$output .= ' ';
+$output .= get_button_inline('wartung.php', 'Zu Geräteeinstellung');
+draw_page($output, $title, $author, HEAD);
 ?>

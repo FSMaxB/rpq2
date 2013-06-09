@@ -29,6 +29,7 @@ $author = 'Max Bruckner';
 $output = get_button_menu('einstell-mess.php', 'Einstell-/Messwerttabellen verwalten');
 $output .= get_button_menu('einstell.php?filename=default.ew', 'Einstellwerte');
 $output .= get_button_menu('mess.php?filename=default.mw', 'Messwerte');
+$output .= get_button_menu('sollwert.php', 'Sollwertvorgabe');
 $output .= get_button_menu('logs.php', 'Aufzeichnungen verwalten');
 $output .= get_button_menu('wartung.php', 'Manuelle Geräteeinstellung');
 $output .= get_button_menu('docs.php', 'Dokumentationen');

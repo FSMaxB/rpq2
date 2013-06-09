@@ -31,6 +31,7 @@ function get_settings() {
             'ordner_einstell-mess' => 'einstell-mess',
             'ordner_wartung' => 'wartung',
             'ordner_log' => 'log',
+            'ordner_pdo' => 'pdo'
         );
 
     $lines = file(CONFIG_FILE, FILE_IGNORE_NEW_LINES);

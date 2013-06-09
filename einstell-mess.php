@@ -50,15 +50,18 @@ foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
     }
 }
 $mess_list .= '</table>';
-
-$output = get_heading($heading);
+$output .= '</br>';
+//$output = get_heading($heading);
 $output .= get_form_upload($settings['ordner_einstell-mess'], $extension, $return, $return);
-$output .= '<br><b>Einstellwerte:</b></br>';
-$output .= get_container($einstell_list, "200px");
-$output .= '<br><b>Messwerte:</b></br>';
-$output .= get_container($mess_list, "100px");
+$output .= get_button_inline('index.php', '<b>Zum Hauptmenü</b>');
+$output .= ' ';
 $output .= get_button_inline("editor.php?ordner={$settings['ordner_einstell-mess']}&return=einstell-mess.php", 'Neue Datei');
-$output .= get_button_menu_back();
+$output .= '</br>';
+$output .= '<br><b>Einstellwerte:</b></br>';
+$output .= get_container($einstell_list, "315px");
+$output .= '<b>Messwerte:</b></br>';
+$output .= get_container($mess_list, "150px");
+//$output .= get_button_menu_back();
 
-draw_page($output, $title, $author, LAYOUT);
+draw_page($output, $title, $author, HEAD);
 ?>

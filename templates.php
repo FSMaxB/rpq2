@@ -45,6 +45,14 @@ function get_page($content, $current) {
     return $output;
 }
 
+function get_page_header($content, $current) {
+    $template_page = file_get_contents('template_page_header.html');
+
+    $output = str_replace('{content}', $content, $template_page);
+    $output = str_replace('{current}', $current, $output);
+    return $output;
+}
+
 function get_link_einstell($ordner, $filename, $return_success, $return_failure) {
     $template_link_einstell = file_get_contents('template_link_einstell.html');
 
@@ -190,7 +198,7 @@ function get_button_menu_back() {
     return $template_button_menu_back;
 }
 
-function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_einstell_mess, $ordner_wartung, $ordner_log, $return_success, $return_failure) {
+function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, $ordner_einstell_mess, $ordner_wartung, $ordner_log, $ordner_pdo, $return_success, $return_failure) {
     $template_form_settings = file_get_contents('template_form_settings.html');
 
     $output = str_replace('{serial_interfaces}', $serial_interfaces, $template_form_settings);
@@ -199,6 +207,7 @@ function get_form_settings($serial_interfaces, $serial_baudrates, $ordner_docs, 
     $output = str_replace('{ordner_einstell-mess}', $ordner_einstell_mess, $output);
     $output = str_replace('{ordner_wartung}', $ordner_wartung, $output);
     $output = str_replace('{ordner_log}', $ordner_log, $output);
+    $output = str_replace('{ordner_pdo}', $ordner_pdo, $output);
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
     return $output;
@@ -342,5 +351,41 @@ function get_link_logs($filename, $ordner, $return_success, $return_failure) {
     $output = str_replace('{return_success}', $return_success, $output);
     $output = str_replace('{return_failure}', $return_failure, $output);
     return $output;
+}
+
+function hex($input, $digits) {
+	if ($input == '')
+		return('');
+	$string = NULL;
+	for($i = 0; $i < $digits; $i++) {
+		$string .= '0';
+	}
+	
+	$string .= dechex($input);
+	return substr($string, strlen($string) - $digits);
+}
+
+function get_pdo_mapping($comment, $received, $command, $regler, $map_high, $map_low, $map_index, $mapped_high, $mapped_low, $mapped_index) {
+	$template_pdo_mapping = file_get_contents('template_pdo_mapping.html');
+	
+	$output = str_replace('{comment}', $comment, $template_pdo_mapping);
+ 	$output = str_replace('{received}', $received, $output);
+ 	$output = str_replace('{command}', $command, $output);
+ 	$output = str_replace('{regler}', $regler, $output);
+ 	$output = str_replace('{map_high}', $map_high, $output);
+ 	$output = str_replace('{map_low}', $map_low, $output);
+ 	$output = str_replace('{map_index}', $map_index, $output);
+ 	$output = str_replace('{mapped_high}', $mapped_high, $output);
+ 	$output = str_replace('{mapped_low}', $mapped_low, $output);
+ 	$output = str_replace('{mapped_index}', $mapped_index, $output);
+	return $output;
+}
+
+function get_link_pdo($filename, $ordner) {
+	$template_link_pdo = file_get_contents('template_link_pdo.html');
+	
+	$output = str_replace('{ordner}', $ordner, $template_link_pdo);
+	$output = str_replace('{filename}', $filename, $output);
+	return $output;
 }
 ?>

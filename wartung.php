@@ -38,6 +38,7 @@ function send($send) {
     global $settings;
 
     $received = NULL;
+    $befehl = NULL;
 
     exec("nativ/einstell wartung {$settings['serial_interface']} $send", $results);
 
@@ -84,7 +85,14 @@ $file_list = get_file_list();
 
 $output = get_heading($heading);
 $output .= get_form_upload($settings['ordner_wartung'], '', 'wartung.php', 'wartung.php');
-$output .= get_wartung(get_container($file_list, '200px'), $comment, $send, $received);
-$output .= get_button_menu_back();
-draw_page( $output, $title, $author, LAYOUT);
+$output .= '</br> ';
+$output .= get_wartung(get_container($file_list, '330px'), $comment, $send, $received);
+$output .= '</br> ';
+$output .= '</br> ';
+$output .= get_button_inline('index.php', '<b>Zum Hauptmenu</b>');
+$output .= ' ';
+$output .= get_button_inline('mess.php?filename=default.mw', '<b>Zu Messwerten</b>');
+$output .= ' ';
+$output .= get_button_inline('pdo_mapping.php', '<b>PDO Mapping</b>');
+draw_page( $output, $title, $author, HEAD);
 ?>

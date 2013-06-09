@@ -1,13 +1,13 @@
-
 <form action="einstell_write.php" method="post">
-    <textarea name="comment" cols="80" rows="2">{comment}</textarea></br>
+    <textarea name="comment" cols="70" rows="2">{comment}</textarea></br>
     <input type="hidden" name="index" value="{index}">
-    <div style="height:400px;width:100%;border:1px solid #ccc;overflow:auto;">
+    <div style="height:436px;width:100%;border:1px solid #ccc;overflow:auto;">
         <table>
             {einstellwerte}
         </table>
     </div>
-    Dateiname:<input type="text" size="30" name="filename" value="{filename}"></br>
+    </br>
+    Dateiname:<input type="text" size="30" name="filename" value="{filename}">
     Regleradresse:<input type="text" size="3" maxlength="3" name="regler" value="{regler}">
     <select name="mode" size="1">
         <option value="read" selected>Werte auslesen</option>
@@ -15,9 +15,11 @@
         <option value="write_save">Werte schreiben und speichern</option>
         <option value="write">Werte schreiben</option>
     </select>
-    </br>
-    <input type="hidden" name="take_comments" value="true">
+     <input type="hidden" name="take_comments" value="true">
     <input type="hidden" name="take_trenn" value="true">
     <input type="reset" value="Zurücksetzen">
     <input type="submit" value="Absenden">
 </form>
+<a href="index.php"><button><b>Zum Hauptmenü</b></button></a>
+<a href="mess.php?filename=default.mw"><button><b>Zu Messwerten</b></button></a>
+<a href="einstell-mess.php"><button><b>Weitere Einstellwerte</b></button></a>

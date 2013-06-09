@@ -41,5 +41,5 @@ $output = get_heading($heading);
 $output .= get_form_upload($settings['ordner_docs'], '', $return, $return);
 $output .= get_container($file_list);
 $output .= get_button_menu_back();
-draw_page($output, $title, $author, LAYOUT);
+draw_page($output, $title, $author, HEAD);
 ?>

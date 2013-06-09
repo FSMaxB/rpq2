@@ -21,7 +21,8 @@
 
 define('NAKED', 0);
 define('RAW', 1);       //Verwende leere Seite mit Header und Footer
-define('LAYOUT', 2);        //Verwende Layout
+define('LAYOUT', 2);    //Verwende Layout
+define('HEAD', 3);      //Nur Kopfzeile
 
 include_once('templates.php');
 
@@ -30,7 +31,8 @@ function draw_page( $content, $title, $author, $type, $header = '') {
 
     switch ($type) {
         case NAKED:
-            $output = $content;
+ //           $output = $content;
+            $output = get_page_header($content, $current);
             break;
         case RAW:
             $output = get_page($content, $current);
@@ -38,6 +40,9 @@ function draw_page( $content, $title, $author, $type, $header = '') {
         case LAYOUT:
             $output = get_page(get_layout($content), $current);
             break;
+      case HEAD:
+            $output = get_page_header($content, $current);
+            break;            
     }
     echo get_html($output, $title, $author, $header);
 }

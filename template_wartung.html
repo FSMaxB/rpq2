@@ -1,4 +1,5 @@
 {file_list}
+</br>
 <form action="wartung.php" method="post">
   <table>
     <tr>
@@ -6,10 +7,9 @@
         Dateiname:
       </td>
       <td>
-        <input type="text" id="filename" name="filename" size="30" maxlength="30"></br>
+        <input type="text" id="filename" name="filename" size="47" maxlength="50"></br>
       </td>
-    </tr>
-    <tr>
+ 
       <td>
         Beschreibung:
       </td>
@@ -22,13 +22,12 @@
         Befehl:
       </td>
       <td>
-        <input type="text" id="send" name="send" size="25" maxlength="25" value="{send}">
+        <input type="text" id="send" name="send" size="26" maxlength="26" value="{send}">
         <input type="submit" value="Absenden">
         <button onclick="document.getElementById('send').value='';document.getElementById('comment').value='';document.getElementById('filename').value=''">Clear</button>
       </td>
     </tr>
   </table>
 </form>
-</br>
-<b>Antwort:</br>
-{received}</b>
+
+<b>Antwort: {received}</b>

@@ -26,7 +26,7 @@ include_once('page.php');
 
 $title = 'Aufzeichnungen verwalten';
 $author = 'Max Bruckner';
-$header = 'Aufzeichnungen verwalten';
+$heading = 'Aufzeichnungen verwalten';
 
 $return = 'logs.php';
 
@@ -37,7 +37,7 @@ foreach( get_files($settings['ordner_log']) as $file ) {
 $file_list .= '</table>';
 
 $output = get_heading($heading);
-$output .= get_container($file_list);
+$output .= get_container($file_list,'460px');
 $output .= get_button_menu_back();
-draw_page($output, $title, $author, LAYOUT);
+draw_page($output, $title, $author, HEAD);
 ?>

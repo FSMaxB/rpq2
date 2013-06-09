@@ -41,5 +41,5 @@ if($mode == 'reboot') {
 
 system("/sbin/shutdown $param now");
 
-draw_page($output, $title, $author, LAYOUT);
+draw_page($output, $title, $author, HEAD);
 ?>
