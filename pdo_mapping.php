@@ -3,7 +3,7 @@
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
-    Author: Max Bruckner
+    Author: Max Bruckner, Andreas Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -53,8 +53,8 @@ function get_file_list() {
 }
 
 $title = 'PDO Mapping';
-$author = 'Andreas Bruckner';
-$heading = '<b>PDO Mapping</b>';
+$author = 'Max Bruckner, Andreas Bruckner';
+$heading = 'PDO Mapping';
 
 $filename = $_GET['filename'];
 
@@ -70,44 +70,44 @@ $mapped_low = $_POST['mapped_low'];
 $mapped_index = $_POST['mapped_low'];
 
 function read_file($lines) {
-	global $comment, $regler, $map_high, $map_low, $map_index, $mapped_high, $mapped_low, $mapped_index;
-	foreach($lines as $line) {
-		if(strpos($line, '#') === 0) {
-			$comment .= substr($line, 1);
-		} else if(strpos($line, 'Regler') === 0) {
-			$split = explode(',', $line);
-			$regler = $split[1];
-		} else {
-			$split = explode(',', $line);
-			if((count($split) == 4) && (strlen($split[0]) == 4) && (strlen($split[1]) <= 2) && (strlen($split[2]) == 4) && (strlen($split[3]) <= 2)) {
-				$map_high = substr($split[0], 0, 2);
-				$map_low = substr($split[0], 2, 2);
-				$map_index = $split[1];
-				$mapped_high = substr($split[2], 0, 2);
-				$mapped_low = substr($split[2], 2, 2);
-				$mapped_index = $split[3];
-			}
-		}
-	}
+    global $comment, $regler, $map_high, $map_low, $map_index, $mapped_high, $mapped_low, $mapped_index;
+    foreach($lines as $line) {
+        if(strpos($line, '#') === 0) {
+            $comment .= substr($line, 1);
+        } else if(strpos($line, 'Regler') === 0) {
+            $split = explode(',', $line);
+            $regler = $split[1];
+        } else {
+            $split = explode(',', $line);
+            if((count($split) == 4) && (strlen($split[0]) == 4) && (strlen($split[1]) <= 2) && (strlen($split[2]) == 4) && (strlen($split[3]) <= 2)) {
+                $map_high = substr($split[0], 0, 2);
+                $map_low = substr($split[0], 2, 2);
+                $map_index = $split[1];
+                $mapped_high = substr($split[2], 0, 2);
+                $mapped_low = substr($split[2], 2, 2);
+                $mapped_index = $split[3];
+            }
+        }
+    }
 }
 
 set_tty();
 
 if($filename != '') {
-	$lines = file("{$settings['ordner_pdo']}/$filename", FILE_IGNORE_NEW_LINES);
-	read_file($lines);
+    $lines = file("{$settings['ordner_pdo']}/$filename", FILE_IGNORE_NEW_LINES);
+    read_file($lines);
 } else if($regler != '') {
-	$command = 0x0600 + $regler;
-	
-	$command = hex($command, 4);
-	if ($mode == 'write') {
-		$command .= '23' . $map_low . $map_high . $map_index .'10';
-		$command .= $mapped_low . $mapped_high . $mapped_index .'8000';
-	} else {
-		$command .= '40' . $map_low . $map_high . $map_index;
-		$command .= '000000008000';
-	}
-	
+    $command = 0x0600 + $regler;
+
+    $command = hex($command, 4);
+    if ($mode == 'write') {
+        $command .= '23' . $map_low . $map_high . $map_index .'10';
+        $command .= $mapped_low . $mapped_high . $mapped_index .'8000';
+    } else {
+        $command .= '40' . $map_low . $map_high . $map_index;
+        $command .= '000000008000';
+    }
+
     $received = send($command);
  }
 
@@ -115,11 +115,11 @@ $file_list = get_file_list();
 
 $output = get_heading($heading);
 $output .= get_form_upload($settings['ordner_pdo'], '', 'pdo_mapping.php', 'pdo_mapping.php');
-$output .= '</br> ';
+$output .= get_newline();
 $output .= get_container($file_list, '330px');
 $output .= get_pdo_mapping($comment, $received, $command, $regler, $map_high, $map_low, $map_index, $mapped_high, $mapped_low, $mapped_index);
-$output .= '</br>';
-$output .= '</br>';
+$output .= get_newline();
+$output .= get_newline();
 $output .= get_button_inline('index.php', '<b>Zum Hauptmenü</b>');
 $output .= ' ';
 $output .= get_button_inline('wartung.php', '<b>Zurück</b>');

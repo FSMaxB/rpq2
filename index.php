@@ -3,7 +3,7 @@
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
-    Author: Max Bruckner
+    Author: Max Bruckner, Andreas Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ include_once('templates.php');
 
 
 $title = 'RPQ2 Webinterface';
-$author = 'Max Bruckner';
+$author = 'Max Bruckner, Andreas Bruckner';
 
 $output = get_button_menu('einstell-mess.php', 'Einstell-/Messwerttabellen verwalten');
 $output .= get_button_menu('einstell.php?filename=default.ew', 'Einstellwerte');

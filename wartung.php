@@ -3,7 +3,7 @@
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
-    Author: Max Bruckner
+    Author: Max Bruckner, Andreas Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ include_once('file.php');
 include_once('tty.php');
 
 $title = 'Manuelle Geräteeinstellung';
-$author = 'Max Bruckner';
+$author = 'Max Bruckner, Andreas Bruckner';
 $heading = 'Manuelle Geräteeinstellung';
 
 $send = $_POST['send'];
@@ -85,10 +85,10 @@ $file_list = get_file_list();
 
 $output = get_heading($heading);
 $output .= get_form_upload($settings['ordner_wartung'], '', 'wartung.php', 'wartung.php');
-$output .= '</br> ';
+$output .= get_newline();
 $output .= get_wartung(get_container($file_list, '330px'), $comment, $send, $received);
-$output .= '</br> ';
-$output .= '</br> ';
+$output .= get_newline();
+$output .= get_newline();
 $output .= get_button_inline('index.php', '<b>Zum Hauptmenu</b>');
 $output .= ' ';
 $output .= get_button_inline('mess.php?filename=default.mw', '<b>Zu Messwerten</b>');

@@ -3,7 +3,7 @@
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
-    Author: Max Bruckner
+    Author: Max Bruckner, Andreas Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -108,14 +108,16 @@ switch($mode) {
         $title = 'Einstellwerte lesen';
         write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
         $return = run('read', 'send.ew', 'receive.ew');
-        $output = get_output($return, '</br>Einstellwerte erfolgreich ausgelesen', 'receive.ew', nl2br($return), 'send.ew');
+        $output = get_newline();
+        $output .= get_output($return, 'Einstellwerte erfolgreich ausgelesen', 'receive.ew', nl2br($return), 'send.ew');
         break;
 
     case 'write':
         $title = 'Einstellwerte schreiben';
         write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
         $return = run('write', 'send.ew');
-        $output = get_output($return, '</br>Einstellwerte erfolgreich geschrieben', 'send.ew', nl2br($return), 'send.ew');
+        $output = get_newline();
+        $output .= get_output($return, '</br>Einstellwerte erfolgreich geschrieben', 'send.ew', nl2br($return), 'send.ew');
         break;
 
     case 'write_save':
@@ -123,9 +125,11 @@ switch($mode) {
         write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
         $return = run('write', 'send.ew');
         if(write_csv($filename, $comment, $regler, $index, $data, $take_trenn, $take_comments, false)) {
-            $output = get_output($return, '</br>Einstellwerte erfolgreich geschrieben und gespeichert', $filename, nl2br($return), 'send.ew');
+            $output = get_newline();
+            $output .= get_output($return, 'Einstellwerte erfolgreich geschrieben und gespeichert', $filename, nl2br($return), 'send.ew');
         } else {
-            $output = get_failure('</br>Speichern der Einstellwerte fehlgeschlagen!');
+            $output = get_newline();
+            $output .= get_failure('Speichern der Einstellwerte fehlgeschlagen!');
             $output .= get_button_menu_back();
         }
         break;
@@ -133,14 +137,16 @@ switch($mode) {
     case 'save':
         $title = 'save';
         if(write_csv($filename, $comment, $regler, $index, $data, $take_trenn, $take_comment, false)) {
-            $output = get_success('</br>Einstellwerte erfolgreich gespeichert');
+            $output = get_newline();
+            $output .= get_success('Einstellwerte erfolgreich gespeichert');
             $header = get_redirect(1, "einstell.php?filename=$filename");
         } else {
-            $output = get_failure('</br>Beim Speichern der Einstellwerte ist ein Fehler aufgetreten');
+            $output = get_newline();
+            $output .= get_failure('Beim Speichern der Einstellwerte ist ein Fehler aufgetreten');
             $header = get_redirect(3, "index.php");
         }
         break;
 }
-$author = 'Max Bruckner';
+$author = 'Max Bruckner, Andreas Bruckner';
 draw_page($output, $title, $author, NAKED, $header);
 ?>

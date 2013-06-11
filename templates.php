@@ -3,7 +3,7 @@
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
-    Author: Max Bruckner
+    Author: Max Bruckner, Andreas Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -353,39 +353,32 @@ function get_link_logs($filename, $ordner, $return_success, $return_failure) {
     return $output;
 }
 
-function hex($input, $digits) {
-	if ($input == '')
-		return('');
-	$string = NULL;
-	for($i = 0; $i < $digits; $i++) {
-		$string .= '0';
-	}
-	
-	$string .= dechex($input);
-	return substr($string, strlen($string) - $digits);
-}
-
 function get_pdo_mapping($comment, $received, $command, $regler, $map_high, $map_low, $map_index, $mapped_high, $mapped_low, $mapped_index) {
-	$template_pdo_mapping = file_get_contents('template_pdo_mapping.html');
-	
-	$output = str_replace('{comment}', $comment, $template_pdo_mapping);
- 	$output = str_replace('{received}', $received, $output);
- 	$output = str_replace('{command}', $command, $output);
- 	$output = str_replace('{regler}', $regler, $output);
- 	$output = str_replace('{map_high}', $map_high, $output);
- 	$output = str_replace('{map_low}', $map_low, $output);
- 	$output = str_replace('{map_index}', $map_index, $output);
- 	$output = str_replace('{mapped_high}', $mapped_high, $output);
- 	$output = str_replace('{mapped_low}', $mapped_low, $output);
- 	$output = str_replace('{mapped_index}', $mapped_index, $output);
-	return $output;
+    $template_pdo_mapping = file_get_contents('template_pdo_mapping.html');
+
+    $output = str_replace('{comment}', $comment, $template_pdo_mapping);
+    $output = str_replace('{received}', $received, $output);
+    $output = str_replace('{command}', $command, $output);
+    $output = str_replace('{regler}', $regler, $output);
+    $output = str_replace('{map_high}', $map_high, $output);
+    $output = str_replace('{map_low}', $map_low, $output);
+    $output = str_replace('{map_index}', $map_index, $output);
+    $output = str_replace('{mapped_high}', $mapped_high, $output);
+    $output = str_replace('{mapped_low}', $mapped_low, $output);
+    $output = str_replace('{mapped_index}', $mapped_index, $output);
+    return $output;
 }
 
 function get_link_pdo($filename, $ordner) {
-	$template_link_pdo = file_get_contents('template_link_pdo.html');
-	
-	$output = str_replace('{ordner}', $ordner, $template_link_pdo);
-	$output = str_replace('{filename}', $filename, $output);
-	return $output;
+    $template_link_pdo = file_get_contents('template_link_pdo.html');
+
+    $output = str_replace('{ordner}', $ordner, $template_link_pdo);
+    $output = str_replace('{filename}', $filename, $output);
+    return $output;
 }
+
+function get_newline() {
+    $template_newline = file_get_contents('template_newline.html');
+
+    return $template_newline;
 ?>

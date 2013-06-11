@@ -3,7 +3,7 @@
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
-    Author: Max Bruckner, Andreas Bruckner
+    Author: Max Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,27 +19,15 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-include_once('page.php');
+function hex($input, $digits) {
+    if ($input == '')
+        return('');
+    $string = NULL;
+    for($i = 0; $i < $digits; $i++) {
+        $string .= '0';
+    }
 
-$title = 'System herunterfahren';
-$author = 'Max Bruckner, Andreas Bruckner';
-
-$mode = $_GET['mode'];
-
-if($mode == 'reboot') {
-    $param = '-r';
-    $output = '<h1>Das System wird neu gestartet!</h1>';
-} else if($mode == 'halt') {
-    $param = '-h';
-    $output = '<h1>Das System wird heruntergefahren</h1>';
-} else {
-    $output = '<h1>Ungültiger Parameter</h1>';
-    $output .= get_button('index.php', 'Zum Hauptmenü');
-    draw_page($output, $title, $author, LAYOUT);
-    exit(0);
+    $string .= dechex($input);
+    return substr($string, strlen($string) - $digits);
 }
-
-system("/sbin/shutdown $param now");
-
-draw_page($output, $title, $author, HEAD);
 ?>
