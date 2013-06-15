@@ -381,4 +381,5 @@ function get_newline() {
     $template_newline = file_get_contents('template_newline.html');
 
     return $template_newline;
+}
 ?>
