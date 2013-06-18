@@ -1,0 +1,97 @@
+<?php
+/*
+    RPQ2-Webinterface
+
+    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
+    Author: Max Bruckner
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see http://www.gnu.org/licenses/.
+*/
+
+include_once('page.php');
+include_once('settings.php');
+include_once('file.php');
+
+function ordner_list($ordner) {
+    global $settings;
+
+    $output = NULL;
+    foreach (array_keys($settings) as $key) {
+        if( strpos($key, 'ordner') === 0) {
+            if($settings[$key] === $ordner) {
+                $output .= "<option value=\"{$settings[$key]}\" selected>{$settings[$key]}</option>\n";
+            } else {
+                $output .= "<option value=\"{$settings[$key]}\">{$settings[$key]}</option>\n";
+            }
+        }
+    }
+    return $output;
+}
+
+$get = FALSE;
+if(isset($_GET['ordner'])) {
+    $ordner = $_GET['ordner'];
+    $get = TRUE;
+} else {
+    $ordner = $_POST['ordner'];
+}
+if(isset($_GET['filename'])) {
+    $filename = correct_filename($_GET['filename'], '');
+    $get = TRUE;
+} else {
+    $filename = correct_filename($_POST['filename'], '');
+}
+$text = $_POST['text'];
+$return = $_GET['return'];
+
+$title = "Bearbeiten von \"$ordner/$filename\"";
+$author = 'Max Bruckner';
+$heading = "Bearbeiten von \"$ordner/$filename\"";
+
+if( ($ordner != '') && ($filename != '')) {
+    if($get === TRUE) {
+        $text = file_get_contents("$ordner/$filename");
+    } else {
+        if($text == '') //Verhindert einen Bug, dass man leere Dateien nicht speichern kann
+            $text = ' ';
+        if(file_put_contents("$ordner/$filename", $text)) {
+            $message = get_success('Speichern Erfolgreich');
+        } else {
+            $message = get_failure('Speichern Fehlgeschlagen');
+        }
+    }
+}
+
+$ordnerlist = ordner_list($ordner);
+if($return == '') {
+    $return = 'index.php';
+}
+
+$output = get_heading($heading);
+$output .= get_form_editor($text, $ordnerlist, $filename);
+$output .= '</br>';
+$output .= $message;
+$output .= '</br>';
+$output .= '</br>';
+$output .= get_button_inline('index.php', '<b>Zum Hauptmenü</b>');
+$output .= ' ';
+$output .= get_button_inline('einstell-mess.php', '<b>Verwaltung Einstellwerte</b>');
+$output .= ' ';
+$output .= get_button_inline('mess.php?filename=default.mw', '<b>Zu Messwerten</b>');
+$output .= ' ';
+$output .= get_button_inline('pdo_mapping.php', '<b>PDO Mapping</b>');
+$output .= ' ';
+$output .= get_button_inline('wartung.php', '<b>Zu Geräteeinstellung</b>');
+draw_page($output, $title, $author, HEAD);
+?>

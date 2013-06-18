@@ -1,0 +1,22 @@
+<form action="einstell_write.php" method="post">
+    <textarea name="comment" cols="70" rows="1">{comment}</textarea></br>
+    <input type="hidden" name="index" value="{index}">
+    <div style="height:436px;width:100%;border:1px solid #ccc;overflow:auto;">
+        <table>
+            {einstellwerte}
+        </table>
+    </div>
+    </br>
+    Dateiname:<input type="text" size="30" name="filename" value="{filename}">
+    Regleradresse:<input type="text" size="3" maxlength="3" name="regler" value="{regler}">
+    <select name="mode" size="1">
+        <option value="read" selected>Werte auslesen</option>
+        <option value="save">CSV speichern</option>
+        <option value="write_save">Werte schreiben und speichern</option>
+        <option value="write">Werte schreiben</option>
+    </select>
+     <input type="hidden" name="take_comments" value="true">
+    <input type="hidden" name="take_trenn" value="true">
+    <input type="reset" value="Zurücksetzen">
+    <input type="submit" value="Absenden">
+</form>

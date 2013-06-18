@@ -1,0 +1,37 @@
+<form action="settings.php" method="post">
+  <p>
+    <h3>Serielle Schnittstelle</h3>
+    <table>
+      <tr>
+        <td>
+          <b>Schnittstelle:</b>
+        </td>
+        <td>
+          <select name="settings[serial_interface]" size="1">
+            {serial_interfaces}
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Baudrate:</b>
+        </td>
+        <td>
+          <select name="settings[serial_baudrate]" size="1">
+            {serial_baudrates}
+          </select>
+        </td>
+      </tr>
+    </table>
+  </p>
+  <p>
+    <input type="hidden" name="settings[ordner_docs]" value="{ordner_docs}">
+    <input type="hidden" name="settings[ordner_einstell-mess]" value="{ordner_einstell-mess}">
+    <input type="hidden" name="settings[ordner_wartung]" value="{ordner_wartung}">
+    <input type="hidden" name="settings[ordner_log]" value="{ordner_log}">
+    <input type="hidden" name="settings[ordner_pdo]" value="{ordner_pdo}">
+    <input type="hidden" name="return_success" value="{return_success}">
+    <input type="hidden" name="return_failure" value="{return_failure}">
+    <input type="submit" value="Einstellungen speichern">
+  </p>
+</form>

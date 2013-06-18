@@ -1,0 +1,33 @@
+{file_list}
+</br>
+<form action="wartung.php" method="post">
+  <table>
+    <tr>
+      <td>
+        Dateiname:
+      </td>
+      <td>
+        <input type="text" id="filename" name="filename" size="47" maxlength="50"></br>
+      </td>
+ 
+      <td>
+        Beschreibung:
+      </td>
+      <td>
+        <input type="text" id="comment" name="comment" size="50" maxlength="50" value="{comment}"></br>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Befehl:
+      </td>
+      <td>
+        <input type="text" id="send" name="send" size="26" maxlength="26" value="{send}">
+        <input type="submit" value="Absenden">
+        <button onclick="document.getElementById('send').value='';document.getElementById('comment').value='';document.getElementById('filename').value=''">Clear</button>
+      </td>
+    </tr>
+  </table>
+</form>
+
+<b>Antwort: {received}</b>
