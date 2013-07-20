@@ -1,15 +1,16 @@
 <b>{comment}</b>
+<br>
 {container}
 <form name="vars">
   <input type="hidden" name="run" value="true">
   <input type="hidden" name="log" value="false">
-  Update-Intervall (1/10s):<input type="text" name="refresh" value="1">
+  Update-Intervall (1/10s):<input type="text" name="refresh" value="5">
 </form>
 <button id="run" onclick="run();">Stop</button>
 <button id="log" onclick="log_toggle();">Aufzeichnen</button>
 <button onclick="document.getElementById('messwerte').innerHTML = ''">Clear</button>  
-</br>
-</br>
+<br>
+<br>
 <a href="index.php"><button><b>Zum Hauptmenü</b></button></a>
 <a href="einstell.php?filename=default.ew"><button><b>Zu Einstellwerten</b></button></a>
 <a href="einstell-mess.php"><button><b>Zu Mess/Einstellwerte</b></button></a>

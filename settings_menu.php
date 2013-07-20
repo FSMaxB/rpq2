@@ -53,7 +53,8 @@ foreach( explode("\n", get_baudrates()) as $baudrate ) {
 }
 
 $output = get_heading($heading);
-$output .= get_form_settings($interfaces, $baudrates, $settings['ordner_docs'], $settings['ordner_einstell-mess'], $settings['ordner_wartung'], $settings['ordner_log'], $settings['ordner_pdo'], 'settings_menu.php', 'settings_menu.php');
-$output .= get_button_menu_back();
+$output .= get_form_settings($interfaces, $baudrates, $settings['ordner_docs'], $settings['ordner_einstell-mess'], $settings['ordner_wartung'], $settings['ordner_log'], $settings['ordner_pdo'], $settings['ordner_misc'], 'settings_menu.php', 'settings_menu.php');
+$output .= get_button_inline("index.php", "<b>Zum Hauptmenü</b>");
+$output .= get_button_inline("editor.php?ordner={$settings['ordner_misc']}&filename=shutdown_time", "<b>Shutdown-Zeit</b>");
 draw_page($output, $title, $author, HEAD);
 ?>

@@ -19,16 +19,27 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-include_once('page.php');
+include_once('settings.php');
 include_once('templates.php');
+include_once('file.php');
+include_once('page.php');
 
-$title = 'Lizenzbedingungen';
+$title = 'Dokumentationen';
 $author = 'Max Bruckner';
+$heading = 'Dokumentationen';
 
-$return = $_GET['return'];
+$return = 'docs.php';
 
-$output = get_license(get_container(get_license_gpl(), '600px'));
-// $output .= '<a href="index.php"><h3>Zurück</h3></a>';
+//Dateiliste erstellen:
+$file_list = '<table>';
+foreach ( get_files($settings['ordner_docs']) as $file ) {
+    $file_list .= get_link_docs($settings['ordner_docs'], $file, $return, $return);
+}
+$file_list .= '</table>';
 
+$output = get_heading($heading);
+$output .= get_form_upload($settings['ordner_docs'], '', $return, $return);
+$output .= get_container($file_list,'260px');
+$output .= '<a href="index.php"><h3>Zurück</h3></a>';
 draw_page($output, $title, $author, HEAD);
 ?>

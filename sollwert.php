@@ -181,7 +181,7 @@ if($regler != '')
 
 			if($wert1 != '')
 			{
-				$befehl = 'sw' . $befehl . 'ENDE';
+				$befehl = 'sk' . $befehl . 'ende';
 				$received = send($befehl);
 			}
 		}

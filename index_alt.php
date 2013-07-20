@@ -1,3 +1,4 @@
+
 <?php
 /*
     RPQ2-Webinterface
@@ -22,13 +23,16 @@
 include_once('page.php');
 include_once('templates.php');
 
-$title = 'Lizenzbedingungen';
-$author = 'Max Bruckner';
 
-$return = $_GET['return'];
+$title = 'RPQ2 Webinterface';
+$author = 'Andreas Bruckner';
 
-$output = get_license(get_container(get_license_gpl(), '600px'));
-// $output .= '<a href="index.php"><h3>Zurück</h3></a>';
-
-draw_page($output, $title, $author, HEAD);
+$output = '<a href="einstell_alt.php?filename=default.ew"><h1>Einstellwerte</h1></a>';
+$output .= '<a href="mess_alt.php?filename=default.mw"><h1>Messwerte</h1></a>';
+$output .= '<a href="einstell-mess_alt.php"><h1>Verwaltung Einstellwerte</h1></a>';
+//$output .= '<a href="logs_alt.php"><h1>Aufzeichnungen verwalten</h1></a>';
+$output .= '<a href="docs_alt.php"><h1>Dokumentationen</h1></a>';
+$output .= '<a href="shutdown.php?mode=halt"><h1>Herunterfahren</h1></a>';
+$output .= '<br> ';
+draw_page($output, $title, $author, RAW);
 ?>

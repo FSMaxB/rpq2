@@ -89,9 +89,9 @@ function get_mess_lines($messwerte, $mess_format) {
             $bin = $messwerte[$pos]['bin'];
             $bin1 = substr($bin, 0, 4);
             $bin2 = substr($bin, 4, 4);
-			$bin3 = substr($bin, 8, 4);
-			$bin4 = substr($bin, 12, 4);			
-            $bin = "$bin1 $bin2 $bin3 $bin4";
+            $bin3 = substr($bin, 8,4);
+            $bin4 = substr($bin, 12,4);            
+            $bin = "$bin1-$bin2-$bin3-$bin4";
         }
 
         $output .= get_zeile_mess_get($text, $skal, $proz, $hex, $bin);
@@ -115,7 +115,7 @@ if($log === 'true') {
     file_put_contents("{$settings['ordner_log']}/$filename", $log_line, FILE_APPEND);
 }
 
-$output = get_zeile_mess_get('<b>Beschreibung:</b>', '&nbsp;<b>Istwert:</b>', '&nbsp;<b>Prozesswert:</b>', '&nbsp;<b>HEX-Wert:</b>', '&nbsp;<b>Binär-Wert:</b>');
+$output = get_zeile_mess_get('<b>Beschreibung:</b>', '&nbsp;<b>Istwert:</b>', '&nbsp;<b>Prozesswert:</b>', '&nbsp;<b>HEX-Wert:</b>', '&nbsp;<b> Anzeige Binäre-Werte:</b>&nbsp;');
 $output .= get_mess_lines($messwerte, $mess_format);
 echo get_mess_get($output);
 ?>

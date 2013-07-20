@@ -19,16 +19,27 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-include_once('page.php');
+include_once('settings.php');
 include_once('templates.php');
+include_once('file.php');
+include_once('page.php');
 
-$title = 'Lizenzbedingungen';
+$title = 'Aufzeichnungen verwalten';
 $author = 'Max Bruckner';
+$heading = 'Aufzeichnungen verwalten';
 
-$return = $_GET['return'];
+$return = 'logs.php';
 
-$output = get_license(get_container(get_license_gpl(), '600px'));
-// $output .= '<a href="index.php"><h3>Zurück</h3></a>';
+$file_list = "<table>\n";
+foreach( get_files($settings['ordner_log']) as $file ) {
+    $file_list .= get_link_logs($file, $settings['ordner_log'], $return, $return) . "\n";
+}
+$file_list .= '</table>';
 
+$output = get_heading($heading);
+//$output .= get_container($file_list,'460px');
+$output .= get_container($file_list,'260px');
+$output .= '<a href="index.php"><h3>Zurück</h3></a>';
 draw_page($output, $title, $author, HEAD);
 ?>
+
