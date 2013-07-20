@@ -48,12 +48,8 @@ function write_csv($filename, $comment, $regler, $index, $einstellwerte, $take_t
                 if( $einstellwert['checked'] === 'true') {
                     $first_value = true;
                     $Zahl = $einstellwert['value'];
- //                   if ($Zahl < 0)
-//						$Zahl = $Zahl + 0xFFFF +1;
-						
- //                   $value = number_format($einstellwert['value'], $einstellwert['komma'], '.', '');
+ 
 					$value = number_format($Zahl, $einstellwert['komma'], '.', '');
-//					echo($value);
                     $output .= "{$einstellwert['id']},$value,{$einstellwert['skal']},{$einstellwert['komma']},{$einstellwert['text']}\n";
                 }
                 break;
@@ -100,17 +96,14 @@ function get_output($return, $text_success, $file_success, $text_fail, $file_fai
     global $header; //Das ist etwas gegen mein Konzept
     if( (strpos($return, 'FEHLER') !== FALSE) ) {
             $output = get_failure($text_fail);
-            $header = get_redirect(3, "einstell.php?filename=$file_fail");
+            $header = get_redirect(3, "einstell_alt.php?filename=$file_fail");
         } else {
-            $output = get_success($text_success);
-            $header = get_redirect(1, "einstell.php?filename=$file_success");
+ //           $output = get_success($text_success);
+            $header = get_redirect(0, "einstell_alt.php?filename=$file_success");
         }
     return $output;
 }
 
-
-//function run_einstell_write()
-//{
 set_tty();
 
 switch($mode) {
@@ -146,15 +139,14 @@ switch($mode) {
     case 'save':
         $title = 'save';
         if(write_csv($filename, $comment, $regler, $index, $data, $take_trenn, $take_comment, false)) {
-            $output = get_success('</br>Einstellwerte erfolgreich gespeichert');
-            $header = get_redirect(1, "einstell.php?filename=$filename");
+ //           $output = get_success('</br>Einstellwerte erfolgreich gespeichert');
+            $header = get_redirect(0, "einstell_alt.php?filename=$filename");
         } else {
             $output = get_failure('</br>Beim Speichern der Einstellwerte ist ein Fehler aufgetreten');
             $header = get_redirect(3, "index.php");
         }
         break;
 }
-//}
-//run_einstell_write();
+
 draw_page($output, $title, $author, NAKED, $header);
 ?>

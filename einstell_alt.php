@@ -39,12 +39,28 @@ include_once('settings.php');
 include_once('page.php');
 include_once('templates.php');
 include_once('csv.php');
+include_once('tty.php');
+include_once('file.php');
+
+function get_form_einstell_alt($comment, $regler, $index, $einstellwerte, $filename) {
+    $template_form_einstell = file_get_contents('template_form_einstell_alt.html');
+
+    $output = str_replace('{comment}', $comment, $template_form_einstell);
+    $output = str_replace('{regler}', $regler, $output);
+    $output = str_replace('{index}',$index, $output);
+    $output = str_replace('{einstellwerte}', $einstellwerte, $output);
+    $output = str_replace('{filename}', $filename, $output);
+    return $output;
+}
+
 
 $title = 'Einstellwerte';
 $author = 'Max Bruckner';
 $heading = 'Einstellwerte';
 
 $filename = $_GET['filename'];
+$info = $_GET['info'];
+
 
 function get_einstellwerte($lines) {
     $i = 0;
@@ -106,6 +122,9 @@ function get_list($einstellwerte) {
     return $output;
 }
 
+
+
+
 $einstell_lines = file("{$settings['ordner_einstell-mess']}/$filename", FILE_IGNORE_NEW_LINES);
 
 $comment = get_comment($einstell_lines);
@@ -114,18 +133,11 @@ $index = get_value('Index', $einstell_lines);
 $einstellwerte = get_einstellwerte($einstell_lines);
 $einstell_list = get_list($einstellwerte);
 
+
 $output = '</br> ';
-//$output = get_heading($heading);
-$output .= get_form_einstell($comment, $regler, $index, $einstell_list, $filename);
+$output .= get_form_einstell_alt($comment, $regler, $index, $einstell_list, $filename);
 $output .= '</br>';
-$output .= get_button_inline('index.php', '<b>Zum Hauptmenü</b>');
-$output .= ' ';
-$output .= get_button_inline('einstell-mess.php', '<b>Verwaltung Einstellwerte</b>');
-$output .= ' ';
-$output .= get_button_inline('mess.php?filename=default.mw', '<b>Zu Messwerten</b>');
-$output .= ' ';
-$output .= get_button_inline('pdo_mapping.php', '<b>PDO Mapping</b>');
-$output .= ' ';
-$output .= get_button_inline('wartung.php', '<b>Zu Geräteeinstellung</b>');
+$output .= '<a href="index.php"><h3>Zum Hauptmenü</h3></a>';
+
 draw_page($output, $title, $author, HEAD);
 ?>
