@@ -19,6 +19,7 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+include_once('meta.php');
 include_once('templates.php');
 
 function correct_filename($filename, $extension) {

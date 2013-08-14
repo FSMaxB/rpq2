@@ -24,6 +24,7 @@ define('RAW', 1);       //Verwende leere Seite mit Header und Footer
 define('LAYOUT', 2);    //Verwende Layout
 define('HEAD', 3);      //Nur Kopfzeile
 
+include_once('meta.php');
 include_once('templates.php');
 
 function draw_page( $content, $title, $author, $type, $header = '') {
@@ -42,7 +43,7 @@ function draw_page( $content, $title, $author, $type, $header = '') {
             break;
       case HEAD:
             $output = get_page_header($content, $current);
-            break;            
+            break;
     }
     echo get_html($output, $title, $author, $header);
 }

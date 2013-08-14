@@ -19,6 +19,7 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+include_once('meta.php');
 include_once('templates.php');
 include_once('page.php');
 
@@ -31,11 +32,11 @@ $return_failure = $_GET['return_failure'];
 
 if(unlink($path)) {
     $header = get_redirect(1, $return_success);
-   	$output = '</br> ';   
+    $output = '</br> ';
     $output .= get_success('Datei "' . $path . '" gelöscht.');
 } else {
     $header = get_redirect(3, $return_failure);
-   	$output = '</br> ';      
+    $output = '</br> ';
     $output .= get_failure('Es ist ein Fehler aufgetreten, "' . $path . '" konnte nicht gelöscht werden.');
 }
 

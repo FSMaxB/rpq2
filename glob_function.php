@@ -20,6 +20,8 @@
 */
 
 
+include_once('meta.php');
+
 function send($send) {
     global $settings;
 
@@ -35,46 +37,46 @@ function send($send) {
 }
 
 function hex($input, $digits) {
-	if ($input == '')
-		return('');
-	$string = NULL;
-	for($i = 0; $i < $digits; $i++) {
-		$string .= '0';
-	}
-	
-	$string .= dechex($input);
-	return substr($string, strlen($string) - $digits);
+    if ($input == '')
+        return('');
+    $string = NULL;
+    for($i = 0; $i < $digits; $i++) {
+        $string .= '0';
+    }
+
+    $string .= dechex($input);
+    return substr($string, strlen($string) - $digits);
 }
 
-function AsciiHex_to_Dezimal($input) 
+function AsciiHex_to_Dezimal($input)
 {
-			$temp = substr($input,0,1);
-			$Ziffer = ord($temp)-48;	
-			if ($Ziffer > 9) 
-				$Ziffer = $Ziffer -7;
-			$Zahl = $Ziffer * 4096;
-			
-			$temp = substr($input,1,1);
-			$Ziffer = ord($temp)-48;	
-			if ($Ziffer > 9) 
-				$Ziffer -= 7;
-			$Zahl += $Ziffer * 256;
-			
-			$temp = substr($input,2,1);
-			$Ziffer = ord($temp)-48;	
-			if ($Ziffer > 9) 
-				$Ziffer -= 7;
-			$Zahl += $Ziffer * 16;
-			
-			$temp = substr($input,3,1);
-			$Ziffer = ord($temp)-48;	
-			if ($Ziffer > 9) 
-				$Ziffer -= 7;
-			$Zahl += $Ziffer;			
-			if  ($Zahl > 0x7FFF)
-			 $Zahl = $Zahl - 0xFFFF -1;
+            $temp = substr($input,0,1);
+            $Ziffer = ord($temp)-48;
+            if ($Ziffer > 9)
+                $Ziffer = $Ziffer -7;
+            $Zahl = $Ziffer * 4096;
 
-	return $Zahl;
+            $temp = substr($input,1,1);
+            $Ziffer = ord($temp)-48;
+            if ($Ziffer > 9)
+                $Ziffer -= 7;
+            $Zahl += $Ziffer * 256;
+
+            $temp = substr($input,2,1);
+            $Ziffer = ord($temp)-48;
+            if ($Ziffer > 9)
+                $Ziffer -= 7;
+            $Zahl += $Ziffer * 16;
+
+            $temp = substr($input,3,1);
+            $Ziffer = ord($temp)-48;
+            if ($Ziffer > 9)
+                $Ziffer -= 7;
+            $Zahl += $Ziffer;
+            if  ($Zahl > 0x7FFF)
+             $Zahl = $Zahl - 0xFFFF -1;
+
+    return $Zahl;
 }
 
 

@@ -18,6 +18,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
+
+include_once('meta.php');
 include_once('page.php');
 include_once('file.php');
 include_once('templates.php');
@@ -43,12 +45,12 @@ if(move_uploaded_file($_FILES['datei']['tmp_name'],$ziel))
 {
     //Wenn erfolgreich, leite nach 1 Sekunde automatisch um und gebe Meldung aus
     $header = get_redirect(1, $return_success);
-	$output = '</br> ';   
+    $output = '</br> ';
     $output .= get_success("Datei \"{$_FILES['datei']['name']}\" erfolgreich hochgeladen.");
 } else {
     //Wenn nicht erfolgreich, leite nach 3 Sekunden automatisch um und gebe Meldung aus
     $header = get_redirect(3, $return_failure);
- 	$output = '</br> ';   
+    $output = '</br> ';
     $output .= get_failure("Beim Hochladen der Datei \"{$_FILES['datei']['name']}\" ist ein Fehler aufgetreten.");
 }
 

@@ -19,8 +19,7 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-//Log-Datei schreiben
-file_put_contents('misc/timestamp', time());
+include_once('meta.php');
 
 function get_wartung($file_list, $comment, $send, $received) {
     $template_wartung = file_get_contents('template_wartung.html');
@@ -358,28 +357,28 @@ function get_link_logs($filename, $ordner, $return_success, $return_failure) {
 }
 
 function get_pdo_mapping($comment, $received, $command, $regler, $map_high, $map_low, $map_index, $mapped_high, $mapped_low, $mapped_index) {
-	$template_pdo_mapping = file_get_contents('template_pdo_mapping.html');
-	
-	$output = str_replace('{comment}', $comment, $template_pdo_mapping);
- 	$output = str_replace('{received}', $received, $output);
- 	$output = str_replace('{command}', $command, $output);
- 	$output = str_replace('{regler}', $regler, $output);
- 	$output = str_replace('{map_high}', $map_high, $output);
- 	$output = str_replace('{map_low}', $map_low, $output);
- 	$output = str_replace('{map_index}', $map_index, $output);
- 	$output = str_replace('{mapped_high}', $mapped_high, $output);
- 	$output = str_replace('{mapped_low}', $mapped_low, $output);
- 	$output = str_replace('{mapped_index}', $mapped_index, $output);
-	return $output;
+    $template_pdo_mapping = file_get_contents('template_pdo_mapping.html');
+
+    $output = str_replace('{comment}', $comment, $template_pdo_mapping);
+    $output = str_replace('{received}', $received, $output);
+    $output = str_replace('{command}', $command, $output);
+    $output = str_replace('{regler}', $regler, $output);
+    $output = str_replace('{map_high}', $map_high, $output);
+    $output = str_replace('{map_low}', $map_low, $output);
+    $output = str_replace('{map_index}', $map_index, $output);
+    $output = str_replace('{mapped_high}', $mapped_high, $output);
+    $output = str_replace('{mapped_low}', $mapped_low, $output);
+    $output = str_replace('{mapped_index}', $mapped_index, $output);
+    return $output;
 }
 
 function get_link_pdo($filename, $ordner, $return_success, $return_failure) {
-	$template_link_pdo = file_get_contents('template_link_pdo.html');
+    $template_link_pdo = file_get_contents('template_link_pdo.html');
 
-	$output = str_replace('{filename}', $filename, $template_link_pdo);
+    $output = str_replace('{filename}', $filename, $template_link_pdo);
     $output = str_replace('{ordner}', $ordner, $output);
     $output = str_replace('{return_success}', $return_success, $output);
-    $output = str_replace('{return_failure}', $return_failure, $output);	
-	return $output;
+    $output = str_replace('{return_failure}', $return_failure, $output);
+    return $output;
 }
 ?>

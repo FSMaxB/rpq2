@@ -19,6 +19,8 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+include_once('meta.php');
+
 define('CONFIG_FILE','settings.cfg');
 
 function get_settings() {

@@ -35,6 +35,7 @@
  *          'checked': Boolean, ob das Häkchen im Webinterface gesetzt wurde
  * */
 
+include_once('meta.php');
 include_once('settings.php');
 include_once('page.php');
 include_once('templates.php');
