@@ -32,8 +32,7 @@ function draw_page( $content, $title, $author, $type, $header = '') {
 
     switch ($type) {
         case NAKED:
- //           $output = $content;
-            $output = get_page_header($content, $current);
+            $output = $content;
             break;
         case RAW:
             $output = get_page($content, $current);

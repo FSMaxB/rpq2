@@ -40,5 +40,5 @@ if(unlink($path)) {
     $output .= get_failure('Es ist ein Fehler aufgetreten, "' . $path . '" konnte nicht gelöscht werden.');
 }
 
-draw_page($output, $title, $author, NAKED, $header);
+draw_page($output, $title, $author, HEAD, $header);
 ?>

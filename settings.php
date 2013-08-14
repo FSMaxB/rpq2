@@ -103,6 +103,6 @@ if( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) {
         $output = get_failure('Beim speichern der Einstellungen ist ein Fehler aufgetreten!');
     }
 
-    draw_page($output, $title, $author, NAKED, $header);
+    draw_page($output, $title, $author, HEAD, $header);
 }
 ?>
