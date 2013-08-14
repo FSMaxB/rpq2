@@ -19,6 +19,7 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+include_once('meta.php');
 include_once('page.php');
 include_once('settings.php');
 include_once('templates.php');
@@ -58,76 +59,76 @@ $mapped_low = $_POST['mapped_low'];
 $mapped_index = $_POST['mapped_index'];
 
 function read_file($lines) {
-	global $comment, $regler, $map_high, $map_low, $map_index, $mapped_high, $mapped_low, $mapped_index;
-	foreach($lines as $line) {
-		if(strpos($line, '#') === 0) {
-			$comment .= substr($line, 1);
-		} else if(strpos($line, 'Regler') === 0) {
-			$split = explode(',', $line);
-			$regler = $split[1];
-		} else {
-			$split = explode(',', $line);
-			if((count($split) == 4) && (strlen($split[0]) == 4) && (strlen($split[1]) <= 2) && (strlen($split[2]) == 4) && (strlen($split[3]) <= 2)) {
-				$map_high = substr($split[0], 0, 2);
-				$map_low = substr($split[0], 2, 2);
-				$map_index = $split[1];
-				$mapped_high = substr($split[2], 0, 2);
-				$mapped_low = substr($split[2], 2, 2);
-				$mapped_index = $split[3];
-			}
-		}
-	}
+    global $comment, $regler, $map_high, $map_low, $map_index, $mapped_high, $mapped_low, $mapped_index;
+    foreach($lines as $line) {
+        if(strpos($line, '#') === 0) {
+            $comment .= substr($line, 1);
+        } else if(strpos($line, 'Regler') === 0) {
+            $split = explode(',', $line);
+            $regler = $split[1];
+        } else {
+            $split = explode(',', $line);
+            if((count($split) == 4) && (strlen($split[0]) == 4) && (strlen($split[1]) <= 2) && (strlen($split[2]) == 4) && (strlen($split[3]) <= 2)) {
+                $map_high = substr($split[0], 0, 2);
+                $map_low = substr($split[0], 2, 2);
+                $map_index = $split[1];
+                $mapped_high = substr($split[2], 0, 2);
+                $mapped_low = substr($split[2], 2, 2);
+                $mapped_index = $split[3];
+            }
+        }
+    }
 }
 
 set_tty();
 
 if($filename != '') {
-	$lines = file("{$settings['ordner_pdo']}/$filename", FILE_IGNORE_NEW_LINES);
-	read_file($lines);
+    $lines = file("{$settings['ordner_pdo']}/$filename", FILE_IGNORE_NEW_LINES);
+    read_file($lines);
 } else if($regler != '') {
-	$command = 0x0600 + $regler;
-	$Vergleich =  0x0580 + $regler;
-	$Vergleich = hex($Vergleich,4);
-	$command = hex($command, 4) . ' ';
-	if ($mode == 'write') {
-		$command .= '23 ' .  $map_low . $map_high . ' ' . $map_index . ' ' . '-' .' 10 ';
-		$command .= $mapped_index . ' ' . $mapped_low . $mapped_high . ' 8000';
-	} else {
-		$command .= '40 ' . $map_low . $map_high . ' ' . $map_index;
-		$command .= ' - 00 00 00 00 8000';
-	}
-	$temp = ereg_replace("-","",$command);
-	$temp = ereg_replace(" ","",$temp);
+    $command = 0x0600 + $regler;
+    $Vergleich =  0x0580 + $regler;
+    $Vergleich = hex($Vergleich,4);
+    $command = hex($command, 4) . ' ';
+    if ($mode == 'write') {
+        $command .= '23 ' .  $map_low . $map_high . ' ' . $map_index . ' ' . '-' .' 10 ';
+        $command .= $mapped_index . ' ' . $mapped_low . $mapped_high . ' 8000';
+    } else {
+        $command .= '40 ' . $map_low . $map_high . ' ' . $map_index;
+        $command .= ' - 00 00 00 00 8000';
+    }
+    $temp = ereg_replace("-","",$command);
+    $temp = ereg_replace(" ","",$temp);
     $received = send($temp);
-	$temp = substr($received,0,3) . ' ';
-	$temp .= substr($received,3,4) . ' ';
-	$temp .= substr($received,7,2) . ' ';	
-	$temp .= substr($received,9,4) . ' ';	
-	$temp .= substr($received,13,2) . ' ';
-	
-	$temp .= substr($received,15,2) . ' ';	
+    $temp = substr($received,0,3) . ' ';
+    $temp .= substr($received,3,4) . ' ';
+    $temp .= substr($received,7,2) . ' ';
+    $temp .= substr($received,9,4) . ' ';
+    $temp .= substr($received,13,2) . ' ';
 
-	if ($mode == 'write')
-	{
-		$temp .= substr($received,17,2) . ' ';	
-		$temp .= substr($received,19,2) . ' ';
-		$temp .= substr($received,21,2);		
-	}
-	else
-	{
-		$mapped_index = substr($received,17,2);
-		$temp .= $mapped_index . ' ';	
-		$mapped_low = substr($received,19,2);
-		$temp .= $mapped_low . ' ';
-		$mapped_high = substr($received,21,2);
-		$temp .= $mapped_high;	
-	}
-	$received = $temp;
-	$comment =  substr($received,4,4);
-	if ($Vergleich == $comment)
-		$comment = get_success(' Übertragung erfolgreich !');
-	else
-		$comment = get_failure(' Fehler Übertragung !');
+    $temp .= substr($received,15,2) . ' ';
+
+    if ($mode == 'write')
+    {
+        $temp .= substr($received,17,2) . ' ';
+        $temp .= substr($received,19,2) . ' ';
+        $temp .= substr($received,21,2);
+    }
+    else
+    {
+        $mapped_index = substr($received,17,2);
+        $temp .= $mapped_index . ' ';
+        $mapped_low = substr($received,19,2);
+        $temp .= $mapped_low . ' ';
+        $mapped_high = substr($received,21,2);
+        $temp .= $mapped_high;
+    }
+    $received = $temp;
+    $comment =  substr($received,4,4);
+    if ($Vergleich == $comment)
+        $comment = get_success(' Übertragung erfolgreich !');
+    else
+        $comment = get_failure(' Fehler Übertragung !');
  }
 
 $file_list = get_file_list();

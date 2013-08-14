@@ -19,6 +19,7 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+include_once('meta.php');
 include_once('settings.php');
 include_once('templates.php');
 include_once('page.php');
@@ -48,8 +49,8 @@ function write_csv($filename, $comment, $regler, $index, $einstellwerte, $take_t
                 if( $einstellwert['checked'] === 'true') {
                     $first_value = true;
                     $Zahl = $einstellwert['value'];
- 
-					$value = number_format($Zahl, $einstellwert['komma'], '.', '');
+
+                    $value = number_format($Zahl, $einstellwert['komma'], '.', '');
                     $output .= "{$einstellwert['id']},$value,{$einstellwert['skal']},{$einstellwert['komma']},{$einstellwert['text']}\n";
                 }
                 break;
@@ -119,7 +120,7 @@ switch($mode) {
         $title = 'Einstellwerte lesen';
         write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
         $return = run('read', 'send.ew', $filename);
-		$output = get_output($return, '</br>Einstellwerte erfolgreich ausgelesen', $filename, nl2br($return), 'send.ew');        
+        $output = get_output($return, '</br>Einstellwerte erfolgreich ausgelesen', $filename, nl2br($return), 'send.ew');
         break;
 
 
@@ -127,7 +128,7 @@ switch($mode) {
         $title = 'Einstellwerte schreiben';
         write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
         $return = run('write', 'send.ew');
-        
+
         $output = get_output($return, '</br>Einstellwerte erfolgreich geschrieben', 'send.ew', nl2br($return), 'send.ew');
         break;
 
@@ -135,7 +136,7 @@ switch($mode) {
         $title = 'Einstellwerte schreiben und speichern';
         write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
         $return = run('write', 'send.ew');
-        
+
         if(write_csv($filename, $comment, $regler, $index, $data, $take_trenn, $take_comments, false)) {
             $output = get_output($return, '</br>Einstellwerte erfolgreich geschrieben und gespeichert', $filename, nl2br($return), 'send.ew');
         } else {

@@ -19,6 +19,8 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+include_once('meta.php');
+
 function get_comment($lines) {
     $comment = NULL;
     foreach($lines as $line) {

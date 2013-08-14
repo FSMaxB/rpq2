@@ -19,6 +19,7 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+include_once('meta.php');
 include_once('page.php');
 
 $title = 'System herunterfahren';
@@ -33,8 +34,8 @@ if($mode == 'reboot') {
     $param = '-h';
     $output = '<h1>Das System wird heruntergefahren</h1>';
     $output .= '<br>';
-    $output .= '<h1>Zum Neustart Spannung am Webinterface weg nehmen</h1>';    
-     $output .= '<h1>und nach einigen Sekunden wieder einschalten</h1>';           
+    $output .= '<h1>Zum Neustart Spannung am Webinterface weg nehmen</h1>';
+     $output .= '<h1>und nach einigen Sekunden wieder einschalten</h1>';
 } else {
     $output = '<h1>Ungültiger Parameter</h1>';
     $output .= get_button('index.php', 'Zum Hauptmenü');

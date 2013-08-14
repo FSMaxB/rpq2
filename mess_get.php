@@ -19,6 +19,7 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
+include_once('meta.php');
 include_once('settings.php');
 include_once('csv.php');
 include_once('templates.php');
@@ -90,7 +91,7 @@ function get_mess_lines($messwerte, $mess_format) {
             $bin1 = substr($bin, 0, 4);
             $bin2 = substr($bin, 4, 4);
             $bin3 = substr($bin, 8,4);
-            $bin4 = substr($bin, 12,4);            
+            $bin4 = substr($bin, 12,4);
             $bin = "$bin1-$bin2-$bin3-$bin4";
         }
 
