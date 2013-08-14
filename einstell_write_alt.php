@@ -115,6 +115,14 @@ switch($mode) {
         $output = get_output($return, '</br>Einstellwerte erfolgreich ausgelesen', 'receive.ew', nl2br($return), 'send.ew');
         break;
 
+    case 'read_save':
+        $title = 'Einstellwerte lesen';
+        write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
+        $return = run('read', 'send.ew', $filename);
+		$output = get_output($return, '</br>Einstellwerte erfolgreich ausgelesen', $filename, nl2br($return), 'send.ew');        
+        break;
+
+
     case 'write':
         $title = 'Einstellwerte schreiben';
         write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
