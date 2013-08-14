@@ -158,5 +158,5 @@ switch($mode) {
         break;
 }
 
-draw_page($output, $title, $author, NAKED, $header);
+draw_page($output, $title, $author, HEAD, $header);
 ?>

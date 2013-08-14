@@ -66,5 +66,5 @@ if(write_csv($filename, $comment, $regler, $data, $take_comments, FALSE)) {
     $header = get_redirect(3, 'einstell-mess.php');
 }
 
-draw_page($output, $title, $author, NAKED, $header);
+draw_page($output, $title, $author, HEAD, $header);
 ?>
