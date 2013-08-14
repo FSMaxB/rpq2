@@ -24,11 +24,12 @@ include_once('templates.php');
 include_once('file.php');
 include_once('page.php');
 
+
 $title = 'Dokumentationen';
 $author = 'Max Bruckner';
 $heading = 'Dokumentationen';
 
-$return = 'docs.php';
+$return = 'docs_alt.php';
 
 //Dateiliste erstellen:
 $file_list = '<table>';
@@ -40,6 +41,6 @@ $file_list .= '</table>';
 $output = get_heading($heading);
 $output .= get_form_upload($settings['ordner_docs'], '', $return, $return);
 $output .= get_container($file_list,'260px');
-$output .= '<a href="index.php"><h3>Zurück</h3></a>';
+$output .= '<a href="index.php"><h3>Zum Hauptmenü</h3></a>';
 draw_page($output, $title, $author, HEAD);
 ?>

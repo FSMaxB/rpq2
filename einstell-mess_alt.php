@@ -82,6 +82,6 @@ $output .= get_container($mess_list, "50px");
 
 $output .= '<br>';
 $output .= '<br>';
-$output .= '<a href="index.php"><h3>Zurück</h3></a>';
+$output .= '<a href="index.php"><h3>Zum Hauptmenü</h3></a>';
 draw_page($output, $title, $author, HEAD);
 ?>

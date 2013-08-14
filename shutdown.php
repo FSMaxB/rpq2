@@ -32,6 +32,9 @@ if($mode == 'reboot') {
 } else if($mode == 'halt') {
     $param = '-h';
     $output = '<h1>Das System wird heruntergefahren</h1>';
+    $output .= '<br>';
+    $output .= '<h1>Zum Neustart Spannung am Webinterface weg nehmen</h1>';    
+     $output .= '<h1>und nach einigen Sekunden wieder einschalten</h1>';           
 } else {
     $output = '<h1>Ungültiger Parameter</h1>';
     $output .= get_button('index.php', 'Zum Hauptmenü');
