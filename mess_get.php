@@ -95,7 +95,7 @@ function get_mess_lines($messwerte, $mess_format) {
             $bin = "$bin1-$bin2-$bin3-$bin4";
         }
 
-        $output .= get_zeile_mess_get($text, $skal, $proz, $hex, $bin);
+        $output .= get_template('zeile_mess_get', array('text' => $text, 'skal' => $skal, 'proz' => $proz, 'hex' => $hex, 'bin' => $bin));
     }
     return $output;
 }
@@ -116,7 +116,7 @@ if($log === 'true') {
     file_put_contents("{$settings['ordner_log']}/$filename", $log_line, FILE_APPEND);
 }
 
-$output = get_zeile_mess_get('<b>Beschreibung:</b>', '&nbsp;<b>Istwert:</b>', '&nbsp;<b>Prozesswert:</b>', '&nbsp;<b>HEX-Wert:</b>', '&nbsp;<b> Anzeige Binäre-Werte:</b>&nbsp;');
+$output = get_template('zeile_mess_get', array('text' => '<b>Beschreibung:</b>', 'skal' => '&nbsp;<b>Istwert:</b>', 'proz' => '&nbsp;<b>Prozesswert:</b>', 'hex' => '&nbsp;<b>HEX-Wert:</b>', 'bin' => '&nbsp;<b> Anzeige Binäre-Werte:</b>&nbsp;'));
 $output .= get_mess_lines($messwerte, $mess_format);
-echo get_mess_get($output);
+echo get_template('mess_get', array('content' => $output));
 ?>

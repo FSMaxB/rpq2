@@ -62,7 +62,16 @@ function get_mess_lines($lines) {
                 if($split[6] === '1')
                     $bin = 'checked';
                 $text = $split[7];
-                $output .= get_zeile_mess_edit($i, $pos, $skal, $komma, $skalproz, $proz, $hex, $bin, $text);
+                $output .= get_template('zeile_mess_edit', array(
+                                        'number' => $i,
+                                        'pos' => $pos,
+                                        'skal' => $skal,
+                                        'komma' => $komma,
+                                        'skalproz' => $skalproz,
+                                        'proz' => $proz,
+                                        'hex' => $hex,
+                                        'bin' => $bin,
+                                        'text' => $hex));
             } else {
                 $output .= "<input type=\"hidden\" name=\"data[$i][type]\" value=\"other\">\n";
             }
@@ -83,11 +92,10 @@ $regler = get_value('Regler', $lines);
 $comment = get_comment($lines);
 $mess_lines = get_mess_lines($lines);
 
-$output = get_heading($heading);
-$output .= get_mess_edit_Neu($comment, $regler, $mess_lines, $filename);
+$output = get_template('heading', array('heading' => $heading));
+$output = get_template('mess_edit_alt', array('comment' => $comment, 'messwerte' => $mess_lines, 'filename' => $filename, 'regler' => $regler));
 $output .= '<br>';
 $output .= '<br>';
 $output .= '<a href="einstell-mess_alt.php"><h3>Zurück</h3></a>';
 draw_page($output, $title, $author, HEAD);
-
 ?>

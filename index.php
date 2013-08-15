@@ -28,16 +28,16 @@ $title = 'RPQ2 Webinterface';
 $author = 'Max Bruckner';
 
 
-$output = file_get_contents('template_script_detect.html');
-$output .= get_button_menu('einstell.php?filename=default.ew', 'Einstellwerte');
-$output .= get_button_menu('mess.php?filename=default.mw', 'Messwerte');
-$output .= get_button_menu('einstell-mess.php', 'Einstell-/Mess-/Sollwerte verwalten');
-$output .= get_button_menu('logs.php', 'Aufzeichnungen verwalten');
-$output .= get_button_menu('docs.php', 'Dokumentationen');
-$output .= get_button_menu('settings_menu.php', 'Einstellungen');
+$output = get_template('script_detect');
+$output .= get_template('button_menu', array('link' => 'einstell.php?filename=default.ew', 'text' => 'Einstellwerte'));
+$output .= get_template('button_menu', array('link' => 'mess.php?filename=default.mw', 'text' => 'Messwerte'));
+$output .= get_template('button_menu', array('link' => 'einstell-mess.php', 'text' => 'Einstell-/Mess-/Sollwerte verwalten'));
+$output .= get_template('button_menu', array('link' => 'logs.php', 'text' => 'Aufzeichnungen verwalten'));
+$output .= get_template('button_menu', array('link' => 'docs.php', 'text' => 'Dokumentationen'));
+$output .= get_template('button_menu', array('link' => 'settings_menu.php', 'text' => 'Einstellungen'));
 
-$output .= get_vspace();
-$output .= get_button_shutdown();
+$output .= get_template('vspace');
+$output .= get_template('button_shutdown');
 
 draw_page($output, $title, $author, LAYOUT);
 ?>

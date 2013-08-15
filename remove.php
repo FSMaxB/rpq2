@@ -31,13 +31,13 @@ $return_success = $_GET['return_success'];
 $return_failure = $_GET['return_failure'];
 
 if(unlink($path)) {
-    $header = get_redirect(1, $return_success);
+    $header = get_template('redirect', array('time' => 1, 'destination' => $return_success));
     $output = '</br> ';
-    $output .= get_success('Datei "' . $path . '" gelöscht.');
+    $output .= get_template('success', array('text' => 'Datei "' . $path . '" gelöscht.'));
 } else {
-    $header = get_redirect(3, $return_failure);
+    $header = get_template('redirect', array('time' => 3, 'destination' => $return_failure));
     $output = '</br> ';
-    $output .= get_failure('Es ist ein Fehler aufgetreten, "' . $path . '" konnte nicht gelöscht werden.');
+    $output .= get_template('failure', array('text' => 'Es ist ein Fehler aufgetreten, "' . $path . '" konnte nicht gelöscht werden.'));
 }
 
 draw_page($output, $title, $author, HEAD, $header);

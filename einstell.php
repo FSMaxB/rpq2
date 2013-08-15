@@ -4,6 +4,7 @@
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
+            Andreas Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -86,25 +87,25 @@ function get_list($einstellwerte) {
     for($i = 0; $i < count($einstellwerte); $i++) {
         switch($einstellwerte[$i]['type']) {
             case 'value':
-                $form = get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
-                $output .= get_einstellzeile(
-                                $i,
-                                $form,
-                                $einstellwerte[$i]['id'],
-                                $einstellwerte[$i]['value'],
-                                $einstellwerte[$i]['skal'],
-                                $einstellwerte[$i]['komma'],
-                                $einstellwerte[$i]['text']);
+                $form = get_template('form_einstellzeile', array('number' => $i, 'line' => $einstellwerte[$i]['line'], 'type' => $einstellwerte[$i]['type']));
+                $output .= get_template('einstellzeile', array(
+                                        'number' => $i,
+                                        'form' => $form,
+                                        'id' => $einstellwerte[$i]['id'],
+                                        'value' => $einstellwerte[$i]['value'],
+                                        'skal' => $einstellwerte[$i]['skal'],
+                                        'komma' => $einstellwerte[$i]['komma'],
+                                        'text' => $einstellwerte[$i]['text']));
                 break;
             case 'trenn':
-                $output .= get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
-                $output .= get_einstellzeile_trenn();
+                $output .= get_template('form_einstellzeile', array('number' => $i, 'line' => $einstellwerte[$i]['line'], 'type' => $einstellwerte[$i]['type']));
+                $output .= get_template('einstellzeile_trenn');
                 break;
             case 'comment':
-                $output .= get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
+                $output .= get_template('form_einstellzeile', array('number' => $i, 'line' => $einstellwerte[$i]['line'], 'type' => $einstellwerte[$i]['type']));
                 break;
             case 'other':
-                $output .= get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
+                $output .= get_template('form_einstellzeile', array('number' => $i, 'line' => $einstellwerte[$i]['line'], 'type' => $einstellwerte[$i]['type']));
                 break;
         }
     }
@@ -122,19 +123,20 @@ $einstell_list = get_list($einstellwerte);
 
 
 $output = '</br> ';
-//$output = get_heading($heading);
-$output .= get_form_einstell($comment, $regler, $index, $einstell_list, $filename);
+//$output = get_template('heading', array('heading' => $heading));
+$output .= get_template('form_einstell', array('comment' => $comment, 'regler' => $regler, 'index' => $index, 'einstellwerte' => $einstell_list, 'filename' => $filename));
 $output .= '</br>';
-$output .= get_button_inline('index.php', '<b>Zum Hauptmenü</b>');
+$output .= get_template('button_inline', array('link' => 'index.php', 'text' => '<b>Zum Hauptmenü</b>'));
 $output .= ' ';
-$output .= get_button_inline('einstell-mess.php', '<b>Verwaltung Einstellwerte</b>');
+$output .= get_template('button_inline', array('link' => 'einstell-mess.php', 'text' => '<b>Verwaltung Einstellwerte</b>'));
 $output .= ' ';
-$output .= get_button_inline('mess.php?filename=default.mw', '<b>Zu Messwerten</b>');
+$output .= get_template('button_inline', array('link' => 'mess.php?filename=default.mw', 'text' => '<b>Zu Messwerten</b>'));
 $output .= ' ';
-$output .= get_button_inline('pdo_mapping.php', '<b>PDO Mapping</b>');
+$output .= get_template('button_inline', array('link' => 'pdo_mapping.php', 'text' => '<b>PDO Mapping</b>'));
 $output .= ' ';
-$output .= get_button_inline('wartung.php', '<b>Zu Geräteeinstellung</b>');
+$output .= get_template('button_inline', array('link' => 'wartung.php', 'text' => '<b>Zu Geräteeinstellung</b>'));
 $output .= $info;
 
 draw_page($output, $title, $author, HEAD);
 ?>
+

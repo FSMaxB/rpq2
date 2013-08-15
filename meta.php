@@ -23,4 +23,5 @@
 
 //Log-Datei schreiben
 file_put_contents('misc/timestamp', time());
+$return = $_SERVER["REQUEST_URI"];  //return auf aktuelle Seite setzen
 ?>

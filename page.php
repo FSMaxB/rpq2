@@ -30,20 +30,20 @@ include_once('templates.php');
 function draw_page( $content, $title, $author, $type, $header = '') {
     $current = $_SERVER["REQUEST_URI"];
 
+    $output = $content;
     switch ($type) {
         case NAKED:
             $output = $content;
             break;
-        case RAW:
-            $output = get_page($content, $current);
-            break;
         case LAYOUT:
-            $output = get_page(get_layout($content), $current);
+            $output = get_template('layout', array('current' => $current, 'content' => $content));
+        case RAW:
+            $output = get_template('page', array('current' => $current, 'content' => $output));
             break;
       case HEAD:
-            $output = get_page_header($content, $current);
+            $output = get_template('page_header', array('current' => $current, 'content' => $content));
             break;
     }
-    echo get_html($output, $title, $author, $header);
+    echo get_template('html', array('content' => $output, 'title' => $title, 'author' => $author, 'header' => $header));
 }
 ?>

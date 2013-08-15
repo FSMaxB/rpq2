@@ -20,6 +20,7 @@
 */
 
 include_once('meta.php');
+include_once('defaults.php');
 include_once('settings.php');
 include_once('page.php');
 include_once('templates.php');
@@ -29,8 +30,6 @@ $title = 'Einstell-/Messwerttabellen verwalten';
 $author = 'Max Bruckner';
 $heading = 'Einstell-/Messwerttabellen verwalten';
 
-
-$return = 'einstell-mess.php';
 $extension = '';
 
 //Dateiliste erstellen:
@@ -38,7 +37,7 @@ $einstell_list = '<table>';
 foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
     $split = explode('.', $file);
     if(end($split) !== 'mw') {
-        $einstell_list .= get_link_einstell($settings['ordner_einstell-mess'], $file, $return, $return);
+        $einstell_list .= get_template('link_einstell', array('directory' => $settings['ordner_einstell-mess'], 'filename' => $file, 'return_success' => $return, 'return_failure' => $return));
     }
 }
 $einstell_list .= '</table>';
@@ -47,28 +46,27 @@ $mess_list = '<table>';
 foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
     $split = explode('.', $file);
     if(end($split) === 'mw') {
-        $mess_list .= get_link_mess($settings['ordner_einstell-mess'], $file, $return, $return);
+        $mess_list .= get_template('link_mess', array('directory' => $settings['ordner_einstell-mess'], 'filename' => $file, 'return_success' => $return, 'return_failure' => $return));
     }
 }
 $mess_list .= '</table>';
 $output = '</br>';
-//$output = get_heading($heading);
-$output .= get_form_upload($settings['ordner_einstell-mess'], $extension, $return, $return);
-
+//$output = get_template('heading', array('heading' => $heading));
+$output .= get_template('form_upload', array('directory' => $settings['ordner_einstell-mess'], 'extension' => $extension, 'return_success' => $return, 'return_failure' => $return));
 $output .= '<br><b>Einstellwerte:</b></br>';
-$output .= get_container($einstell_list, "315px");
+$output .= get_template('container', array('content' => $einstell_list, 'height' => '315px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output .= '<b>Messwerte:</b></br>';
-$output .= get_container($mess_list, "100px");
+$output .= get_template('container', array('content' => $mess_list, 'height' => '100px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 //$output .= '</br>';
-$output .= get_button_inline("editor.php?ordner={$settings['ordner_einstell-mess']}&return=einstell-mess.php", '<b>Neue Datei</b>');
+$output .= get_template('button_inline', array('link' => "editor.php?ordner={$settings['ordner_einstell-mess']}&return=einstell-mess.php", 'text' => '<b>Neue Datei</b>'));
 $output .= '</br>';
 $output .= '</br>';
-$output .= get_button_inline('index.php', '<b>Zum Hauptmenü</b>');
+$output .= get_template('button_inline', array('link' => "index.php", 'text' => '<b>Zum Hauptmenü</b>'));
 $output .= ' ';
-$output .= get_button_inline('sollwert.php', '<b>Sollwerte</b>');
+$output .= get_template('button_inline', array('link' => "sollwert.php", 'text' => '<b>Sollwerte</b>'));
 $output .= ' ';
-$output .= get_button_inline('pdo_mapping.php', '<b>PDO Mapping</b>');
+$output .= get_template('button_inline', array('link' => "pdo_mapping.php", 'text' => '<b>PDO Mapping</b>'));
 $output .= ' ';
-$output .= get_button_inline('wartung.php', '<b>Manuelle Geräteeinstellung</b>');
+$output .= get_template('button_inline', array('link' => "wartung.php", 'text' => '<b>Manuelle Geräteeinstellung</b>'));
 draw_page($output, $title, $author, HEAD);
 ?>

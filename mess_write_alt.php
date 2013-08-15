@@ -60,11 +60,11 @@ $data = $_POST['data'];
 $take_comments = $_POST['take_comments'];
 
 if(write_csv($filename, $comment, $regler, $data, $take_comments, FALSE)) {
- //   $output = get_success('Messwerttabelle erfolgreich gespeichert!');
-    $header = get_redirect(0, 'einstell-mess_alt.php');
+    //$output = get_template('success', array('text' => 'Messwerttabelle erfolgreich gespeichert!'));
+    $header = get_template('redirect', array('time' => 0, 'destination' => 'einstell-mess_alt.php'));
 } else {
-    $output = get_failure('Messwerttabelle konnte nicht gespeichert werden!');
-    $header = get_redirect(3, 'einstell-mess_alt.php');
+    $output = get_template('failure', array('text' => 'Messwerttabelle konnte nicht gespeichert werden!'));
+    $header = get_template('redirect', array('time' => 3, 'desination' => 'einstell-mess_alt.php'));
 }
 
 draw_page($output, $title, $author, HEAD, $header);

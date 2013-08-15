@@ -45,7 +45,7 @@ foreach( get_ttys() as $tty ) {
 
 //Liste mit Baudraten erstellen
 $baudrates = '';
-foreach( explode("\n", get_baudrates()) as $baudrate ) {
+foreach( explode("\n", get_template('baudrates', array(), 'txt')) as $baudrate ) {
     if( $baudrate == $settings['serial_baudrate'] ) {
         $baudrates .= "<option selected>$baudrate</option>\n";
     } else {
@@ -53,9 +53,19 @@ foreach( explode("\n", get_baudrates()) as $baudrate ) {
     }
 }
 
-$output = get_heading($heading);
-$output .= get_form_settings($interfaces, $baudrates, $settings['ordner_docs'], $settings['ordner_einstell-mess'], $settings['ordner_wartung'], $settings['ordner_log'], $settings['ordner_pdo'], $settings['ordner_misc'], 'settings_menu.php', 'settings_menu.php');
-$output .= get_button_inline("index.php", "<b>Zum Hauptmenü</b>");
-$output .= get_button_inline("editor.php?ordner={$settings['ordner_misc']}&filename=shutdown_time", "<b>Shutdown-Zeit</b>");
+$output = get_template('heading', array('heading' => $heading));
+$output .= get_template('form_settings', array(
+                        'serial_interfaces' => $interfaces,
+                        'serial_baudrates' => $baudrates,
+                        'ordner_docs' => $settings['ordner_docs'],
+                        'ordner_einstell-mess' => $settings['ordner_einstell-mess'],
+                        'ordner_wartung' => $settings['ordner_wartung'],
+                        'ordner_log' => $settings['ordner_log'],
+                        'ordner_pdo' => $settings['ordner_pdo'],
+                        'ordner_misc' => $settings['ordner_misc'],
+                        'return_success' => $return,
+                        'return_failure' => $return));
+$output .= get_template('button_inline', array('link' => 'index.php', 'text' => '<b>Zum Hauptmenü</b>'));
+$output .= get_template('button_inline', array('link' => "editor.php?ordner={$settings['ordner_misc']}&filename=shutdown_time", 'text' => '<b>Shutdown-Zeit</b>'));
 draw_page($output, $title, $author, HEAD);
 ?>

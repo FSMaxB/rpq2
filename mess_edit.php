@@ -50,7 +50,16 @@ function get_mess_lines($lines) {
                 if($split[6] === '1')
                     $bin = 'checked';
                 $text = $split[7];
-                $output .= get_zeile_mess_edit($i, $pos, $skal, $komma, $skalproz, $proz, $hex, $bin, $text);
+                $output .= get_template('zeile_mess_edit', array(
+                                        'number' => $i,
+                                        'pos' => $pos,
+                                        'skal' => $skal,
+                                        'komma' => $komma,
+                                        'skalproz' => $skalproz,
+                                        'proz' => $proz,
+                                        'hex' => $hex,
+                                        'bin' => $bin,
+                                        'text' => $hex));
             } else {
                 $output .= "<input type=\"hidden\" name=\"data[$i][type]\" value=\"other\">\n";
             }
@@ -71,18 +80,17 @@ $regler = get_value('Regler', $lines);
 $comment = get_comment($lines);
 $mess_lines = get_mess_lines($lines);
 
-$output = get_heading($heading);
-$output .= get_mess_edit($comment, $regler, $mess_lines, $filename);
+$output = get_template('heading', array('heading' => $heading));
+$output = get_template('mess_edit', array('comment' => $comment, 'messwerte' => $mess_lines, 'filename' => $filename, 'regler' => $regler));
 $output .= '</br>';
-$output .= get_button_inline('index.php', '<b>Zum Hauptmenü</b>');
+$output .= get_template('button_inline', array('link' => 'index.php', 'text' => '<b>Zum Hauptmenü</b>'));
 $output .= ' ';
-$output .= get_button_inline('einstell-mess.php', '<b>Verwaltung Einstellwerte</b>');
+$output .= get_template('button_inline', array('link' => 'einstell-mess.php', 'text' => '<b>Verwaltung Einstellwerte</b>'));
 $output .= ' ';
-$output .= get_button_inline('mess.php?filename=default.mw', '<b>Zu Messwerten</b>');
+$output .= get_template('button_inline', array('link' => 'mess.php?filename=default.mw', 'text' => '<b>Zu Messwerten</b>'));
 $output .= ' ';
-$output .= get_button_inline('pdo_mapping.php', '<b>PDO Mapping</b>');
+$output .= get_template('button_inline', array('link' => 'pdo_mapping.php', 'text' => '<b>PDO Mapping</b>'));
 $output .= ' ';
-$output .= get_button_inline('wartung.php', '<b>Zu Geräteeinstellung</b>');
+$output .= get_template('button_inline', array('link' => 'wartung.php', 'text' => '<b>Zu Geräteeinstellung</b>'));
 draw_page($output, $title, $author, HEAD);
-
 ?>

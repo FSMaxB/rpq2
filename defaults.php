@@ -19,19 +19,7 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-include_once('meta.php');
-include_once('defaults.php');
-include_once('page.php');
-include_once('templates.php');
-
-$title = 'Lizenzbedingungen';
-$author = 'Max Bruckner';
-
-$return = $_GET['return'];
-
-$gpl = get_template('license_gpl');
-$container = get_template('container', array('content' => $gpl, 'height' => '600px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
-$output = get_template('license', array('license' => $container));
-
-draw_page($output, $title, $author, HEAD);
+define('DEFAULT_CONTAINER_HEIGHT', '400px');
+define('DEFAULT_CONTAINER_BORDER', '1px');
+define('DEFAULT_CONTAINER_ID', 'div');
 ?>

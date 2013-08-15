@@ -26,8 +26,8 @@ include_once('templates.php');
 $title = 'System herunterfahren';
 $author = 'Max Bruckner';
 
-$output = get_button_menu('shutdown.php?mode=halt', 'Herunterfahren');
-$output .= get_button_menu('shutdown.php?mode=reboot', 'Neustarten');
-$output .= get_button_menu_back();
+$output = get_template('button_menu', array('link' => 'shutdown.php?mode=halt', 'text' => 'Herunterfahren'));
+$output .= get_template('button_menu', array('link' => 'shutdown.php?mode=reboot', 'text' => 'Neustarten'));
+$output .= get_template('button_menu_back');
 draw_page($output, $title, $author, LAYOUT);
 ?>
