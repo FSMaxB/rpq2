@@ -25,16 +25,6 @@ include_once('page.php');
 include_once('settings.php');
 include_once('file.php');
 
-function get_form_editor_Neu_Shut_Down($text, $ordnerlist, $filename) {
-    $template_form_editor = file_get_contents('template_form_editor_alt_shut_down.html');
-
-    $output = str_replace('{text}', $text, $template_form_editor);
-    $output = str_replace('{ordnerlist}', $ordnerlist, $output);
-    $output = str_replace('{filename}', $filename, $output);
-    return $output;
-}
-
-
 function ordner_list($ordner) {
     global $settings;
 
@@ -78,9 +68,9 @@ if( ($ordner != '') && ($filename != '')) {
         if($text == '') //Verhindert einen Bug, dass man leere Dateien nicht speichern kann
             $text = ' ';
         if(file_put_contents("$ordner/$filename", $text)) {
-            $message = get_success('Speichern Erfolgreich');
+            $message = get_template('success', array('text' => 'Speichern Erfolgreich'));
         } else {
-            $message = get_failure('Speichern Fehlgeschlagen');
+            $message = get_template('failure', array('text' => 'Speichern Fehlgeschlagen'));
         }
     }
 }
@@ -90,8 +80,8 @@ if($return == '') {
     $return = 'index.php';
 }
 
-$output = get_heading($heading);
-$output .= get_form_editor_Neu_Shut_Down($text, $ordnerlist, $filename);
+$output = get_template('heading', array('heading' => $heading));
+$output .= get_template('form_editor_alt_shut_down', array('text' => $text, 'ordnerlist' => $ordnerlist, 'filename' => $filename));
 $output .= '</br>';
 $output .= $message;
 $output .= '</br>';

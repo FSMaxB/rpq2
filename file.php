@@ -30,8 +30,8 @@ function correct_filename($filename, $extension) {
     }
 
     if( strcasecmp(end($split), 'php') === 0  ) {
-        $output = get_failure('Es ist nicht gestattet, PHP-Dateien abzuspeichern!');
-        $header = get_redirect(3, 'index.php');     //TODO Das ist nicht die eleganteste Lösung
+        $output = get_template('failure', array('text' => 'Es ist nicht gestattet, PHP-Dateien abzuspeichern!'));
+        $header = get_template('redirect', array('time' => 3, 'destination' => 'index.php'));   //TODO Das ist nicht die eleganteste Lösung
         draw_page($output, $title, $author, HEAD, $header);
         exit(1);
     }

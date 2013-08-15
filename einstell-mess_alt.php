@@ -21,6 +21,7 @@
 */
 
 include_once('meta.php');
+include_once('defaults.php');
 include_once('settings.php');
 include_once('page.php');
 include_once('templates.php');
@@ -60,7 +61,7 @@ $einstell_list = '<table>';
 foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
     $split = explode('.', $file);
     if(end($split) !== 'mw') {
-        $einstell_list .= get_link_einstell_Neu($settings['ordner_einstell-mess'], $file, $return, $return);
+        $einstell_list .= get_template('link_einstell_alt', array('directory' => $settings['ordner_einstell-mess'], 'filename' => $file, 'return_success' => $return, 'return_failure' => $return));
     }
 }
 $einstell_list .= '</table>';
@@ -69,19 +70,17 @@ $mess_list = '<table>';
 foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
     $split = explode('.', $file);
     if(end($split) === 'mw') {
-        $mess_list .= get_link_mess_Neu($settings['ordner_einstell-mess'], $file, $return, $return);
+        $mess_list .= get_template('link_mess_alt', array('directory' => $settings['ordner_einstell-mess'], 'filename' => $file, 'return_success' => $return, 'return_failure' => $return));
     }
 }
 $mess_list .= '</table>';
 $output = '<br>';
-//$output = get_heading($heading);
-$output .= get_form_upload($settings['ordner_einstell-mess'], $extension, $return, $return);
-
+//$output = get_template('heading', array('heading' => $heading));
+$output .= get_template('form_upload', array('directory' => $settings['ordner_einstell-mess'], 'extension' => $extension, 'return_success' => $return, 'return_failure' => $return));
 $output .= '<br><b>Einstellwerte:</b></br>';
-$output .= get_container($einstell_list, "214px");
+$output .= get_template('container', array('content' => $einstell_list, 'height' => '214px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output .= '<br><b>Messwerte:</b></br>';
-$output .= get_container($mess_list, "50px");
-
+$output .= get_template('container', array('content' => $mess_list, 'height' => '50px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output .= '<br>';
 $output .= '<br>';
 $output .= '<a href="index.php"><h3>Zum Hauptmenü</h3></a>';

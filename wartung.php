@@ -20,6 +20,7 @@
 */
 
 include_once('meta.php');
+include_once('defaults.php');
 include_once('page.php');
 include_once('settings.php');
 include_once('templates.php');
@@ -50,11 +51,11 @@ function send($send) {
 }
 
 function get_file_list() {
-    global $settings;
+    global $settings, $return;
 
     $file_list = '<table>';
     foreach( get_files($settings['ordner_wartung']) as $file ) {
-        $file_list .= get_link_wartung($file, $settings['ordner_wartung'], 'wartung.php', 'wartung.php');
+        $file_list .= get_template('link_wartung', array('directory' => $settings['ordner_wartung'], 'filename' => $file, 'return_success' => $return, 'return_failure' => $return));   //$return macht eventuell Probleme und muss mit 'wartung.php' ersetzt werden
     }
     $file_list .= '</table>';
     return $file_list;
@@ -84,18 +85,19 @@ if( $filename_read != '' ) {
 
 $file_list = get_file_list();
 
-$output = get_heading($heading);
-$output .= get_form_upload($settings['ordner_wartung'], '', 'wartung.php', 'wartung.php');
+$output = get_template('heading', array('heading' => $heading));
+$output .= get_template('form_upload', array('directory' => $settings['ordner_wartung'], 'extension' => '', 'return_success' => $return, 'return_failure' => $return));
 $output .= '</br> ';
-$output .= get_wartung(get_container($file_list, '340px'), $comment, $send, $received);
+$container = get_template('container', array('content' => $file_list, 'height' => '340px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
+$output .= get_template('wartung', array('file_list' => $container, 'comment' => $comment, 'send' => $send, 'received' => $received));
 $output .= '</br> ';
 $output .= '</br> ';
-$output .= get_button_inline('index.php', '<b>Zum Hauptmenu</b>');
+$output .= get_template('button_inline', array('link' => 'index.php', 'text' => '<b>Zum Hauptmenü</b>'));
 $output .= ' ';
-$output .= get_button_inline('einstell-mess.php', '<b>Weitere Einstellwerte</b>');
+$output .= get_template('button_inline', array('link' => 'einstell-mess.php', 'text' => '<b>Weiter Einstellwerte</b>'));
 $output .= ' ';
-$output .= get_button_inline('mess.php?filename=default.mw', '<b>Zu Messwerten</b>');
+$output .= get_template('button_inline', array('link' => 'mess.php?filename=default.mw', 'text' => '<b>Zu Messwerten</b>'));
 $output .= ' ';
-$output .= get_button_inline('pdo_mapping.php', '<b>PDO Mapping</b>');
+$output .= get_template('button_inline', array('link' => 'pdo_mapping.php', 'text' => '<b>PDO Mapping</b>'));
 draw_page( $output, $title, $author, HEAD);
 ?>

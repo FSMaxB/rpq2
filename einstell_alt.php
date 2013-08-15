@@ -44,18 +44,6 @@ include_once('csv.php');
 include_once('tty.php');
 include_once('file.php');
 
-function get_form_einstell_alt($comment, $regler, $index, $einstellwerte, $filename) {
-    $template_form_einstell = file_get_contents('template_form_einstell_alt.html');
-
-    $output = str_replace('{comment}', $comment, $template_form_einstell);
-    $output = str_replace('{regler}', $regler, $output);
-    $output = str_replace('{index}',$index, $output);
-    $output = str_replace('{einstellwerte}', $einstellwerte, $output);
-    $output = str_replace('{filename}', $filename, $output);
-    return $output;
-}
-
-
 $title = 'Einstellwerte';
 $author = 'Max Bruckner';
 $heading = 'Einstellwerte';
@@ -99,32 +87,30 @@ function get_list($einstellwerte) {
     for($i = 0; $i < count($einstellwerte); $i++) {
         switch($einstellwerte[$i]['type']) {
             case 'value':
-                $form = get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
-                $output .= get_einstellzeile(
-                                $i,
-                                $form,
-                                $einstellwerte[$i]['id'],
-                                $einstellwerte[$i]['value'],
-                                $einstellwerte[$i]['skal'],
-                                $einstellwerte[$i]['komma'],
-                                $einstellwerte[$i]['text']);
+                $form = get_template('form_einstellzeile', array('number' => $i, 'line' => $einstellwerte[$i]['line'], 'type' => $einstellwerte[$i]['type']));
+                $output .= get_template('einstellzeile', array(
+                                        'number' => $i,
+                                        'form' => $form,
+                                        'id' => $einstellwerte[$i]['id'],
+                                        'value' => $einstellwerte[$i]['value'],
+                                        'skal' => $einstellwerte[$i]['skal'],
+                                        'komma' => $einstellwerte[$i]['komma'],
+                                        'text' => $einstellwerte[$i]['text']));
                 break;
             case 'trenn':
-                $output .= get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
-                $output .= get_einstellzeile_trenn();
+                $output .= get_template('form_einstellzeile', array('number' => $i, 'line' => $einstellwerte[$i]['line'], 'type' => $einstellwerte[$i]['type']));
+                $output .= get_template('einstellzeile_trenn');
                 break;
             case 'comment':
-                $output .= get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
+                $output .= get_template('form_einstellzeile', array('number' => $i, 'line' => $einstellwerte[$i]['line'], 'type' => $einstellwerte[$i]['type']));
                 break;
             case 'other':
-                $output .= get_form_einstellzeile($i, $einstellwerte[$i]['line'], $einstellwerte[$i]['type']);
+                $output .= get_template('form_einstellzeile', array('number' => $i, 'line' => $einstellwerte[$i]['line'], 'type' => $einstellwerte[$i]['type']));
                 break;
         }
     }
     return $output;
 }
-
-
 
 
 $einstell_lines = file("{$settings['ordner_einstell-mess']}/$filename", FILE_IGNORE_NEW_LINES);
@@ -137,7 +123,8 @@ $einstell_list = get_list($einstellwerte);
 
 
 $output = '</br> ';
-$output .= get_form_einstell_alt($comment, $regler, $index, $einstell_list, $filename);
+//$output = get_template('heading', array('heading' => $heading));
+$output .= get_template('form_einstell', array('comment' => $comment, 'regler' => $regler, 'index' => $index, 'einstellwerte' => $einstell_list, 'filename' => $filename));
 $output .= '</br>';
 $output .= '<a href="index.php"><h3>Zum Hauptmenü</h3></a>';
 

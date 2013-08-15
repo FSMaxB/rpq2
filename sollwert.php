@@ -3,7 +3,8 @@
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
-    Author: Max Bruckner
+    Author: Andreas Bruckner
+            Max Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -49,47 +50,6 @@ $BA_Manuell_K = $_POST['Betriebsart_Manuell_K'];
 $BA_Manuell_GGKK = $_POST['Betriebsart_Manuell_GGKK'];
 $BA_Autoquit = $_POST['Betriebsart_Autoquit'];
 $BA_Quit_Kabelbruch = $_POST['Betriebsart_Quit_Kabelbruch'];
-
-function get_sollwert($received,$wert1,$wert2,$wert3,$wert4,$wert5,$wert6,$wert7,$wert8,
-                      $BA_Regler_Aus,$BA_Regler_Freigabe,$BA_Manuell_G,
-                      $BA_Manuell_K,$BA_Manuell_GGKK,$BA_Autoquit,$BA_Quit_Kabelbruch,$befehl,$status,$st_Info,$regler,$BA_check) {
-    $template_sollwert = file_get_contents('template_sollwert.html');
-    $output = str_replace('{received}', $received, $template_sollwert);
-    $output = str_replace('{wert1}', $wert1, $output);
-    $output = str_replace('{wert2}', $wert2, $output);
-    $output = str_replace('{wert3}', $wert3, $output);
-    $output = str_replace('{wert4}', $wert4, $output);
-    $output = str_replace('{wert5}', $wert5, $output);
-    $output = str_replace('{wert6}', $wert6, $output);
-    $output = str_replace('{wert7}', $wert7, $output);
-    $output = str_replace('{wert8}', $wert8, $output);
-
-    $output = str_replace('{Betriebsart_Regler_Aus}', $BA_Regler_Aus, $output);
-    $output = str_replace('{Betriebsart_Regler_Freigabe}', $BA_Regler_Freigabe, $output);
-//  $output = str_replace('{Betriebsart_Regler_RK2}', $BA_Regler_RK2, $output);
-    $output = str_replace('{Betriebsart_Manuell_G}', $BA_Manuell_G, $output);
-    $output = str_replace('{Betriebsart_Manuell_K}', $BA_Manuell_K, $output);
-    $output = str_replace('{Betriebsart_Manuell_GGKK}', $BA_Manuell_GGKK, $output);
-    $output = str_replace('{Betriebsart_Autoquit}', $BA_Autoquit, $output);
-    $output = str_replace('{Betriebsart_Quit_Kabelbruch}', $BA_Quit_Kabelbruch, $output);
-
-    $output = str_replace('{checked1}', $BA_check[0], $output);
-    $output = str_replace('{checked2}', $BA_check[1], $output);
-    $output = str_replace('{checked3}', $BA_check[2], $output);
-    $output = str_replace('{checked4}', $BA_check[3], $output);
-    $output = str_replace('{checked5}', $BA_check[4], $output);
-    $output = str_replace('{checked6}', $BA_check[5], $output);
-    $output = str_replace('{checked7}', $BA_check[6], $output);
-
-
-
-    $output = str_replace('{befehl}', $befehl, $output);
-    $output = str_replace('{status}', $status, $output);
-    $output = str_replace('{st_Info}', $st_Info, $output);
-    $output = str_replace('{regler}', $regler, $output);
-    return $output;
-}
-
 
 set_tty();
 
@@ -313,17 +273,44 @@ if($regler != '')
 }
 
 $output = '</br>';
-//$output = get_heading($heading);
-$output .= get_sollwert($received,$wert1,$wert2,$wert3,$wert4,$wert5,$wert6,$wert7,$wert8,
-                        $BA_Regler_Aus,$BA_Regler_Freigabe,$BA_Manuell_G,
-                        $BA_Manuell_K,$BA_Manuell_GGKK,$BA_Autoquit,
-                        $BA_Quit_Kabelbruch,$befehl,$status,$st_Info,$regler,$BA_check);
+//$output = get_template('heading', array('heading' => $heading));
+$output .= get_template('sollwert', array(
+                        'received' => $received,
+                        'wert1' => $wert1,
+                        'wert2' => $wert2,
+                        'wert3' => $wert3,
+                        'wert4' => $wert4,
+                        'wert5' => $wert5,
+                        'wert6' => $wert6,
+                        'wert7' => $wert7,
+                        'wert8' => $wert8,
+
+                        'Betriebsart_Regler_Aus' => $BA_Regler_Aus,
+                        'Betriebsart_Regler_Freigabe' => $BA_Regler_Freigabe,
+                        'Betriebsart_Manuell_G' => $BA_Manuell_G,
+                        'Betriebsart_Manuell_K' => $BA_Manuell_K,
+                        'Betriebsart_Manuell_GGKK' => $BA_Manuell_GGKK,
+                        'Betriebsart_Autoquit' => $BA_Autoquit,
+                        'Betriebsart_Quit_Kabelbruch' => $BA_Quit_Kabelbruch,
+
+                        'checked1' => $BA_check[0],
+                        'checked2' => $BA_check[1],
+                        'checked3' => $BA_check[2],
+                        'checked4' => $BA_check[3],
+                        'checked5' => $BA_check[4],
+                        'checked6' => $BA_check[5],
+                        'checked7' => $BA_check[6],
+
+                        'befehl' => $befehl,
+                        'status' => $status,
+                        'st_Info' => $st_Info,
+                        'regler' => $regler));
 $output .= '</br>';
 $output .= '</br>';
-$output .= get_button_inline('index.php', '<b>Zum Hauptmenu</b>');
+$output .= get_template('button_inline', array('link' => 'index.php', 'text' => '<b>Zum Hauptmenü</b>'));
 $output .= ' ';
-$output .= get_button_inline('mess.php?filename=default.mw', '<b>Zu Messwerten</b>');
+$output .= get_template('button_inline', array('link' => 'mess.php?filename=default.mw', 'text' => '<b>Zu Messwerten</b>'));
 $output .= ' ';
-$output .= get_button_inline('einstell-mess.php', '<b>Weitere Einstellwerte</b>');
+$output .= get_template('button_inline', array('link' => 'einstell-mess.php', 'text' => '<b>Weitere Einstellwerte</b>'));
 draw_page( $output, $title, $author, HEAD);
 ?>

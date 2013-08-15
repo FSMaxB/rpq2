@@ -20,6 +20,7 @@
 */
 
 include_once('meta.php');
+include_once('defaults.php');
 include_once('settings.php');
 include_once('templates.php');
 include_once('file.php');
@@ -29,16 +30,14 @@ $title = 'Aufzeichnungen verwalten';
 $author = 'Max Bruckner';
 $heading = 'Aufzeichnungen verwalten';
 
-$return = 'logs.php';
-
 $file_list = "<table>\n";
 foreach( get_files($settings['ordner_log']) as $file ) {
-    $file_list .= get_link_logs($file, $settings['ordner_log'], $return, $return) . "\n";
+    $file_list .= get_template('link_logs', array('directory' => $settings['ordner_log'], 'filename' => $file, 'return_success' => $return, 'return_failure' => $return)) . "\n";
 }
 $file_list .= '</table>';
 
-$output = get_heading($heading);
-$output .= get_container($file_list,'460px');
-$output .= get_button_menu_back();
+$output = get_template('heading', array('heading' => $heading));
+$output .= get_template('container', array('content' => $file_list, 'height' => '460px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
+$output .= get_template('button_menu_back');
 draw_page($output, $title, $author, HEAD);
 ?>

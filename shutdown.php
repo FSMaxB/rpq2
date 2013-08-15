@@ -38,7 +38,7 @@ if($mode == 'reboot') {
      $output .= '<h1>und nach einigen Sekunden wieder einschalten</h1>';
 } else {
     $output = '<h1>Ungültiger Parameter</h1>';
-    $output .= get_button('index.php', 'Zum Hauptmenü');
+    $output .= get_template('button', array('link' => 'index.php', 'text' => '<b>Zum Hauptmenü</b>'));
     draw_page($output, $title, $author, LAYOUT);
     exit(0);
 }

@@ -67,9 +67,9 @@ if( ($ordner != '') && ($filename != '')) {
         if($text == '') //Verhindert einen Bug, dass man leere Dateien nicht speichern kann
             $text = ' ';
         if(file_put_contents("$ordner/$filename", $text)) {
-            $message = get_success('Speichern Erfolgreich');
+            $message = get_template('success', array('text' => 'Speichern Erfolgreich'));
         } else {
-            $message = get_failure('Speichern Fehlgeschlagen');
+            $message = get_template('failure', array('text' => 'Speichern Fehlgeschlagen'));
         }
     }
 }
@@ -79,20 +79,20 @@ if($return == '') {
     $return = 'index.php';
 }
 
-$output = get_heading($heading);
-$output .= get_form_editor($text, $ordnerlist, $filename);
+$output = get_template('heading', array('heading' => $heading));
+$output .= get_template('form_editor', array('text' => $text, 'ordnerlist' => $ordnerlist, 'filename' => $filename));
 $output .= '</br>';
 $output .= $message;
 $output .= '</br>';
 $output .= '</br>';
-$output .= get_button_inline('index.php', '<b>Zum Hauptmenü</b>');
+$output .= get_template('button_inline', array('link' => 'index.php', 'text' => '<b>Zum Hauptmenü</b>'));
 $output .= ' ';
-$output .= get_button_inline('einstell-mess.php', '<b>Verwaltung Einstellwerte</b>');
+$output .= get_template('button_inline', array('link' => 'einstell-mess.php', 'text' => '<b>Verwaltung Einstellwerte</b>'));
 $output .= ' ';
-$output .= get_button_inline('mess.php?filename=default.mw', '<b>Zu Messwerten</b>');
+$output .= get_template('button_inline', array('link' => 'mess.php?filename=default.mw', 'text' => '<b>Zu Messwerten</b>'));
 $output .= ' ';
-$output .= get_button_inline('pdo_mapping.php', '<b>PDO Mapping</b>');
+$output .= get_template('button_inline', array('link' => 'pdo_mapping.php', 'text' => '<b>PDO Mapping</b>'));
 $output .= ' ';
-$output .= get_button_inline('wartung.php', '<b>Zu Geräteeinstellung</b>');
+$output .= get_template('button_inline', array('link' => 'wartung.php', 'text' => '<b>Zu Geräteeinstellung</b>'));
 draw_page($output, $title, $author, HEAD);
 ?>

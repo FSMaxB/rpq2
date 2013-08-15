@@ -1,0 +1,13 @@
+<script language="JavaScript">
+    Ergebnis = navigator.userAgent.split(";");
+    Pos = Ergebnis[1].search(/MSIE/);
+    if (Pos != -1)
+    {
+        strZahl = Ergebnis[1].substr(5,3);
+        Zahl = parseInt(strZahl);
+        if (Zahl < 9)
+        {
+                window.location.href = "index_alt.php";
+        }
+    }
+</script>

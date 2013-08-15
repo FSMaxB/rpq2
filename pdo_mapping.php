@@ -20,6 +20,7 @@
 */
 
 include_once('meta.php');
+include_once('defaults.php');
 include_once('page.php');
 include_once('settings.php');
 include_once('templates.php');
@@ -32,11 +33,11 @@ $comment = NULL;
 
 
 function get_file_list() {
-    global $settings;
+    global $settings, $return;
 
     $file_list = '<table>';
     foreach( get_files($settings['ordner_pdo']) as $file ) {
-        $file_list .= get_link_pdo($file, $settings['ordner_pdo'], 'pdo_mapping.php', 'pdo_mapping.php');
+        $file_list .= get_template('link_pdo', array('directory' => $settings['ordner_pdo'], 'filename' => $file, 'return_success' => $return, 'return_failure' => $return));
     }
     $file_list .= '</table>';
     return $file_list;
@@ -126,29 +127,39 @@ if($filename != '') {
     $received = $temp;
     $comment =  substr($received,4,4);
     if ($Vergleich == $comment)
-        $comment = get_success(' Übertragung erfolgreich !');
+        $comment = get_template('success', array('text' => ' Übertragung erfolgreich !'));
     else
-        $comment = get_failure(' Fehler Übertragung !');
+        $comment = get_template('failure', array('text' => ' Fehler Übertragung !'));
  }
 
 $file_list = get_file_list();
 
-//$output = get_heading($heading);
+//$output = get_template('heading', array('heading' => $heading));
 $output = '</br> ';
-$output .= get_form_upload($settings['ordner_pdo'], '', 'pdo_mapping.php', 'pdo_mapping.php');
+$output .= get_template('form_upload', array('directory' => $settings['ordner_pdo'], 'extension' => '', 'return_success' => $return, 'return_failure' => $return));
 $output .= '</br> ';
-$output .= get_container($file_list, '200px');
+$output .= get_template('container', array('content' => $file_list, 'height' => '200px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output .= '</br> ';
-$output .= get_pdo_mapping($comment, $received, $command, $regler, $map_high, $map_low, $map_index, $mapped_high, $mapped_low, $mapped_index);
+$output .= get_template('pdo_mapping', array(
+                        'comment' => $comment,
+                        'received' => $received,
+                        'command' => $command,
+                        'regler' => $regler,
+                        'map_high' => $map_high,
+                        'map_low' => $map_low,
+                        'map_index' => $mapped_high,
+                        'mapped_high' => $mapped_high,
+                        'mapped_low' => $mapped_low,
+                        'mapped_index' => $mapped_index));
 $output .= '</br>';
 $output .= '</br>';
-$output .= get_button_inline('index.php', '<b>Zum Hauptmenü</b>');
+$output .= get_template('button_inline', array('link' => 'index.php', 'text' => '<b>Zum Hauptmenü</b>'));
 $output .= ' ';
-$output .= get_button_inline('einstell-mess.php', '<b>Weitere Einstellwerte</b>');
+$output .= get_template('button_inline', array('link' => 'einstell-mess.php', 'text' => '<b>Weiter Einstellwerte</b>'));
 $output .= ' ';
-$output .= get_button_inline('mess.php?filename=default.mw', '<b>Zu Messwerten</b>');
+$output .= get_template('button_inline', array('link' => 'mess.php?filename=default.mw', 'text' => '<b>Zu Messwerten</b>'));
 $output .= ' ';
-$output .= get_button_inline('wartung.php', '<b>Manuelle Geräteeinstellung</b>');
+$output .= get_template('button_inline', array('link' => 'wartung.php', 'text' => '<b>Manuelle Geräteeinstellung</b>'));
 
 draw_page( $output, $title, $author, HEAD);
 ?>

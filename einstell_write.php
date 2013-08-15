@@ -4,6 +4,7 @@
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
+            Andreas Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -100,11 +101,11 @@ function run($mode, $file_send, $file_receive = '') {
 function get_output($return, $text_success, $file_success, $text_fail, $file_fail) {
     global $header; //Das ist etwas gegen mein Konzept
     if( (strpos($return, 'FEHLER') !== FALSE) ) {
-            $output = get_failure($text_fail);
-            $header = get_redirect(3, "einstell.php?filename=$file_fail");
+            $output = get_template('failure', array('text' => $text_fail));
+            $header = get_template('redirect', array('time' => 3, 'destination' => "einstell.php?filename=$file_fail"));
         } else {
- //           $output = get_success($text_success);
-            $header = get_redirect(0, "einstell.php?filename=$file_success");
+            //$output = get_template('success', array('text' => $text_success));
+            $header = get_template('redirect', array('time' => 0, 'destination' => "einstell.php?filename=$file_success"));
         }
     return $output;
 }
@@ -143,19 +144,19 @@ switch($mode) {
         if(write_csv($filename, $comment, $regler, $index, $data, $take_trenn, $take_comments, false)) {
             $output = get_output($return, '</br>Einstellwerte erfolgreich geschrieben und gespeichert', $filename, nl2br($return), 'send.ew');
         } else {
-            $output = get_failure('</br>Speichern der Einstellwerte fehlgeschlagen!');
-            $output .= get_button_menu_back();
+            $output = get_template('failure', array('text' => '</br>Speichern der Einstellwerte fehlgeschlagen!'));
+            $output .= get_template('button_menu_back');
         }
         break;
 
     case 'save':
         $title = 'save';
         if(write_csv($filename, $comment, $regler, $index, $data, $take_trenn, $take_comment, false)) {
- //           $output = get_success('</br>Einstellwerte erfolgreich gespeichert');
-            $header = get_redirect(0, "einstell.php?filename=$filename");
+            //$output = get_template('success', array('text' => '</br>Einstellwerte erfolgreich gespeichert'));
+            $header = get_template('redirect', array('time' => 0, 'destination' => "einstell.php?filename=$filename"));
         } else {
-            $output = get_failure('</br>Beim Speichern der Einstellwerte ist ein Fehler aufgetreten');
-            $header = get_redirect(3, "index.php");
+            $output = get_template('failure', array('text' => '</br>Beim Speichern der Einstellwerte ist ein Fehler aufgetreten'));
+            $header = get_template('redirect', array('time' => 3, 'destination' => 'index.php'));
         }
         break;
 }

@@ -20,6 +20,7 @@
 */
 
 include_once('meta.php');
+include_once('defaults.php');
 include_once('settings.php');
 include_once('templates.php');
 include_once('file.php');
@@ -29,18 +30,16 @@ $title = 'Dokumentationen';
 $author = 'Max Bruckner';
 $heading = 'Dokumentationen';
 
-$return = 'docs.php';
-
 //Dateiliste erstellen:
 $file_list = '<table>';
 foreach ( get_files($settings['ordner_docs']) as $file ) {
-    $file_list .= get_link_docs($settings['ordner_docs'], $file, $return, $return);
+    $file_list .= get_template('link_docs', array('directory' => $settings['ordner_docs'], 'filename' => $file, 'return_success' => $return, 'return_failure' => $return));
 }
 $file_list .= '</table>';
 
-$output = get_heading($heading);
-$output .= get_form_upload($settings['ordner_docs'], '', $return, $return);
-$output .= get_container($file_list);
-$output .= get_button_menu_back();
+$output = get_template('heading', array('heading' => $heading));
+$output .= get_template('form_upload', array('directory' => $settings['ordner_docs'], 'extension' => '', 'return_success' => $return, 'return_failure' => $return));
+$output .= get_template('container', array('content' => $file_list, 'height' => DEFAULT_CONTAINER_HEIGHT, 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
+$output .= get_template('button_menu_back');
 draw_page($output, $title, $author, HEAD);
 ?>

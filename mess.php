@@ -40,11 +40,11 @@ $filename = $_GET['filename'];
 $lines = file("{$settings['ordner_einstell-mess']}/$filename", FILE_IGNORE_NEW_LINES);
 $regler = get_value('Regler', $lines);
 $comment = get_comment($lines);
-$container = get_container('', '450px', '0px', 'messwerte');
+$container = get_template('container', array('content' => '', 'height' => '450px', 'border' => '0px', 'id' => 'messwerte'));
 
-//$output = get_heading("$heading $regler");
+//$output = get_template('heading', array('heading' => "$heading $regler"));
 $output = '<br> ';
-$output .= get_mess(nl2br($comment), $container);
+$output .= get_template('mess', array('comment' => nl2br($comment), 'container' => $container));
 
-draw_page($output, "$title $regler", $author, HEAD, get_script_mess($filename));
+draw_page($output, "$title $regler", $author, HEAD, get_template('script_mess', array('filename' => $filename)));
 ?>
