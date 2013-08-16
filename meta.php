@@ -21,7 +21,14 @@
 
 //Diese Datei muss in jeder anderen Datei eingebunden werden.
 
+define('PROFILE_STANDARD', 0);
+define('PROFILE_IE7', 1);
+
 //Log-Datei schreiben
 file_put_contents('misc/timestamp', time());
 $return = $_SERVER["REQUEST_URI"];  //return auf aktuelle Seite setzen
+$profile = PROFILE_STANDARD;
+if(stripos($_SERVER['HTTP_USER_AGENT'], 'MSIE 7') !== FALSE) {
+    $profile = PROFILE_IE7;
+}
 ?>
