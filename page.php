@@ -28,7 +28,11 @@ include_once('meta.php');
 include_once('templates.php');
 
 function draw_page( $content, $title, $author, $type, $header = '') {
+    global $meta_header, $profile;
     $current = $_SERVER["REQUEST_URI"];
+
+    if( ($profile == PROFILE_IE7) && ($type == LAYOUT))
+        $type = RAW;
 
     $output = $content;
     switch ($type) {

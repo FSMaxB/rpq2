@@ -20,6 +20,7 @@
 */
 
 include_once('meta.php');
+include_once('profiles.php');
 include_once('page.php');
 include_once('templates.php');
 
@@ -27,17 +28,25 @@ include_once('templates.php');
 $title = 'RPQ2 Webinterface';
 $author = 'Max Bruckner';
 
+$menu = array('einstell', 'mess', 'einstell-mess', 'logs', 'docs', 'settings_menu', 'shutdown_menu');
 
-$output = get_template('script_detect');
-$output .= get_template('button_menu', array('link' => 'einstell.php?filename=default.ew', 'text' => 'Einstellwerte'));
-$output .= get_template('button_menu', array('link' => 'mess.php?filename=default.mw', 'text' => 'Messwerte'));
-$output .= get_template('button_menu', array('link' => 'einstell-mess.php', 'text' => 'Einstell-/Mess-/Sollwerte verwalten'));
-$output .= get_template('button_menu', array('link' => 'logs.php', 'text' => 'Aufzeichnungen verwalten'));
-$output .= get_template('button_menu', array('link' => 'docs.php', 'text' => 'Dokumentationen'));
-$output .= get_template('button_menu', array('link' => 'settings_menu.php', 'text' => 'Einstellungen'));
+$output = '';
+foreach($menu as $menu_item) {
+    switch($profile) {
+        case PROFILE_STANDARD:
+            if(array_search($menu_item, $REFS_STANDARD) !== TRUE)
+                continue;
+            break;
+        case PROFILE_IE7:
+            if(array_search($menu_item, $REFS_IE7) !== TRUE)
+                continue;
+            break;
+    }
+    if($menu_item != 'shutdown_menu')
+        $output .= profile_button_menu($REFS[$menu_item]['link'], $REFS[$menu_item]['menu']);
+}
 
-$output .= get_template('vspace');
-$output .= get_template('button_shutdown');
+$output .= profile_button_shutdown();
 
 draw_page($output, $title, $author, LAYOUT);
 ?>
