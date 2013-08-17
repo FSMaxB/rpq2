@@ -33,7 +33,7 @@ $heading = 'Aufzeichnungen verwalten';
 
 $file_list = "<table>\n";
 foreach( get_files($settings['ordner_log']) as $file ) {
-    $file_list .= get_template('link_logs', array('directory' => $settings['ordner_log'], 'filename' => $file, 'return_success' => $return, 'return_failure' => $return)) . "\n";
+    $file_list .= get_template('link_logs', array('directory' => $settings['ordner_log'], 'filename' => $file, 'return_success' => $meta_current, 'return_failure' => $meta_current)) . "\n";
 }
 $file_list .= '</table>';
 

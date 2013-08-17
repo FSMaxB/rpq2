@@ -26,12 +26,22 @@ define('PROFILE_IE7', 1);
 
 //Log-Datei schreiben
 file_put_contents('misc/timestamp', time());
-$return = $_SERVER["REQUEST_URI"];  //return auf aktuelle Seite setzen
 
-$profile = PROFILE_STANDARD;
+//Verweis auf existierende Seite (dabei 'message=' entfernen)
+$meta_url_parsed = parse_url($_SERVER["REQUEST_URI"]);  //return auf aktuelle Seite setzen
+$meta_current_split = explode('&', $meta_url_parsed['query']);
+for($i = 0; $i < count($meta_current_split); $i++) {
+    if(strpos($meta_current_split[$i], 'message=') === 0)
+        unset($meta_current_split[$i]);
+}
+if(count($meta_current_split) > 0)
+    $meta_url_parsed['path'] .= '?';
+$meta_current = $meta_url_parsed['path'] . str_replace('0=', '', http_build_query($meta_current_split));
+
+$meta_profile = PROFILE_STANDARD;
 //Internet-Explorer erkennen
 if(preg_match('*msie [1-9]*', strtolower($_SERVER['HTTP_USER_AGENT'])) === 1)
-    $profile = PROFILE_IE7;
+    $meta_profile = PROFILE_IE7;
 
 //Nachrichten für Nachrichtenzeile empfangen
 $meta_message = $_GET['message'];
