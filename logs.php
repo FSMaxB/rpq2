@@ -20,6 +20,7 @@
 */
 
 include_once('meta.php');
+include_once('profiles.php');
 include_once('defaults.php');
 include_once('settings.php');
 include_once('templates.php');
@@ -38,6 +39,6 @@ $file_list .= '</table>';
 
 $output = get_template('heading', array('heading' => $heading));
 $output .= get_template('container', array('content' => $file_list, 'height' => '460px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
-$output .= get_template('button_menu_back');
+$output .= get_references(array('index'));
 draw_page($output, $title, $author, HEAD);
 ?>

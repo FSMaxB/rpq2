@@ -20,6 +20,7 @@
 */
 
 include_once('meta.php');
+include_once('profiles.php');
 include_once('defaults.php');
 include_once('settings.php');
 include_once('page.php');
@@ -57,16 +58,8 @@ $output .= '<br><b>Einstellwerte:</b></br>';
 $output .= get_template('container', array('content' => $einstell_list, 'height' => '315px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output .= '<b>Messwerte:</b></br>';
 $output .= get_template('container', array('content' => $mess_list, 'height' => '100px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
-//$output .= '</br>';
-$output .= get_template('button_inline', array('link' => "editor.php?ordner={$settings['ordner_einstell-mess']}&return=einstell-mess.php", 'text' => '<b>Neue Datei</b>'));
-$output .= '</br>';
-$output .= '</br>';
-$output .= get_template('button_inline', array('link' => "index.php", 'text' => '<b>Zum Hauptmenü</b>'));
-$output .= ' ';
-$output .= get_template('button_inline', array('link' => "sollwert.php", 'text' => '<b>Sollwerte</b>'));
-$output .= ' ';
-$output .= get_template('button_inline', array('link' => "pdo_mapping.php", 'text' => '<b>PDO Mapping</b>'));
-$output .= ' ';
-$output .= get_template('button_inline', array('link' => "wartung.php", 'text' => '<b>Manuelle Geräteeinstellung</b>'));
+
+$output .= profile_button_inline("editor.php?ordner={$settings['ordner_einstell-mess']}&return=einstell-mess.php", 'Neue Datei');
+$output .= get_references(array('index', 'sollwert', 'pdo_mapping', 'wartung'));
 draw_page($output, $title, $author, HEAD);
 ?>

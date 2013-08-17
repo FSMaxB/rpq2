@@ -20,6 +20,7 @@
 */
 
 include_once('meta.php');
+include_once('profiles.php');
 include_once('defaults.php');
 include_once('settings.php');
 include_once('templates.php');
@@ -40,6 +41,6 @@ $file_list .= '</table>';
 $output = get_template('heading', array('heading' => $heading));
 $output .= get_template('form_upload', array('directory' => $settings['ordner_docs'], 'extension' => '', 'return_success' => $return, 'return_failure' => $return));
 $output .= get_template('container', array('content' => $file_list, 'height' => DEFAULT_CONTAINER_HEIGHT, 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
-$output .= get_template('button_menu_back');
+$output .= get_references(array('index'));
 draw_page($output, $title, $author, HEAD);
 ?>

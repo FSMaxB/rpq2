@@ -21,6 +21,7 @@
 */
 
 include_once('meta.php');
+include_once('profiles.php');
 include_once('settings.php');
 include_once('templates.php');
 include_once('page.php');
@@ -145,7 +146,7 @@ switch($mode) {
             $output = get_output($return, '</br>Einstellwerte erfolgreich geschrieben und gespeichert', $filename, nl2br($return), 'send.ew');
         } else {
             $output = get_template('failure', array('text' => '</br>Speichern der Einstellwerte fehlgeschlagen!'));
-            $output .= get_template('button_menu_back');
+            $output .= get_references(array('index'));
         }
         break;
 

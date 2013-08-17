@@ -28,7 +28,9 @@ define('PROFILE_IE7', 1);
 file_put_contents('misc/timestamp', time());
 $return = $_SERVER["REQUEST_URI"];  //return auf aktuelle Seite setzen
 $profile = PROFILE_STANDARD;
-if(stripos($_SERVER['HTTP_USER_AGENT'], 'MSIE 7') !== FALSE) {
+
+if(preg_match('*msie [1-9]*', strtolower($_SERVER['HTTP_USER_AGENT'])) === 1)
     $profile = PROFILE_IE7;
-}
+//if(stripos($_SERVER['HTTP_USER_AGENT'], 'MSIE 7') !== FALSE) {
+//    $profile = PROFILE_IE7;
 ?>

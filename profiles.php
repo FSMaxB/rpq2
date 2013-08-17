@@ -140,7 +140,7 @@ function profile_references() {
 function get_references($refs) {
     global $REFS;
 
-    $output = '';
+    $output = '</br></br>';
 
     $available_refs = profile_references();
     foreach($refs as $ref) {

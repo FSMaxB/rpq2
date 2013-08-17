@@ -20,6 +20,7 @@
 */
 
 include_once('meta.php');
+include_once('profiles.php');
 include_once('defaults.php');
 include_once('page.php');
 include_once('templates.php');
@@ -32,6 +33,6 @@ $return = $_GET['return'];
 $gpl = get_template('license_gpl');
 $container = get_template('container', array('content' => $gpl, 'height' => '600px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output = get_template('license', array('license' => $container));
-
+$output .= get_references(array('index'));
 draw_page($output, $title, $author, HEAD);
 ?>
