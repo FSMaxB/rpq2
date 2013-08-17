@@ -20,6 +20,7 @@
 */
 
 include_once('meta.php');
+include_once('profiles.php');
 include_once('page.php');
 
 $title = 'System herunterfahren';
@@ -38,8 +39,7 @@ if($mode == 'reboot') {
      $output .= '<h1>und nach einigen Sekunden wieder einschalten</h1>';
 } else {
     $output = '<h1>Ungültiger Parameter</h1>';
-    $output .= get_template('button', array('link' => 'index.php', 'text' => '<b>Zum Hauptmenü</b>'));
-    draw_page($output, $title, $author, LAYOUT);
+    $output .= get_references(array('index'));
     exit(0);
 }
 

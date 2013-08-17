@@ -20,6 +20,7 @@
 */
 
 include_once('meta.php');
+include_once('profiles.php');
 include_once('page.php');
 include_once('settings.php');
 include_once('templates.php');
@@ -45,6 +46,6 @@ $container = get_template('container', array('content' => '', 'height' => '450px
 //$output = get_template('heading', array('heading' => "$heading $regler"));
 $output = '<br> ';
 $output .= get_template('mess', array('comment' => nl2br($comment), 'container' => $container));
-
+$output .= get_references(array('index', 'einstell', 'einstell-mess', 'sollwert', 'pdo_mapping'));
 draw_page($output, "$title $regler", $author, HEAD, get_template('script_mess', array('filename' => $filename)));
 ?>

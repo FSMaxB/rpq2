@@ -21,6 +21,7 @@
 */
 
 include_once('meta.php');
+include_once('profiles.php');
 include_once('page.php');
 include_once('settings.php');
 include_once('templates.php');
@@ -305,12 +306,6 @@ $output .= get_template('sollwert', array(
                         'status' => $status,
                         'st_Info' => $st_Info,
                         'regler' => $regler));
-$output .= '</br>';
-$output .= '</br>';
-$output .= get_template('button_inline', array('link' => 'index.php', 'text' => '<b>Zum Hauptmenü</b>'));
-$output .= ' ';
-$output .= get_template('button_inline', array('link' => 'mess.php?filename=default.mw', 'text' => '<b>Zu Messwerten</b>'));
-$output .= ' ';
-$output .= get_template('button_inline', array('link' => 'einstell-mess.php', 'text' => '<b>Weitere Einstellwerte</b>'));
+$output .= get_references(array('index', 'mess', 'einstell-mess'));
 draw_page( $output, $title, $author, HEAD);
 ?>

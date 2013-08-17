@@ -21,6 +21,7 @@
 
 include_once('meta.php');
 include_once('defaults.php');
+include_once('profiles.php');
 include_once('page.php');
 include_once('settings.php');
 include_once('templates.php');
@@ -90,14 +91,6 @@ $output .= get_template('form_upload', array('directory' => $settings['ordner_wa
 $output .= '</br> ';
 $container = get_template('container', array('content' => $file_list, 'height' => '340px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output .= get_template('wartung', array('file_list' => $container, 'comment' => $comment, 'send' => $send, 'received' => $received));
-$output .= '</br> ';
-$output .= '</br> ';
-$output .= get_template('button_inline', array('link' => 'index.php', 'text' => '<b>Zum Hauptmenü</b>'));
-$output .= ' ';
-$output .= get_template('button_inline', array('link' => 'einstell-mess.php', 'text' => '<b>Weiter Einstellwerte</b>'));
-$output .= ' ';
-$output .= get_template('button_inline', array('link' => 'mess.php?filename=default.mw', 'text' => '<b>Zu Messwerten</b>'));
-$output .= ' ';
-$output .= get_template('button_inline', array('link' => 'pdo_mapping.php', 'text' => '<b>PDO Mapping</b>'));
+$output .= get_references(array('index', 'einstell-mess', 'mess', 'pdo_mapping'));
 draw_page( $output, $title, $author, HEAD);
 ?>

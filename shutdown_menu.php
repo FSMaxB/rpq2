@@ -20,14 +20,15 @@
 */
 
 include_once('meta.php');
+include_once('profiles.php');
 include_once('page.php');
 include_once('templates.php');
 
 $title = 'System herunterfahren';
 $author = 'Max Bruckner';
 
-$output = get_template('button_menu', array('link' => 'shutdown.php?mode=halt', 'text' => 'Herunterfahren'));
-$output .= get_template('button_menu', array('link' => 'shutdown.php?mode=reboot', 'text' => 'Neustarten'));
-$output .= get_template('button_menu_back');
+$output = profile_button_menu('shutdown.php?mode=halt', 'Herunterfahren');
+$output .= profile_button_menu('shutdown.php?mode=reboot', 'Neustarten');
+$output .= get_references(array('index'));
 draw_page($output, $title, $author, LAYOUT);
 ?>

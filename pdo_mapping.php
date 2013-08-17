@@ -20,6 +20,7 @@
 */
 
 include_once('meta.php');
+include_once('profiles.php');
 include_once('defaults.php');
 include_once('page.php');
 include_once('settings.php');
@@ -151,15 +152,6 @@ $output .= get_template('pdo_mapping', array(
                         'mapped_high' => $mapped_high,
                         'mapped_low' => $mapped_low,
                         'mapped_index' => $mapped_index));
-$output .= '</br>';
-$output .= '</br>';
-$output .= get_template('button_inline', array('link' => 'index.php', 'text' => '<b>Zum Hauptmenü</b>'));
-$output .= ' ';
-$output .= get_template('button_inline', array('link' => 'einstell-mess.php', 'text' => '<b>Weiter Einstellwerte</b>'));
-$output .= ' ';
-$output .= get_template('button_inline', array('link' => 'mess.php?filename=default.mw', 'text' => '<b>Zu Messwerten</b>'));
-$output .= ' ';
-$output .= get_template('button_inline', array('link' => 'wartung.php', 'text' => '<b>Manuelle Geräteeinstellung</b>'));
-
+$output .= get_references(array('index', 'einstell-mess', 'mess', 'wartung'));
 draw_page( $output, $title, $author, HEAD);
 ?>

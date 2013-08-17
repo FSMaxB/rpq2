@@ -20,6 +20,7 @@
 */
 
 include_once('meta.php');
+include_once('profiles.php');
 include_once('page.php');
 include_once('templates.php');
 include_once('settings.php');
@@ -65,7 +66,8 @@ $output .= get_template('form_settings', array(
                         'ordner_misc' => $settings['ordner_misc'],
                         'return_success' => $return,
                         'return_failure' => $return));
-$output .= get_template('button_inline', array('link' => 'index.php', 'text' => '<b>Zum Hauptmenü</b>'));
-$output .= get_template('button_inline', array('link' => "editor.php?ordner={$settings['ordner_misc']}&filename=shutdown_time", 'text' => '<b>Shutdown-Zeit</b>'));
+$output .= get_references(array('index'));
+$output .= '&nbsp;';
+$output .= profile_button_inline("editor.php?ordner={$settings['ordner_misc']}&filename=shutdown_time", 'Shutdown-Zeit');
 draw_page($output, $title, $author, HEAD);
 ?>
