@@ -27,10 +27,13 @@ define('PROFILE_IE7', 1);
 //Log-Datei schreiben
 file_put_contents('misc/timestamp', time());
 $return = $_SERVER["REQUEST_URI"];  //return auf aktuelle Seite setzen
-$profile = PROFILE_STANDARD;
 
+$profile = PROFILE_STANDARD;
+//Internet-Explorer erkennen
 if(preg_match('*msie [1-9]*', strtolower($_SERVER['HTTP_USER_AGENT'])) === 1)
     $profile = PROFILE_IE7;
-//if(stripos($_SERVER['HTTP_USER_AGENT'], 'MSIE 7') !== FALSE) {
-//    $profile = PROFILE_IE7;
+
+//Nachrichten für Nachrichtenzeile empfangen
+$meta_message = $_GET['message'];
+
 ?>

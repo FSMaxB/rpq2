@@ -19,16 +19,17 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-define('NAKED', 0);
-define('RAW', 1);       //Verwende leere Seite mit Header und Footer
-define('LAYOUT', 2);    //Verwende Layout
-define('HEAD', 3);      //Nur Kopfzeile
+define('NAKED', 0);     //Gar kein Template
+define('HTML', 1);      //Nur HTML-Gerüst
+define('RAW', 2);       //Verwende leere Seite mit Header und Footer
+define('LAYOUT', 3);    //Verwende Layout
+define('HEAD', 4);      //Nur Kopfzeile
 
 include_once('meta.php');
 include_once('templates.php');
 
 function draw_page( $content, $title, $author, $type, $header = '') {
-    global $meta_header, $profile;
+    global $meta_header, $profile, $meta_message;
     $current = $_SERVER["REQUEST_URI"];
 
     if( ($profile == PROFILE_IE7) && ($type == LAYOUT))
@@ -39,15 +40,26 @@ function draw_page( $content, $title, $author, $type, $header = '') {
         case NAKED:
             $output = $content;
             break;
-        case LAYOUT:
-            $output = get_template('layout', array('current' => $current, 'content' => $content));
+        case HTML:
+            $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $content, 'message' => $meta_message));
+            break;
         case RAW:
-            $output = get_template('page', array('current' => $current, 'content' => $output));
+            $output = get_template('page_header', array('message' => $meta_message));
+            $output .= $content;
+            $output .= get_template('page_footer', array('current' => $current));
+            $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $output, 'message' => ''));
+        case LAYOUT:
+            $output = get_template('page_header', array('message' => $meta_message));
+            $output .= get_template('layout', array('content' => $content));
+            $output .= get_template('page_footer', array('current' => $current));
+            $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $output, 'message' => ''));
             break;
       case HEAD:
-            $output = get_template('page_header', array('current' => $current, 'content' => $content));
+            $output = get_template('page_header', array('message' => $meta_message));
+            $output .= $content;
+            $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $output, 'message' => ''));
             break;
     }
-    echo get_template('html', array('content' => $output, 'title' => $title, 'author' => $author, 'header' => $header));
+    echo $output;
 }
 ?>
