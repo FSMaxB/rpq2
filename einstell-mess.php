@@ -38,7 +38,7 @@ $einstell_list = '<table>';
 foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
     $split = explode('.', $file);
     if(end($split) !== 'mw') {
-        $einstell_list .= get_template('link_einstell', array('directory' => $settings['ordner_einstell-mess'], 'filename' => $file, 'return_success' => $return, 'return_failure' => $return));
+        $einstell_list .= get_template('link_einstell', array('directory' => $settings['ordner_einstell-mess'], 'filename' => $file, 'return_success' => $meta_current, 'return_failure' => $meta_current));
     }
 }
 $einstell_list .= '</table>';
@@ -47,13 +47,13 @@ $mess_list = '<table>';
 foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
     $split = explode('.', $file);
     if(end($split) === 'mw') {
-        $mess_list .= get_template('link_mess', array('directory' => $settings['ordner_einstell-mess'], 'filename' => $file, 'return_success' => $return, 'return_failure' => $return));
+        $mess_list .= get_template('link_mess', array('directory' => $settings['ordner_einstell-mess'], 'filename' => $file, 'return_success' => $meta_current, 'return_failure' => $meta_current));
     }
 }
 $mess_list .= '</table>';
 $output = '</br>';
 //$output = get_template('heading', array('heading' => $heading));
-$output .= get_template('form_upload', array('directory' => $settings['ordner_einstell-mess'], 'extension' => $extension, 'return_success' => $return, 'return_failure' => $return));
+$output .= get_template('form_upload', array('directory' => $settings['ordner_einstell-mess'], 'extension' => $extension, 'return_success' => $meta_current, 'return_failure' => $meta_current));
 $output .= '<br><b>Einstellwerte:</b></br>';
 $output .= get_template('container', array('content' => $einstell_list, 'height' => '315px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output .= '<b>Messwerte:</b></br>';

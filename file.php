@@ -30,9 +30,9 @@ function correct_filename($filename, $extension) {
     }
 
     if( strcasecmp(end($split), 'php') === 0  ) {
-        $output = get_template('failure', array('text' => 'Es ist nicht gestattet, PHP-Dateien abzuspeichern!'));
-        $header = get_template('redirect', array('time' => 3, 'destination' => 'index.php'));   //TODO Das ist nicht die eleganteste Lösung
-        draw_page($output, $title, $author, HEAD, $header);
+        $message = http_build_query(array('message' => get_template('failure', array('text' => 'Es ist nicht gestattet, PHP-Dateien abzuspeichern!'))));
+        $header = get_template('redirect', array('time' => 0, 'destination' => "index.php?$message"));   //TODO Das ist nicht die eleganteste Lösung
+        draw_page($output, $title, $author, HTML, $header);
         exit(1);
     }
 

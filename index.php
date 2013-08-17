@@ -32,7 +32,7 @@ $menu = array('einstell', 'mess', 'einstell-mess', 'logs', 'docs', 'settings_men
 
 $output = '';
 foreach($menu as $menu_item) {
-    switch($profile) {
+    switch($meta_profile) {
         case PROFILE_STANDARD:
             if(array_search($menu_item, $REFS_STANDARD) !== TRUE)
                 continue;

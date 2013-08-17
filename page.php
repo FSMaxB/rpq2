@@ -29,10 +29,9 @@ include_once('meta.php');
 include_once('templates.php');
 
 function draw_page( $content, $title, $author, $type, $header = '') {
-    global $meta_header, $profile, $meta_message;
-    $current = $_SERVER["REQUEST_URI"];
+    global $meta_profile, $meta_message, $meta_current;
 
-    if( ($profile == PROFILE_IE7) && ($type == LAYOUT))
+    if( ($meta_profile == PROFILE_IE7) && ($type == LAYOUT))
         $type = RAW;
 
     $output = $content;
@@ -46,12 +45,12 @@ function draw_page( $content, $title, $author, $type, $header = '') {
         case RAW:
             $output = get_template('page_header', array('message' => $meta_message));
             $output .= $content;
-            $output .= get_template('page_footer', array('current' => $current));
+            $output .= get_template('page_footer', array('current' => $meta_current));
             $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $output, 'message' => ''));
         case LAYOUT:
             $output = get_template('page_header', array('message' => $meta_message));
             $output .= get_template('layout', array('content' => $content));
-            $output .= get_template('page_footer', array('current' => $current));
+            $output .= get_template('page_footer', array('current' => $meta_current));
             $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $output, 'message' => ''));
             break;
       case HEAD:

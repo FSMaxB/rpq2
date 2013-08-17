@@ -34,11 +34,11 @@ $comment = NULL;
 
 
 function get_file_list() {
-    global $settings, $return;
+    global $settings, $meta_current;
 
     $file_list = '<table>';
     foreach( get_files($settings['ordner_pdo']) as $file ) {
-        $file_list .= get_template('link_pdo', array('directory' => $settings['ordner_pdo'], 'filename' => $file, 'return_success' => $return, 'return_failure' => $return));
+        $file_list .= get_template('link_pdo', array('directory' => $settings['ordner_pdo'], 'filename' => $file, 'return_success' => $meta_current, 'return_failure' => $meta_current));
     }
     $file_list .= '</table>';
     return $file_list;
@@ -137,7 +137,7 @@ $file_list = get_file_list();
 
 //$output = get_template('heading', array('heading' => $heading));
 $output = '</br> ';
-$output .= get_template('form_upload', array('directory' => $settings['ordner_pdo'], 'extension' => '', 'return_success' => $return, 'return_failure' => $return));
+$output .= get_template('form_upload', array('directory' => $settings['ordner_pdo'], 'extension' => '', 'return_success' => $meta_current, 'return_failure' => $meta_current));
 $output .= '</br> ';
 $output .= get_template('container', array('content' => $file_list, 'height' => '200px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output .= '</br> ';

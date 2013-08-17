@@ -64,8 +64,8 @@ $output .= get_template('form_settings', array(
                         'ordner_log' => $settings['ordner_log'],
                         'ordner_pdo' => $settings['ordner_pdo'],
                         'ordner_misc' => $settings['ordner_misc'],
-                        'return_success' => $return,
-                        'return_failure' => $return));
+                        'return_success' => $meta_current,
+                        'return_failure' => $meta_current));
 $output .= get_references(array('index'));
 $output .= '&nbsp;';
 $output .= profile_button_inline("editor.php?ordner={$settings['ordner_misc']}&filename=shutdown_time", 'Shutdown-Zeit');

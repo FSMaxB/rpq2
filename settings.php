@@ -93,16 +93,23 @@ if( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) {
     $return_failure = $_POST['return_failure'];
 
     if( write_settings($settings) ) {
-        $header = get_template('redirect', array('time' => 1, 'destination' => $return_success));
-        $output = get_template('success', array('text' => 'Einstellungen erfolgreich gespeichert'));
+        $message = http_build_query(array('message' => get_template('success', array('text' => 'Einstellungen erfolgreich gespeichert'))));
+        if(strpos($return_success, '?') === FALSE)
+            $return_success .= "?$message";
+        else
+            $return_success .= $message;
+        $header = get_template('redirect', array('time' => 0, 'destination' => $return_success));
     } else {
         //Im fehlerfall werden die Einstellungen wieder zurückgegeben, sodass man sie nicht nochmal eingeben muss
-        $settings_container = array( 'settings' => $settings);
-        $query = http_build_query($settings_container);
-        $header = get_template('redirect', array('time' => 3, 'destination' => "$return_failure?$query"));
-        $output = get_template('failure', array('text' => 'Beim speichern der Einstellungen ist ein Fehler aufgetreten!'));
+        $queries = array( 'settings' => $settings, 'message' => 'Beim speichern der Einstellungen ist ein Fehler aufgetreten!');
+        $query = http_build_query($queries);
+        if(strpos($return_failure, '?') === FALSE)
+            $return_failure .= "?$query";
+        else
+            $return_failure .= $query;
+        $header = get_template('redirect', array('time' => 0, 'destination' => "$return_failure"));
     }
 
-    draw_page($output, $title, $author, HEAD, $header);
+    draw_page($output, $title, $author, HTML, $header);
 }
 ?>

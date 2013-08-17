@@ -87,8 +87,8 @@ $REFS_IE7 = array('docs', 'einstell-mess', 'einstell',
         'settings_menu', 'shutdown_menu');
 
 function profile_button($link, $text) {
-    global $profile;
-    switch($profile) {
+    global $meta_profile;
+    switch($meta_profile) {
         case PROFILE_STANDARD:
             return get_template('button', array('link' => $link, 'text' => $text));
         case PROFILE_IE7:
@@ -97,8 +97,8 @@ function profile_button($link, $text) {
 }
 
 function profile_button_inline($link, $text) {
-    global $profile;
-    switch($profile) {
+    global $meta_profile;
+    switch($meta_profile) {
         case PROFILE_STANDARD:
             return get_template('button_inline', array('link' => $link, 'text' => $text));
         case PROFILE_IE7:
@@ -107,8 +107,8 @@ function profile_button_inline($link, $text) {
 }
 
 function profile_button_menu($link, $text) {
-    global $profile;
-    switch($profile) {
+    global $meta_profile;
+    switch($meta_profile) {
         case PROFILE_STANDARD:
             return get_template('button_menu', array('link' => $link, 'text' => $text));
         case PROFILE_IE7:
@@ -117,8 +117,8 @@ function profile_button_menu($link, $text) {
 }
 
 function profile_button_shutdown() {
-    global $profile, $REFS;
-    switch($profile) {
+    global $meta_profile, $REFS;
+    switch($meta_profile) {
         case PROFILE_STANDARD:
             return get_template('vspace') . get_template('button_shutdown');
         case PROFILE_IE7:
@@ -127,9 +127,9 @@ function profile_button_shutdown() {
 }
 
 function profile_references() {
-    global $REFS_IE7, $REFS_STANDARD, $profile;
+    global $REFS_IE7, $REFS_STANDARD, $meta_profile;
 
-    switch($profile) {
+    switch($meta_profile) {
         case PROFILE_STANDARD:
             return $REFS_STANDARD;
         case PROFILE_IE7:

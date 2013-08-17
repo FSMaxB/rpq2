@@ -34,12 +34,12 @@ $heading = 'Dokumentationen';
 //Dateiliste erstellen:
 $file_list = '<table>';
 foreach ( get_files($settings['ordner_docs']) as $file ) {
-    $file_list .= get_template('link_docs', array('directory' => $settings['ordner_docs'], 'filename' => $file, 'return_success' => $return, 'return_failure' => $return));
+    $file_list .= get_template('link_docs', array('directory' => $settings['ordner_docs'], 'filename' => $file, 'return_success' => $meta_current, 'return_failure' => $meta_current));
 }
 $file_list .= '</table>';
 
 $output = get_template('heading', array('heading' => $heading));
-$output .= get_template('form_upload', array('directory' => $settings['ordner_docs'], 'extension' => '', 'return_success' => $return, 'return_failure' => $return));
+$output .= get_template('form_upload', array('directory' => $settings['ordner_docs'], 'extension' => '', 'return_success' => $meta_current, 'return_failure' => $meta_current));
 $output .= get_template('container', array('content' => $file_list, 'height' => DEFAULT_CONTAINER_HEIGHT, 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output .= get_references(array('index'));
 draw_page($output, $title, $author, HEAD);

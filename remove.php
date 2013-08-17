@@ -31,14 +31,20 @@ $return_success = $_GET['return_success'];
 $return_failure = $_GET['return_failure'];
 
 if(unlink($path)) {
-    $header = get_template('redirect', array('time' => 1, 'destination' => $return_success));
-    $output = '</br> ';
-    $output .= get_template('success', array('text' => 'Datei "' . $path . '" gelöscht.'));
+    $message = http_build_query(array('message' => get_template('success', array('text' => 'Datei "' . $path . '" gelöscht.'))));
+    if(strpos($return_success, '?') === FALSE)
+        $return_success .= "?$message";
+    else
+        $return_success .= $message;
+    $header = get_template('redirect', array('time' => 0, 'destination' => $return_success));
 } else {
-    $header = get_template('redirect', array('time' => 3, 'destination' => $return_failure));
-    $output = '</br> ';
-    $output .= get_template('failure', array('text' => 'Es ist ein Fehler aufgetreten, "' . $path . '" konnte nicht gelöscht werden.'));
+    $message = http_build_query(array('message' => get_template('failure', array('text' => 'Es ist ein Fehler aufgetreten, "' . $path . '" konnte nicht gelöscht werden.'))));
+    if(strpos($return_failure, '?') === FALSE)
+        $return_failure .= "?$message";
+    else
+        $return_failure .= $message;
+    $header = get_template('redirect', array('time' => 0, 'destination' => $return_failure));
 }
 
-draw_page($output, $title, $author, HEAD, $header);
+draw_page($output, $title, $author, HTML, $header);
 ?>

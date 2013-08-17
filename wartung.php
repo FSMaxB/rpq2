@@ -52,11 +52,11 @@ function send($send) {
 }
 
 function get_file_list() {
-    global $settings, $return;
+    global $settings, $meta_current;
 
     $file_list = '<table>';
     foreach( get_files($settings['ordner_wartung']) as $file ) {
-        $file_list .= get_template('link_wartung', array('directory' => $settings['ordner_wartung'], 'filename' => $file, 'return_success' => $return, 'return_failure' => $return));   //$return macht eventuell Probleme und muss mit 'wartung.php' ersetzt werden
+        $file_list .= get_template('link_wartung', array('directory' => $settings['ordner_wartung'], 'filename' => $file, 'return_success' => $meta_current, 'return_failure' => $meta_current));
     }
     $file_list .= '</table>';
     return $file_list;
@@ -87,7 +87,7 @@ if( $filename_read != '' ) {
 $file_list = get_file_list();
 
 $output = get_template('heading', array('heading' => $heading));
-$output .= get_template('form_upload', array('directory' => $settings['ordner_wartung'], 'extension' => '', 'return_success' => $return, 'return_failure' => $return));
+$output .= get_template('form_upload', array('directory' => $settings['ordner_wartung'], 'extension' => '', 'return_success' => $meta_current, 'return_failure' => $meta_current));
 $output .= '</br> ';
 $container = get_template('container', array('content' => $file_list, 'height' => '340px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output .= get_template('wartung', array('file_list' => $container, 'comment' => $comment, 'send' => $send, 'received' => $received));

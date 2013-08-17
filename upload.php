@@ -43,16 +43,20 @@ $ziel = "$ordner/$name";
 
 if(move_uploaded_file($_FILES['datei']['tmp_name'],$ziel))
 {
-    //Wenn erfolgreich, leite nach 1 Sekunde automatisch um und gebe Meldung aus
-    $header = get_template('redirect', array('time' => 1, 'destination' => $return_success));
-    $output = '</br> ';
-    $output .= get_template('success', array('text' => "Datei \"{$_FILES['datei']['name']}\" erfolgreich hochgeladen."));
+    $message = http_build_query(array('message' => get_template('success', array('text' => "Datei \"{$_FILES['datei']['name']}\" erfolgreich hochgeladen."))));
+    if(strpos($return_success, '?') === FAlSE)
+        $return_success .= "?$message";
+    else
+        $return_success .= $message;
+    $header = get_template('redirect', array('time' => 0, 'destination' => $return_success));
 } else {
-    //Wenn nicht erfolgreich, leite nach 3 Sekunden automatisch um und gebe Meldung aus
-    $header = get_template('redirect', array('time' => 3, 'destination' => $return_failure));
-    $output = '</br> ';
-    $output .= get_template('failure', array('text' => "Beim Hochladen der Datei \"{$_FILES['datei']['name']}\" ist ein Fehler aufgetreten."));
+    $message = http_build_query(array('message' => get_template('failure', array( 'text' => "Beim Hochladen der Datei \"{$_FILES['datei']['name']}\" ist ein Fehler aufgetreten."))));
+    if(strpos($return_failure, '?') === FALSE)
+        $return_failure .= "?$message";
+    else
+        $return_failure .= $message;
+    $header = get_template('redirect', array('time' => 0, 'destination' => $return_failure));
 }
 
-draw_page($output, $title, $author, HEAD, $header);
+draw_page($output, $title, $author, HTML, $header);
 ?>
