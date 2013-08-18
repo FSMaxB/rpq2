@@ -47,6 +47,7 @@ function draw_page( $content, $title, $author, $type, $header = '') {
             $output .= $content;
             $output .= get_template('page_footer', array('current' => $meta_current));
             $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $output, 'message' => ''));
+            break;
         case LAYOUT:
             $output = get_template('page_header', array('message' => $meta_message));
             $output .= get_template('layout', array('content' => $content));

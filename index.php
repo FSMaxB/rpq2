@@ -34,16 +34,16 @@ $output = '';
 foreach($menu as $menu_item) {
     switch($meta_profile) {
         case PROFILE_STANDARD:
-            if(array_search($menu_item, $REFS_STANDARD) !== TRUE)
-                continue;
+            if(array_search($menu_item, $REFS_STANDARD) !== FALSE)
+                if($menu_item != 'shutdown_menu')
+                    $output .= profile_button_menu($REFS[$menu_item]['link'], $REFS[$menu_item]['menu']);
             break;
         case PROFILE_IE7:
-            if(array_search($menu_item, $REFS_IE7) !== TRUE)
-                continue;
+            if(array_search($menu_item, $REFS_IE7) !== FALSE)
+                if($menu_item != 'shutdown_menu')
+                    $output .= profile_button_menu($REFS[$menu_item]['link'], $REFS[$menu_item]['menu']);
             break;
     }
-    if($menu_item != 'shutdown_menu')
-        $output .= profile_button_menu($REFS[$menu_item]['link'], $REFS[$menu_item]['menu']);
 }
 
 $output .= profile_button_shutdown();
