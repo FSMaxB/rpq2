@@ -101,7 +101,7 @@ if( __FILE__ == $_SERVER['SCRIPT_FILENAME'] ) {
         $header = get_template('redirect', array('time' => 0, 'destination' => $return_success));
     } else {
         //Im fehlerfall werden die Einstellungen wieder zurückgegeben, sodass man sie nicht nochmal eingeben muss
-        $queries = array( 'settings' => $settings, 'message' => 'Beim speichern der Einstellungen ist ein Fehler aufgetreten!');
+        $queries = array( 'settings' => $settings, 'message' => get_template('failure', array('text' => 'Beim speichern der Einstellungen ist ein Fehler aufgetreten!')));
         $query = http_build_query($queries);
         if(strpos($return_failure, '?') === FALSE)
             $return_failure .= "?$query";
