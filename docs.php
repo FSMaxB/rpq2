@@ -40,7 +40,7 @@ $file_list .= '</table>';
 
 $output = get_template('heading', array('heading' => $heading));
 $output .= get_template('form_upload', array('directory' => $settings['ordner_docs'], 'extension' => '', 'return_success' => $meta_current, 'return_failure' => $meta_current));
-$output .= get_template('container', array('content' => $file_list, 'height' => DEFAULT_CONTAINER_HEIGHT, 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
+$output .= get_template('container', array('content' => $file_list, 'height' => '50%', 'min-height' => DEFAULT_CONTAINER_MIN_HEIGHT, 'max-height' => DEFAULT_CONTAINER_MAX_HEIGHT, 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output .= get_references(array('index'));
 draw_page($output, $title, $author, HEAD);
 ?>

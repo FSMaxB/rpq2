@@ -19,7 +19,9 @@
     along with this program.  If not, see http://www.gnu.org/licenses/.
 */
 
-define('DEFAULT_CONTAINER_HEIGHT', '400px');
+define('DEFAULT_CONTAINER_HEIGHT', '50%');
+define('DEFAULT_CONTAINER_MIN_HEIGHT', '100px');
+define('DEFAULT_CONTAINER_MAX_HEIGHT', '800px');
 define('DEFAULT_CONTAINER_BORDER', '1px');
 define('DEFAULT_CONTAINER_ID', 'div');
 ?>

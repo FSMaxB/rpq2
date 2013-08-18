@@ -41,7 +41,7 @@ $filename = $_GET['filename'];
 $lines = file("{$settings['ordner_einstell-mess']}/$filename", FILE_IGNORE_NEW_LINES);
 $regler = get_value('Regler', $lines);
 $comment = get_comment($lines);
-$container = get_template('container', array('content' => '', 'height' => '450px', 'border' => '0px', 'id' => 'messwerte'));
+$container = get_template('container', array('content' => '', 'height' => '450px', 'min-height' => '450px', 'max-height' => '450px', 'border' => '0px', 'id' => 'messwerte'));
 
 //$output = get_template('heading', array('heading' => "$heading $regler"));
 $output = '<br> ';

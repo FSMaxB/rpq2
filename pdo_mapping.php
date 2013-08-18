@@ -139,7 +139,7 @@ $file_list = get_file_list();
 $output = '</br> ';
 $output .= get_template('form_upload', array('directory' => $settings['ordner_pdo'], 'extension' => '', 'return_success' => $meta_current, 'return_failure' => $meta_current));
 $output .= '</br> ';
-$output .= get_template('container', array('content' => $file_list, 'height' => '200px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
+$output .= get_template('container', array('content' => $file_list, 'height' => '25%', 'min-height' => DEFAULT_CONTAINER_MIN_HEIGHT, 'max-height' => DEFAULT_CONTAINER_MAX_HEIGHT, 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output .= '</br> ';
 $output .= get_template('pdo_mapping', array(
                         'comment' => $comment,

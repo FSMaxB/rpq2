@@ -31,7 +31,7 @@ $author = 'Max Bruckner';
 $return = $_GET['return'];
 
 $gpl = get_template('license_gpl');
-$container = get_template('container', array('content' => $gpl, 'height' => '600px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
+$container = get_template('container', array('content' => $gpl, 'height' => '100%', 'min-height' => DEFAULT_CONTAINER_MIN_HEIGHT, 'max-height' => DEFAULT_CONTAINER_MAX_HEIGHT, 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output = get_template('license', array('license' => $container));
 $output .= get_references(array('index'));
 draw_page($output, $title, $author, HEAD);
