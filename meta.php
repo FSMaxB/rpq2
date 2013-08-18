@@ -40,7 +40,8 @@ $meta_current = $meta_url_parsed['path'] . str_replace('0=', '', http_build_quer
 
 $meta_profile = PROFILE_STANDARD;
 //Internet-Explorer erkennen
-if(preg_match('*msie [1-9]*', strtolower($_SERVER['HTTP_USER_AGENT'])) === 1)
+$USER_AGENT_SPLIT = explode(' ', strtolower($_SERVER['HTTP_USER_AGENT']));
+if((array_search('msie', $USER_AGENT_SPLIT) !== FALSE) && ($USER_AGENT_SPLIT[array_search('msie', $USER_AGENT_SPLIT)+1] < 10))
     $meta_profile = PROFILE_IE7;
 
 //Nachrichten für Nachrichtenzeile empfangen
