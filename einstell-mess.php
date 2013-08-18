@@ -55,9 +55,9 @@ $output = '</br>';
 //$output = get_template('heading', array('heading' => $heading));
 $output .= get_template('form_upload', array('directory' => $settings['ordner_einstell-mess'], 'extension' => $extension, 'return_success' => $meta_current, 'return_failure' => $meta_current));
 $output .= '<br><b>Einstellwerte:</b></br>';
-$output .= get_template('container', array('content' => $einstell_list, 'height' => '315px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
+$output .= get_template('container', array('content' => $einstell_list, 'height' => '25%', 'min-height' => '50px', 'max-height' => DEFAULT_CONTAINER_MAX_HEIGHT,'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output .= '<b>Messwerte:</b></br>';
-$output .= get_template('container', array('content' => $mess_list, 'height' => '100px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
+$output .= get_template('container', array('content' => $mess_list, 'height' => '25%', 'min-height' => '50px', 'max-height' => DEFAULT_CONTAINER_MAX_HEIGHT,'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 
 $output .= profile_button_inline("editor.php?ordner={$settings['ordner_einstell-mess']}&return=einstell-mess.php", 'Neue Datei');
 $output .= get_references(array('index', 'sollwert', 'pdo_mapping', 'wartung'));

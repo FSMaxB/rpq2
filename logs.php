@@ -38,7 +38,7 @@ foreach( get_files($settings['ordner_log']) as $file ) {
 $file_list .= '</table>';
 
 $output = get_template('heading', array('heading' => $heading));
-$output .= get_template('container', array('content' => $file_list, 'height' => '460px', 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
+$output .= get_template('container', array('content' => $file_list, 'height' => '50%', 'min-height' => DEFAULT_CONTAINER_MIN_HEIGHT, 'max-height' => DEFAULT_CONTAINER_MAX_HEIGHT, 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
 $output .= get_references(array('index'));
 draw_page($output, $title, $author, HEAD);
 ?>
