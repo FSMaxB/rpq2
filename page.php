@@ -43,19 +43,19 @@ function draw_page( $content, $title, $author, $type, $header = '') {
             $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $content, 'message' => $meta_message));
             break;
         case RAW:
-            $output = get_template('page_header', array('message' => $meta_message));
+            $output = get_template('page_header', array('message' => $meta_message, 'version' => get_template('version', array(), 'txt')));
             $output .= $content;
             $output .= get_template('page_footer', array('current' => $meta_current));
             $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $output, 'message' => ''));
             break;
         case LAYOUT:
-            $output = get_template('page_header', array('message' => $meta_message));
+            $output = get_template('page_header', array('message' => $meta_message, 'version' => get_template('version', array(), 'txt')));
             $output .= get_template('layout', array('content' => $content));
             $output .= get_template('page_footer', array('current' => $meta_current));
             $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $output, 'message' => ''));
             break;
       case HEAD:
-            $output = get_template('page_header', array('message' => $meta_message));
+            $output = get_template('page_header', array('message' => $meta_message, 'version' => get_template('version', array(), 'txt')));
             $output .= $content;
             $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $output, 'message' => ''));
             break;
