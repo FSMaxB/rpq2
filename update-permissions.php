@@ -23,7 +23,7 @@ include_once('meta.php');
 include_once('page.php');
 include_once('profiles.php');
 
-system("./root");
+system("./update/root");
 $output = "Dateirechte wurden aktualisiert!";
 $output .= get_references(array('index'));
 draw_page($output, 'Dateirechte aktualisieren', 'Max Bruckner', HTML);
