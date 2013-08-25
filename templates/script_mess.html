@@ -13,7 +13,7 @@
 							document.getElementById("messwerte").innerHTML = ajax.responseText;
 						}
 					}
-				}
+				};
 				ajax.open("GET","mess_get.php?filename={filename}&log=" + document.vars.log.value,true);
 				ajax.send();
 				requests++;
