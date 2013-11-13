@@ -60,7 +60,7 @@ function get_mess_lines($lines) {
                                         'proz' => $proz,
                                         'hex' => $hex,
                                         'bin' => $bin,
-                                        'text' => $hex));
+                                        'text' => $text));
             } else {
                 $output .= "<input type=\"hidden\" name=\"data[$i][type]\" value=\"other\">\n";
             }
