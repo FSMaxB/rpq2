@@ -4,6 +4,7 @@
 #include <sstream>
 #include <iostream>
 #include <string>
+#include <unistd.h>
 
 using std::string;
 using std::ifstream;
