@@ -28,9 +28,13 @@ define('HEAD', 4);      //Nur Kopfzeile
 include_once('meta.php');
 include_once('templates.php');
 
+/*
+ * Gibt die fertige Seite aus basierend auf dem übergebenen Typ aus
+ * */
 function draw_page( $content, $title, $author, $type, $header = '') {
     global $meta_profile, $meta_message, $meta_current;
 
+    //IE-User bekommen aus Kompatibilitätsgründen kein Layout
     if( ($meta_profile == PROFILE_IE7) && ($type == LAYOUT))
         $type = RAW;
 
@@ -39,24 +43,28 @@ function draw_page( $content, $title, $author, $type, $header = '') {
         case NAKED:
             $output = $content;
             break;
+
         case HTML:
             $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $content, 'message' => $meta_message));
             break;
+
         case RAW:
             $output = get_template('page_header', array('message' => $meta_message, 'version' => get_template('version', array(), 'txt')));
             $output .= $content;
             $output .= get_template('page_footer', array('current' => $meta_current));
             $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $output, 'message' => ''));
             break;
+
+      case HEAD:
+            $output = get_template('page_header', array('message' => $meta_message, 'version' => get_template('version', array(), 'txt')));
+            $output .= $content;
+            $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $output, 'message' => ''));
+            break;
+
         case LAYOUT:
             $output = get_template('page_header', array('message' => $meta_message, 'version' => get_template('version', array(), 'txt')));
             $output .= get_template('layout', array('content' => $content));
             $output .= get_template('page_footer', array('current' => $meta_current));
-            $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $output, 'message' => ''));
-            break;
-      case HEAD:
-            $output = get_template('page_header', array('message' => $meta_message, 'version' => get_template('version', array(), 'txt')));
-            $output .= $content;
             $output = get_template('html', array('author' => $author, 'title' => $title, 'header' => $header, 'content' => $output, 'message' => ''));
             break;
     }
