@@ -21,6 +21,28 @@
 
 include_once('meta.php');
 
+/*
+ * Die folgende Funktion führt eine Template-Ersetzung mit beliebigen
+ * Dateien durch.
+ *
+ * Um ein neues Template zu erstellen, muss eine neue Datei im Ordner
+ * "templates" angelegt werden.
+ *
+ * Die Funktion get_template erhält einen Dateinamen, optional eine Datei-
+ * Endung ( der Standard ist .html ) und einen Array mit den zu
+ * ersetzenden Texten. Es kann alles ersetzt werden, was in geschweiften
+ * Klammern umfasst ist.
+ *
+ * Hier ein Beispiel:
+ *      Dies ist {eins} Test. Dies ist {zwei} Test.
+ * Mit dem Array array{ 'eins' => 'der erste', 'zwei' => 'der zweite' }
+ * wird zu:
+ *      Dies ist der erste Test. Dies ist der zweite Test.
+ *
+ * Hierbei können beliebige Template-Argumente beliebig Oft in
+ * beliebiger Reihenfolge verwendet werden
+ * 
+ * */
 function get_template($filename, $values = array(), $extension = 'html') {
     $output = file_get_contents("templates/$filename" . '.' . $extension);
     $keys = array_keys($values);    //Liste der zu ersetzenden Strings
