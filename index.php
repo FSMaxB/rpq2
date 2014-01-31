@@ -28,22 +28,15 @@ include_once('templates.php');
 $title = 'RPQ2 Webinterface';
 $author = 'Max Bruckner';
 
+//Die folgenden Seiten bekommen Menu-Items, sofern im Profil vorhanden
 $menu = array('einstell', 'mess', 'einstell-mess', 'logs', 'docs', 'settings_menu', 'shutdown_menu');
 
 $output = '';
 foreach($menu as $menu_item) {
-    switch($meta_profile) {
-        case PROFILE_STANDARD:
-            if(array_search($menu_item, $REFS_STANDARD) !== FALSE)
-                if($menu_item != 'shutdown_menu')
-                    $output .= profile_button_menu($REFS[$menu_item]['link'], $REFS[$menu_item]['menu']);
-            break;
-        case PROFILE_IE7:
-            if(array_search($menu_item, $REFS_IE7) !== FALSE)
-                if($menu_item != 'shutdown_menu')
-                    $output .= profile_button_menu($REFS[$menu_item]['link'], $REFS[$menu_item]['menu']);
-            break;
-    }
+    //Ist menu_item im aktuellen Profil vorhanden, erstelle Button
+    if(array_search($menu_item, profile_references() ) !== FALSE)
+        if($menu_item != 'shutdown_menu') //Shutdown wird ausgefiltert
+            $output .= profile_button_menu($REFS[$menu_item]['link'], $REFS[$menu_item]['menu']);
 }
 
 $output .= profile_button_shutdown();
