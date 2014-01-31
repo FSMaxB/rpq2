@@ -17,8 +17,28 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see http://www.gnu.org/licenses/.
-*/
+ */
 
+/*
+ * In dieser Datei werden diverse Profile definiert und implementiert.
+ * Die Profile existieren Hauptsächlich, um für Internet Explorer zur
+ * kompatibilität dynamisch einige Funktionen entfernen und UI-Elemente
+ * durch andere ersetzen zu können. Die Profile können aber auch nützlich
+ * sein, um für verschiedene zu steuernde Geräte verschiedene Menüpunkte
+ * und Funktionen anbieten zu können.
+ * */
+
+/*
+ * Dies ist eine Liste aller Links auf Seiten. Hierzu wird erstens
+ * der Name der PHP-Datei ( link ), zweitens der Text, der erscheint,
+ * wenn im Hauptmenü auf die Seite verlinkt wird ( menu ) und
+ * drittens der Text, der bei Querverweisen, zwischen den einzelnen
+ * Seiten und Untermenüs angezeigt wird ( ref ) angegeben.
+ *
+ * Die Untermenüs oder das Hauptmenü muss also nur noch eine Liste
+ * der Seiten angeben, die verlinkt werden sollen und die Buttons
+ * etc. können dann automatisch daraus generiert werden.
+ * */
 $REFS = array(
     'docs' => array(
         'link' => 'docs.php',
@@ -78,6 +98,14 @@ $REFS = array(
         'menu' => 'Manuelle Geräteeinstellung')
     );
 
+/*
+ * Verschiedene Profile enthalten nur bestimmte Seiten,
+ * die überhaupt verwendet werden. Diese werden in den
+ * folgenden Arrays definiert. Wenn ein Untermenü
+ * beispielsweise einen Link zu "sollwert" anfordert,
+ * aktuell aber das IE7-Profil verwendet wird, so wird
+ * dieser Link nicht angezeigt werden.
+ * */
 $REFS_STANDARD = array('docs', 'editor', 'einstell-mess', 'einstell',
         'index', 'license', 'logs', 'mess',
         'mess_edit', 'pdo_mapping', 'settings_menu',
@@ -86,6 +114,9 @@ $REFS_IE7 = array('docs', 'einstell-mess', 'einstell',
         'index', 'license', 'mess', 'mess_edit',
         'settings_menu', 'shutdown_menu');
 
+/*
+ * Gibt den Button des gerade gesetzten Profils zurück
+ * */
 function profile_button($link, $text) {
     global $meta_profile;
     switch($meta_profile) {
@@ -96,6 +127,11 @@ function profile_button($link, $text) {
     }
 }
 
+/*
+ * Gibt den inline-Button des aktuellen Profils zurück.
+ * Inline-Buttons sind Buttons, die nicht eine gesamte
+ * Zeile für sich beanspruchen.
+ * */
 function profile_button_inline($link, $text) {
     global $meta_profile;
     switch($meta_profile) {
@@ -106,6 +142,9 @@ function profile_button_inline($link, $text) {
     }
 }
 
+/*
+ * Gibt den Hauptmenü-Button des aktuellen Profils zurück
+ * */
 function profile_button_menu($link, $text) {
     global $meta_profile;
     switch($meta_profile) {
@@ -116,6 +155,9 @@ function profile_button_menu($link, $text) {
     }
 }
 
+/*
+ * Gibt den Shutdown-Button des aktuellen Profils zurück
+ * */
 function profile_button_shutdown() {
     global $meta_profile, $REFS;
     switch($meta_profile) {
@@ -126,6 +168,10 @@ function profile_button_shutdown() {
     }
 }
 
+/*
+ * Kleine Helferfunktion, die je nach Profil die
+ * Liste der zu verwendenden Seiten zurückgibt.
+ * */
 function profile_references() {
     global $REFS_IE7, $REFS_STANDARD, $meta_profile;
 
@@ -137,6 +183,14 @@ function profile_references() {
     }
 }
 
+/*
+ * Erstellt eine Zeile mit Querverweisen,
+ * wie sie unten auf den meisten Seiten
+ * vorkommen. Hierzu bekommt die Funktion
+ * eine Liste von Seiten, zu denen Verlinkt
+ * werden soll und entscheidet anhand des Profils,
+ * welche Verweise tatsächlich generiert werden.
+ * */
 function get_references($refs) {
     global $REFS;
 
