@@ -35,7 +35,7 @@ using std::cout;
 using std::endl;
 using std::stringstream;
 
-const unsigned int TIMEOUT = 50;        //Timeout in ms
+const unsigned int TIMEOUT = 200;        //Timeout in ms
 const bool SIGNED = true;
 const bool UNSIGNED = false;
 const bool READY = true;
