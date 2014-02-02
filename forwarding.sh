@@ -7,7 +7,7 @@ then
     USER=$1
     HOST=$2
     IDENTITY=$3
-    ssh -i $IDENTITY -R $HOST:8080:localhost:80 $USER@$HOST
+    ssh -N -i $IDENTITY -R $HOST:8080:localhost:80 $USER@$HOST
 else
     echo "Benutzung: $0 nutzer zielserver private-key"
 fi
