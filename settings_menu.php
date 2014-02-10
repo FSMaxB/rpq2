@@ -55,6 +55,7 @@ foreach( explode("\n", get_template('baudrates', array(), 'txt')) as $baudrate )
 }
 
 $output = get_template('heading', array('heading' => $heading));
+//TODO Array für folgendes get_template automatisch generieren
 $output .= get_template('form_settings', array(
                         'serial_interfaces' => $interfaces,
                         'serial_baudrates' => $baudrates,
@@ -64,6 +65,9 @@ $output .= get_template('form_settings', array(
                         'ordner_log' => $settings['ordner_log'],
                         'ordner_pdo' => $settings['ordner_pdo'],
                         'ordner_misc' => $settings['ordner_misc'],
+                        'fernwartung_host' => $settings['fernwartung_host'],
+                        'fernwartung_user' => $settings['fernwartung_user'],
+                        'fernwartung_id' => $settings['fernwartung_id'],
                         'return_success' => $meta_current,
                         'return_failure' => $meta_current));
 $output .= get_references(array('index'));
