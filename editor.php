@@ -84,6 +84,6 @@ $output = get_template('heading', array('heading' => $heading));
 $output .= get_template('form_editor', array('text' => $text, 'ordnerlist' => $ordnerlist, 'filename' => $filename));
 $output .= '</br>';
 $output .= $message;
-$output .= get_references(array('index', 'einstell-mess', 'mess', 'pdo_mapping', 'wartung'));
+$output .= get_references(array('index', 'einstell-mess', 'mess'));
 draw_page($output, $title, $author, HEAD);
 ?>

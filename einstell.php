@@ -126,7 +126,7 @@ $einstell_list = get_list($einstellwerte);
 $output = '</br> ';
 //$output = get_template('heading', array('heading' => $heading));
 $output .= get_template('form_einstell', array('comment' => $comment, 'regler' => $regler, 'index' => $index, 'einstellwerte' => $einstell_list, 'filename' => $filename));
-$output .= get_references(array('index', 'einstell-mess', 'mess', 'pdo_mapping', 'wartung'));
+$output .= get_references(array('index', 'einstell-mess', 'mess'));
 $output .= $info;
 
 draw_page($output, $title, $author, HEAD);

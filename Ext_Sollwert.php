@@ -28,16 +28,42 @@ include_once('templates.php');
 include_once('file.php');
 include_once('tty.php');
 
-$title = 'Manuelle Geräteeinstellung';
-$author = 'Max Bruckner';
-$heading = 'Manuelle Geräteeinstellung';
+$title = 'Externe Sollwertvorgabe';
+$author = 'Andreas Bruckner';
+$heading = 'Externe Sollwertvorgabe';
 
 $send = $_POST['send'];
 $filename_save = $_POST['filename'];
 $comment = $_POST['comment'];
 $filename_read = $_GET['filename'];
 
-function send($send) {
+function get_settingsUSB1() {
+    global $settings;
+     $settings =
+        array(      //Setzen der Defaultwerte
+            'serial_interface' => '/dev/ttyUSB0',
+            'serial_baudrate' => '115200',
+            'ordner_docs' => 'docs',
+            'ordner_einstell-mess' => 'einstell-mess',
+            'ordner_wartung' => 'wartung',
+            'ordner_log' => 'log',
+            'ordner_pdo' => 'pdo',
+            'ordner_misc' => 'misc'
+        );
+
+    $lines = file('settingsUSB1.cfg', FILE_IGNORE_NEW_LINES);
+
+    foreach( $lines as $line) {
+        if( (strpos($line, '#') !== 0) && ($line)) {    //Kommentarzeilen werden ignoriert
+            $setting = explode('=', $line);
+            if( ($setting[0]) && ($setting[1]) ) {
+                $settings[$setting[0]] = trim($setting[1]);
+            }
+        }
+    }
+}
+
+function send_USB1($send) {
     global $settings;
 
     $received = NULL;
@@ -56,16 +82,17 @@ function get_file_list() {
 
     $file_list = '<table>';
     foreach( get_files($settings['ordner_wartung']) as $file ) {
-        $file_list .= get_template('link_wartung', array('directory' => $settings['ordner_wartung'], 'filename' => $file, 'return_success' => $meta_current, 'return_failure' => $meta_current));
+        $file_list .= get_template('link_Ext_Sollwert', array('directory' => $settings['ordner_wartung'], 'filename' => $file, 'return_success' => $meta_current, 'return_failure' => $meta_current));
     }
     $file_list .= '</table>';
     return $file_list;
 }
 
+get_settingsUSB1();
 set_tty();
 
 if( $send != '') {
-    $received = send($send);
+    $received = send_USB1($send);
 }
 
 if( $filename_save != '' ) {
@@ -90,7 +117,7 @@ $output = get_template('heading', array('heading' => $heading));
 $output .= get_template('form_upload', array('directory' => $settings['ordner_wartung'], 'extension' => '', 'return_success' => $meta_current, 'return_failure' => $meta_current));
 $output .= '</br> ';
 $container = get_template('container', array('content' => $file_list, 'height' => '40%', 'min-height' => DEFAULT_CONTAINER_MIN_HEIGHT, 'max-height' => DEFAULT_CONTAINER_MAX_HEIGHT, 'border' => DEFAULT_CONTAINER_BORDER, 'id' => DEFAULT_CONTAINER_ID));
-$output .= get_template('wartung', array('file_list' => $container, 'comment' => $comment, 'send' => $send, 'received' => $received));
-$output .= get_references(array('index', 'einstell-mess', 'mess', 'pdo_mapping'));
+$output .= get_template('Ext_Sollwert', array('file_list' => $container, 'comment' => $comment, 'send' => $send, 'received' => $received));
+$output .= get_references(array('index', 'einstell-mess', 'mess'));
 draw_page( $output, $title, $author, HEAD);
 ?>

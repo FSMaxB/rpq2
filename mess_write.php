@@ -59,10 +59,10 @@ $data = $_POST['data'];
 $take_comments = $_POST['take_comments'];
 
 if(write_csv($filename, $comment, $regler, $data, $take_comments, FALSE)) {
-    $message = http_build_query(array('message' => get_template('success', array('text' => 'Messwerttabelle erfolgreich gespeichert!'))));
+    $message = http_build_query(array('message' => get_template('success', array('text' => 'Messwerttabelle gespeichert!'))));
     $header = get_template('redirect', array('time' => 0, 'destination' => "einstell-mess.php?$message"));
 } else {
-    $message = http_build_query(array('message' => get_template('failure', array('text' => 'Messwerttabelle konnte nicht gespeichert werden!'))));
+    $message = http_build_query(array('message' => get_template('failure', array('text' => 'Messwerttabelle nicht gespeichert!'))));
     $header = get_template('redirect', array('time' => 3, 'destination' => "einstell-mess.php?$message"));
 }
 

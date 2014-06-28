@@ -119,14 +119,14 @@ switch($mode) {
         $title = 'Einstellwerte lesen';
         write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
         $return = run('read', 'send.ew', 'receive.ew');
-        $output = get_output($return, 'Einstellwerte erfolgreich ausgelesen', 'receive.ew', nl2br($return), 'send.ew');
+        $output = get_output($return, 'Einstellwerte ausgelesen', 'receive.ew', nl2br($return), 'send.ew');
         break;
 
      case 'read_save':
         $title = 'Einstellwerte lesen';
         write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
         $return = run('read', 'send.ew', $filename);
-        $output = get_output($return, 'Einstellwerte erfolgreich ausgelesen', $filename, nl2br($return), 'send.ew');
+        $output = get_output($return, 'Einstellwerte ausgelesen und gespeichert', $filename, nl2br($return), 'send.ew');
         break;
 
     case 'write':
@@ -134,7 +134,7 @@ switch($mode) {
         write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
         $return = run('write', 'send.ew');
 
-        $output = get_output($return, 'Einstellwerte erfolgreich geschrieben', 'send.ew', nl2br($return), 'send.ew');
+        $output = get_output($return, 'Einstellwerte geschrieben', 'send.ew', nl2br($return), 'send.ew');
         break;
 
     case 'write_save':
@@ -143,7 +143,7 @@ switch($mode) {
         $return = run('write', 'send.ew');
 
         if(write_csv($filename, $comment, $regler, $index, $data, $take_trenn, $take_comments, false)) {
-            $output = get_output($return, 'Einstellwerte erfolgreich geschrieben und gespeichert', $filename, nl2br($return), 'send.ew');
+            $output = get_output($return, 'Einstellwerte geschrieben und gespeichert', $filename, nl2br($return), 'send.ew');
         } else {
             $message = http_build_query(array('message' => get_template('failure', array('text' => 'Speichern der Einstellwerte fehlgeschlagen!'))));
             $header = get_template('redirect', array('time' => 0, 'destination' => "einstell.php?filename=$filename&$message"));
@@ -153,10 +153,10 @@ switch($mode) {
     case 'save':
         $title = 'save';
         if(write_csv($filename, $comment, $regler, $index, $data, $take_trenn, $take_comment, false)) {
-            $message = http_build_query(array('message' => get_template('success', array('text' => 'Einstellwerte erfolgreich gespeichert'))));
+            $message = http_build_query(array('message' => get_template('success', array('text' => 'Einstellwerte gespeichert'))));
             $header = get_template('redirect', array('time' => 0, 'destination' => "einstell.php?filename=$filename&$message"));
         } else {
-            $message = http_build_query(array('message' => get_template('failure', array('text' => 'Beim Speichern der Einstellwerte ist ein Fehler aufgetreten'))));
+            $message = http_build_query(array('message' => get_template('failure', array('text' => 'Beim Speichern ist ein Fehler aufgetreten'))));
             $header = get_template('redirect', array('time' => 3, 'destination' => "index.php?$message"));
         }
         break;

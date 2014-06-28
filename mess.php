@@ -41,11 +41,11 @@ $filename = $_GET['filename'];
 $lines = file("{$settings['ordner_einstell-mess']}/$filename", FILE_IGNORE_NEW_LINES);
 $regler = get_value('Regler', $lines);
 $comment = get_comment($lines);
-$container = get_template('container', array('content' => '', 'height' => '450px', 'min-height' => '450px', 'max-height' => '450px', 'border' => '0px', 'id' => 'messwerte'));
+$container = get_template('container', array('content' => '', 'height' => '350px', 'min-height' => '350px', 'max-height' => '350px', 'border' => '0px', 'id' => 'messwerte'));
 
 //$output = get_template('heading', array('heading' => "$heading $regler"));
 $output = '<br> ';
 $output .= get_template('mess', array('comment' => nl2br($comment), 'container' => $container));
-$output .= get_references(array('index', 'einstell', 'einstell-mess', 'sollwert', 'pdo_mapping'));
+$output .= get_references(array('index', 'einstell', 'einstell-mess', 'sollwert'));
 draw_page($output, "$title $regler", $author, HEAD, get_template('script_mess', array('filename' => $filename)));
 ?>

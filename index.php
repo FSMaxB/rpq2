@@ -23,10 +23,14 @@ include_once('meta.php');
 include_once('profiles.php');
 include_once('page.php');
 include_once('templates.php');
+include_once('settings.php');
+include_once('tty.php');
 
 
 $title = 'RPQ2 Webinterface';
 $author = 'Max Bruckner';
+
+set_tty();
 
 //Die folgenden Seiten bekommen Menu-Items, sofern im Profil vorhanden
 $menu = array('einstell', 'mess', 'einstell-mess', 'logs', 'docs', 'settings_menu', 'shutdown_menu');

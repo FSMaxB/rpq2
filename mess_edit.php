@@ -83,6 +83,6 @@ $mess_lines = get_mess_lines($lines);
 
 $output = get_template('heading', array('heading' => $heading));
 $output = get_template('mess_edit', array('comment' => $comment, 'messwerte' => $mess_lines, 'filename' => $filename, 'regler' => $regler));
-$output .= get_references(array('index', 'einstell-mess', 'mess', 'pdo_mapping', 'wartung'));
+$output .= get_references(array('index', 'einstell-mess', 'mess'));
 draw_page($output, $title, $author, HEAD);
 ?>
