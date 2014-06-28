@@ -2,8 +2,8 @@
 /*
     RPQ2-Webinterface
 
-    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
-    Author: Max Bruckner
+    Copyright (C) 2012-2014 Innowatt Energiesysteme GmbH
+    Author: Max Bruckner, Andreas Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -37,39 +37,13 @@ $filename_save = $_POST['filename'];
 $comment = $_POST['comment'];
 $filename_read = $_GET['filename'];
 
-function get_settingsUSB1() {
-    global $settings;
-     $settings =
-        array(      //Setzen der Defaultwerte
-            'serial_interface' => '/dev/ttyUSB0',
-            'serial_baudrate' => '115200',
-            'ordner_docs' => 'docs',
-            'ordner_einstell-mess' => 'einstell-mess',
-            'ordner_wartung' => 'wartung',
-            'ordner_log' => 'log',
-            'ordner_pdo' => 'pdo',
-            'ordner_misc' => 'misc'
-        );
-
-    $lines = file('settingsUSB1.cfg', FILE_IGNORE_NEW_LINES);
-
-    foreach( $lines as $line) {
-        if( (strpos($line, '#') !== 0) && ($line)) {    //Kommentarzeilen werden ignoriert
-            $setting = explode('=', $line);
-            if( ($setting[0]) && ($setting[1]) ) {
-                $settings[$setting[0]] = trim($setting[1]);
-            }
-        }
-    }
-}
-
-function send_USB1($send) {
+function send($send) {
     global $settings;
 
     $received = NULL;
     $befehl = NULL;
 
-    exec("nativ/einstell wartung {$settings['serial_interface']} $send", $results);
+    exec("nativ/einstell wartung {$settings['serial_interface2']} $send", $results);
 
     foreach ( $results as $result ) {
          $received .= "$result\n";
@@ -88,11 +62,10 @@ function get_file_list() {
     return $file_list;
 }
 
-get_settingsUSB1();
 set_tty();
 
 if( $send != '') {
-    $received = send_USB1($send);
+    $received = send($send);
 }
 
 if( $filename_save != '' ) {

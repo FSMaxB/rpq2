@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
 
-    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2014 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
 
     This program is free software: you can redistribute it and/or modify
@@ -36,21 +36,35 @@ if( isset($_GET['']) ) {
 
 //Liste mit seriellen Schnittstellen erstellen
 $interfaces = NULL;
+$interfaces2 = NULL;
 foreach( get_ttys() as $tty ) {
     if( "/dev/$tty" == $settings['serial_interface'] ) {
         $interfaces .= "<option selected>/dev/$tty</option>\n";
     } else {
         $interfaces .= "<option>/dev/$tty</option>";
     }
+
+    if( "/dev/$tty" == $settings['serial_interface2'] ) {
+        $interfaces2 .= "<option selected>/dev/$tty</option>\n";
+    } else {
+        $interfaces2 .= "<option>/dev/$tty</option>";
+    }
 }
 
 //Liste mit Baudraten erstellen
 $baudrates = '';
+$baudrates2 = '';
 foreach( explode("\n", get_template('baudrates', array(), 'txt')) as $baudrate ) {
     if( $baudrate == $settings['serial_baudrate'] ) {
         $baudrates .= "<option selected>$baudrate</option>\n";
     } else {
         $baudrates .= "<option>$baudrate</option>\n";
+    }
+
+    if( $baudrate == $settings['serial_baudrate2'] ) {
+        $baudrates2 .= "<option selected>$baudrate</option>\n";
+    } else {
+        $baudrates2 .= "<option>$baudrate</option>\n";
     }
 }
 
@@ -58,6 +72,8 @@ $output = get_template('heading', array('heading' => $heading));
 $output .= get_template('form_settings', array(
                         'serial_interfaces' => $interfaces,
                         'serial_baudrates' => $baudrates,
+                        'serial_interfaces2' => $interfaces2,
+                        'serial_baudrates2' => $baudrates2,
                         'ordner_docs' => $settings['ordner_docs'],
                         'ordner_einstell-mess' => $settings['ordner_einstell-mess'],
                         'ordner_wartung' => $settings['ordner_wartung'],

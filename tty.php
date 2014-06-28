@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
 
-    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2014 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
 
     This program is free software: you can redistribute it and/or modify
@@ -36,9 +36,16 @@ function get_ttys() {
 
 function set_tty() {
     global $settings;
+    //Erste Schnittstelle
     system("stty -F {$settings['serial_interface']} -echo");
     system("stty -F {$settings['serial_interface']} {$settings['serial_baudrate']}");
     system("stty -F {$settings['serial_interface']} raw");
+
+    //Zweite Schnittstelle (Externe Sollwertvorgabe)
+    system("stty -F {$settings['serial_interface2']} -echo");
+    system("stty -F {$settings['serial_interface2']} {$settings['serial_baudrate2']}");
+    system("stty -F {$settings['serial_interface2']} raw");
+
 }
 
 ?>

@@ -4,7 +4,7 @@
     <table>
       <tr>
         <td>
-          <b>Schnittstelle:</b>
+          <b>Schnittstelle (Con08):</b>
         </td>
         <td>
           <select name="settings[serial_interface]" size="1">
@@ -19,6 +19,26 @@
         <td>
           <select name="settings[serial_baudrate]" size="1">
             {serial_baudrates}
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Schnittstelle Externe Sollwertvorgabe (Con07):</b>
+        </td>
+        <td>
+          <select name="settings[serial_interface2]" size="1">
+            {serial_interfaces2}
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Baudrate:</b>
+        </td>
+        <td>
+          <select name="settings[serial_baudrate2]" size="1">
+            {serial_baudrates2}
           </select>
         </td>
       </tr>

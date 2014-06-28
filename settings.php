@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
 
-    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2014 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
 
     This program is free software: you can redistribute it and/or modify
@@ -33,6 +33,8 @@ function get_settings() {
         array(      //Setzen der Defaultwerte
             'serial_interface' => '/dev/ttyUSB0',
             'serial_baudrate' => '115200',
+            'serial_interface2' => '/dev/ttyUSB1',
+            'serial_baudrate2' => '19200',
             'ordner_docs' => 'docs',
             'ordner_einstell-mess' => 'einstell-mess',
             'ordner_wartung' => 'wartung',

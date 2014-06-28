@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
 
-    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2014 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
 
     This program is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@ $ziel = "$ordner/$name";
 
 if(move_uploaded_file($_FILES['datei']['tmp_name'],$ziel))
 {
-    $message = http_build_query(array('message' => get_template('success', array('text' => "Datei \"{$_FILES['datei']['name']}\" erfolgreich hochgeladen."))));
+    $message = http_build_query(array('message' => get_template('success', array('text' => "Datei \"{$_FILES['datei']['name']}\" hochgeladen."))));
     if(strpos($return_success, '?') === FAlSE)
         $return_success .= "?$message";
     else
