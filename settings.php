@@ -23,6 +23,10 @@ include_once('meta.php');
 
 define('CONFIG_FILE','settings.cfg');
 
+/*
+ * Holt die aktuellen Einstellungen aus der Einstelldatei
+ * und nimmt, falls nicht vorhanden die Standardeinstellungen
+ * */
 function get_settings() {
     global $settings;
      $settings =
@@ -37,11 +41,11 @@ function get_settings() {
             'ordner_misc' => 'misc'
         );
 
-    $lines = file(CONFIG_FILE, FILE_IGNORE_NEW_LINES);
+    $lines = file(CONFIG_FILE, FILE_IGNORE_NEW_LINES);  //Konfigurationsdatei einlesen
 
     foreach( $lines as $line) {
         if( (strpos($line, '#') !== 0) && ($line)) {    //Kommentarzeilen werden ignoriert
-            $setting = explode('=', $line);
+            $setting = explode('=', $line);             //Einstellzeilen mit '=' auftrennen
             if( ($setting[0]) && ($setting[1]) ) {
                 $settings[$setting[0]] = trim($setting[1]);
             }
@@ -49,6 +53,10 @@ function get_settings() {
     }
 }
 
+/*
+ * Schreibt die Einstellungen aus einem entsprechenden Array
+ * in die Datei
+ * */
 function write_settings($settings) {
     $config_linse = file(CONFIG_FILE, FILE_IGNORE_NEW_LINES);
     $output = '';
