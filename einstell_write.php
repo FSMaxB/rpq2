@@ -2,7 +2,7 @@
 /*
     RPQ2-Webinterface
 
-    Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
+    Copyright (C) 2012-2014 Innowatt Energiesysteme GmbH
     Author: Max Bruckner
             Andreas Bruckner
 
@@ -125,7 +125,13 @@ switch($mode) {
      case 'read_save':
         $title = 'Einstellwerte lesen';
         write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
-        $return = run('read', 'send.ew', $filename);
+        $return = run('read', 'send.ew', 'tempfile');
+
+	//Überprüfen, ob erfolgreich übertragen, wenn ja 'tempfile' zu $filename umbenennen
+	if( strpos( $return, 'FEHLER') === FALSE ) {
+	    rename( "{$settings['ordner_einstell-mess']}/tempfile", "{$settings['ordner_einstell-mess']}/$filename" );
+	}
+
         $output = get_output($return, 'Einstellwerte ausgelesen und gespeichert', $filename, nl2br($return), 'send.ew');
         break;
 
@@ -142,7 +148,13 @@ switch($mode) {
         write_csv('send.ew', $comment, $regler, $index, $data, false, false, false);
         $return = run('write', 'send.ew');
 
-        if(write_csv($filename, $comment, $regler, $index, $data, $take_trenn, $take_comments, false)) {
+	$status = FALSE;
+	//Überprüfen, ob erfolgreich übertragen, wenn ja, schreibe Werte in Datei
+	if( strpos( $return, 'FEHLER') === FALSE ) {
+	    $status = write_csv($filename, $comment, $regler, $index, $data, $take_trenn, $take_comments, false);
+	}
+
+        if($status) {
             $output = get_output($return, 'Einstellwerte geschrieben und gespeichert', $filename, nl2br($return), 'send.ew');
         } else {
             $message = http_build_query(array('message' => get_template('failure', array('text' => 'Speichern der Einstellwerte fehlgeschlagen!'))));
