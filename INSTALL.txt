@@ -2,17 +2,14 @@ INSTALLATIONSHINWEISE FÜR DAS RPQ2-WEBINTERFACE
 
 VORRAUSSETZUNGEN
 *funktionierende POSIX-Laufzeitumgebung
-*Webserver mit PHP5 (vorzugsweise apache2)
+*Webserver mit PHP5 ( zum Beispiel apache2 )
 *C/C++-Compiler und pthread-Bibliothek (vorzugsweise GCC)
-*Zip
 
 INSTALLATION
 
-Hinweis: Einige der im folgenden beschriebenen Befehle müssen mit Root-Rechten ausgeführt werden. Auf den meisten GNU/Linux-Systemen lässt sich das durch voranstellen des Befehls "sudo" bewerkstelligen.
-
-1. In der php.ini (bei Debian /etc/php5/apache2/php.ini) "post_max_size" und "upload_max_filesize" auf einen angemessen großen Wert setzen (z.B. "64M")
-2. Kopieren der Ordnerstruktur in den Ordner des Webservers (Auf Debian-Systemen normalerweise "/var/www")
-3. Folgenden Befehl als root ausführen: sh permissions.sh user group (wobei user und groub mit Benutzername und Gruppe des Webservers ersetzt werden).
-4. Das Skript source.sh als root ausführen ("./source.sh")
-5. Dem Benutzernamen des Webservers die Rechte für den Zugriff auf die seriellen Schnittstellen geben (normalerweise mit dem Befehl "usermod -a -G dialout www-data"[mit Root-Rechten] "usermod -a -G tty www-data"[mit Root-Rechten]).
-6. Falls man den Rechner per Webinterface herunterfahren können möchte: Dem Benutzernamen des Webservers die Berechtigung zum Ausführen des "shutdown"-Befehles geben (normalerweise mit dem Befehl "chmod +s /sbin/shutdown"[mit Root-Rechten]; ACHTUNG: Anschließend kann jeder Benutzer den Computer herunterfahren)
+1. In der php.ini (bei Debian/Ubuntu /etc/php5/apache2/php.ini) "post_max_size" und "upload_max_filesize" auf einen angemessen großen Wert setzen (z.B. "64M")
+2. Webinterface in den Ordner des Webservers kopieren ( "/var/www" bei Debian und älteren Ubuntus, "/var/www/html" bei neueren Ubuntus, auf anderen Distributionen häufig auch "/srv/http" oder so ähnlich. )
+3. Die Dateizugriffsrechte der Dateien so setzen, dass der Webserver Schreibzugriff auf die Ordner "docs", "einstell-mess", "log", "misc", "pdo", "wartung" und die darin enthaltenen Dateien hat. Ebenso werden Schreibrechte für settings.cfg benötigt.
+4. Im Ordner "nativ" die Dateien kompilieren ( mit dem Skript "compile.sh" )
+5. Den Benutzer der Webservers ( bei Ubuntu/Debian "www-data" ) der Gruppe "dialout" hinzufügen ("gpasswd -a www-data dialout"), damit das Webinterface auf die serielle Schnittstelle zugreifen kann.
+6. Falls man den Rechner über das Webinterface herunterfahren können möchte, muss für "/sbin/shutdown" das Sticky-Bit gesetzt sein. Der Shutdown-Knopf ist allerdings momentan sowieso nur auf dem RaspberryPi aktiviert.
