@@ -3,7 +3,7 @@
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
-    Author: Max Bruckner, Andreas Bruckner
+    Author: Max Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ $text = $_POST['text'];
 $return = $_GET['return'];
 
 $title = "Bearbeiten von \"$ordner/$filename\"";
-$author = 'Max Bruckner, Andreas Bruckner';
+$author = 'Max Bruckner';
 $heading = "Bearbeiten von \"$ordner/$filename\"";
 
 if( ($ordner != '') && ($filename != '')) {
@@ -80,15 +80,18 @@ if($return == '') {
 
 $output = get_heading($heading);
 $output .= get_form_editor($text, $ordnerlist, $filename);
-$output .= get_newline();
+$output .= '</br>';
 $output .= $message;
-$output .= get_newline();
-$output .= get_newline();
-//$output .= get_button($return, 'Zurück');
-$output .= get_button_inline('index.php', 'Zum Hauptmenu');
+$output .= '</br>';
+$output .= '</br>';
+$output .= get_button_inline('index.php', '<b>Zum Hauptmenü</b>');
 $output .= ' ';
-$output .= get_button_inline('einstell-mess.php', 'Verwaltung Einstellwerte');
+$output .= get_button_inline('einstell-mess.php', '<b>Verwaltung Einstellwerte</b>');
 $output .= ' ';
-$output .= get_button_inline('wartung.php', 'Zu Geräteeinstellung');
+$output .= get_button_inline('mess.php?filename=default.mw', '<b>Zu Messwerten</b>');
+$output .= ' ';
+$output .= get_button_inline('pdo_mapping.php', '<b>PDO Mapping</b>');
+$output .= ' ';
+$output .= get_button_inline('wartung.php', '<b>Zu Geräteeinstellung</b>');
 draw_page($output, $title, $author, HEAD);
 ?>

@@ -1,16 +1,16 @@
-<b>Beschreibung: {comment}</b>
+<b>Beschreibung: {comment}</b></br>
+</br>
 <form action="pdo_mapping.php" method="post">
-Regleradresse:
+<b>Regleradresse:</b>
 <input type="text" name="regler" value="{regler}" size="3" maxlength="3">
-   <select name="mode" size="1">
-        <option value="write" selected>Werte schreiben</option>	   
-        <option value="read">Werte auslesen</option>
-    </select>
+<select name="mode" size="1">
+	<option value="write" selected>Werte schreiben</option>	   
+	<option value="read">Werte auslesen</option>
+</select>
 <input type="submit" value="Absenden">
 </br>
 </br>
-<b>PDO Mapping:</b></br>
-</br>
+<b>PDO Mapping:</b>
 Index High:
 <input type="text" name="map_high" value="{map_high}" size="2" maxlength="2">
 Index Low:
@@ -19,8 +19,7 @@ Subindex:
 <input type="text" name ="map_index" value="{map_index}" size="2" maxlength="2">hex
 </br>
 </br>
-<b>PDO Eintrag:</b></br>
-</br>
+<b>PDO Eintrag :</b>
 Index High:
 <input type="text" name ="mapped_high" value="{mapped_high}" size="2" maxlength="2">
 Index Low:

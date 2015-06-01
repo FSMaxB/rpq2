@@ -72,8 +72,16 @@ $mess_lines = get_mess_lines($lines);
 
 $output = get_heading($heading);
 $output .= get_mess_edit($comment, $regler, $mess_lines, $filename);
-$output .= get_button_menu_back();
-
-draw_page($output, $title, $author, LAYOUT);
+$output .= '</br>';
+$output .= get_button_inline('index.php', '<b>Zum Hauptmenü</b>');
+$output .= ' ';
+$output .= get_button_inline('einstell-mess.php', '<b>Verwaltung Einstellwerte</b>');
+$output .= ' ';
+$output .= get_button_inline('mess.php?filename=default.mw', '<b>Zu Messwerten</b>');
+$output .= ' ';
+$output .= get_button_inline('pdo_mapping.php', '<b>PDO Mapping</b>');
+$output .= ' ';
+$output .= get_button_inline('wartung.php', '<b>Zu Geräteeinstellung</b>');
+draw_page($output, $title, $author, HEAD);
 
 ?>

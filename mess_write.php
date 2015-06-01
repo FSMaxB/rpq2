@@ -58,8 +58,8 @@ $data = $_POST['data'];
 $take_comments = $_POST['take_comments'];
 
 if(write_csv($filename, $comment, $regler, $data, $take_comments, FALSE)) {
-    $output = get_success('Messwerttabelle erfolgreich gespeichert!');
-    $header = get_redirect(1, 'einstell-mess.php');
+ //   $output = get_success('Messwerttabelle erfolgreich gespeichert!');
+    $header = get_redirect(0, 'einstell-mess.php');
 } else {
     $output = get_failure('Messwerttabelle konnte nicht gespeichert werden!');
     $header = get_redirect(3, 'einstell-mess.php');

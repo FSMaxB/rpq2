@@ -1,56 +1,122 @@
 <form action="sollwert.php" method="post">
-Regleradresse:
-<input type="text" name="regler" size="3" maxlength="3">
+<b>Regleradresse:</b>
+<input type="text" name="regler"id="regler" value="{regler}" size="3" maxlength="3">
+<select name="mode" size="1">
+	<option value="write_Soll">Soll-Werte schreiben</option>
+	<option value="write">Betriebsart schreiben</option>		   
+	<option value="read" selected>Werte auslesen</option>
+	<option value="read_Status">Lesen Status</option>	
+</select>
+<b>Anzahl Sollwerte:</b>
+<select name="anzahl" size="1">
+	<option value="1" selected>1</option>	
+	<option value="2">2</option>
+	<option value="3">3</option>		   
+	<option value="4">4</option>
+	<option value="5">5</option>	
+	<option value="6">6</option>
+	<option value="7">7</option>		   
+	<option value="8">8</option>	
+</select>
 <input type="submit" value="Absenden">
+<button onclick="document.getElementById('wert1').value='';document.getElementById('wert2').value='';document.getElementById('wert3').value='';
+				document.getElementById('wert4').value='';document.getElementById('wert5').value='';document.getElementById('wert6').value='';
+				document.getElementById('wert7').value='';document.getElementById('wert8').value='';
+				document.getElementById('Betriebsart_Regler_Aus').value= '0' ;document.getElementById('Betriebsart_Regler_Freigabe').value='0';
+				document.getElementById('Betriebsart_Manuell_G').value='0';document.getElementById('Betriebsart_Manuell_K').value='0';
+				document.getElementById('Betriebsart_Manuell_GGKK').value='0';document.getElementById('regler').value='';
+				document.getElementById('Betriebsart_Autoquit').value='0';document.getElementById('Betriebsart_Quit_Kabelbruch').value='0'">Clear</button>
 </br>
 </br>
 <b>Vorgabe Sollwerte:</b></br>
 </br>
-Wert1:
-<input type="text" name="wert1" size="5" maxlength="5">
-Wert2:
-<input type="text" name ="wert2" size="5" maxlength="5">
-Wert3:
-<input type="text" name ="wert3" size="5" maxlength="5">
-Wert4:
-<input type="text" name ="wert4" size="5" maxlength="5">
-Wert5:
-<input type="text" name="wert5" size="5" maxlength="5">
-Wert6:
-<input type="text" name ="wert6" size="5" maxlength="5">
-Wert7:
-<input type="text" name ="wert7" size="5" maxlength="5">
-Wert8:
-<input type="text" name ="wert8" size="5" maxlength="5">
-</br>
+<table>
+<tr>
+		
+<td>
+Wert1
+</td>
+<td>
+Wert2
+</td>
+<td>
+Wert3
+</td>
+<td>
+Wert4
+</td>
+<td>
+Wert5
+</td>
+<td>
+Wert6
+</td>
+<td>
+Wert7
+</td>
+<td>
+Wert8
+</td>
+</tr>
+	
+<tr>
+<td>	
+<input type="text" name="wert1" id="wert1"  value="{wert1}" size="6" maxlength="6">	
+</td>
+<td>	
+<input type="text" name ="wert2" id="wert2"  value="{wert2}" size="6" maxlength="6">
+</td>
+<td>	
+<input type="text" name ="wert3" id="wert3"  value="{wert3}"  size="6" maxlength="6">
+</td>	
+<td>	
+<input type="text" name ="wert4" id="wert4"  value="{wert4}"  size="6" maxlength="6">
+</td>	
+<td>	
+<input type="text" name="wert5"  id="wert5"  value="{wert5}"  size="6" maxlength="6">
+</td>	
+<td>	
+<input type="text" name ="wert6" id="wert6"  value="{wert6}" size="6" maxlength="6">
+</td>	
+<td>	
+<input type="text" name ="wert7" id="wert7"  value="{wert7}"  size="6" maxlength="6">
+</td>	
+<td>	
+<input type="text" name ="wert8" id="wert8"  value="{wert8}"  size="6" maxlength="6">
+</td>	
+</tr>		
+</table>
 </br>
 <b>Steuerung Betriebsart:</b></br>
 </br>
-<input type="text" name ="Betriebsart_Regler_Aus" size="1" maxlength="1">
-Regler Aus</br>
+<!--<input type="hidden" name="Betriebsart_Regler_Aus" value="defaultwert">-->
+<input type="checkbox" name ="Betriebsart_Regler_Aus" id="Betriebsart_Regler_Aus"  value="{Betriebsart_Regler_Aus}"  size="1" maxlength="1" {checked1} >
+Regler Aus
 </br>
-<input type="text" name ="Betriebsart_Regler_Freigabe" size="1" maxlength="1">
-Freigabe Regler</br>
+<input type="checkbox" name ="Betriebsart_Regler_Freigabe" id="Betriebsart_Regler_Freigabe"  value="{Betriebsart_Regler_Freigabe}"  size="1" maxlength="1" {checked2} >
+Freigabe
 </br>
-<input type="text" name ="Betriebsart_Regler_RK2" size="1" maxlength="1">
-Regelkreis 2</br>
-</br>
-<input type="text" name ="Betriebsart_Manuell_G" size="1" maxlength="1">
-Manuell/Q > </br>
-</br>
-<input type="text" name ="Betriebsart_Manuell_K" size="1" maxlength="1">
-Manuell/Q < </br>
-</br>
-<input type="text" name ="Betriebsart_Manuell_GGKK" size="1" maxlength="1">
-Manuell/Q >>/<< </br>
-</br>
-<input type="text" name ="Betriebsart_Autoquit" size="1" maxlength="1">
-Autoquit </br>
-</br>
-<input type="text" name ="Betriebsart_Quit_Kabelbruch" size="1" maxlength="1">
-Quit Kabelbruch </br>
-</br>
-
+<input type="checkbox" name ="Betriebsart_Manuell_G" id="Betriebsart_Manuell_G"  value="{Betriebsart_Manuell_G}"  size="1" maxlength="1" {checked3} >
+Manuell>
+</br> 
+<input type="checkbox" name ="Betriebsart_Manuell_K" id="Betriebsart_Manuell_K"  value="{Betriebsart_Manuell_K}"  size="1" maxlength="1" {checked4} >
+Manuell<
+</br> 
+<input type="checkbox" name ="Betriebsart_Manuell_GGKK" id="Betriebsart_Manuell_GGKK"  value="{Betriebsart_Manuell_GGKK}"  size="1" maxlength="1" {checked5} >
+Manuell>>/<<
+</br> 
+<input type="checkbox" name ="Betriebsart_Autoquit" id="Betriebsart_Autoquit"  value="{Betriebsart_Autoquit}"   size="1" maxlength="1" {checked6} >
+Autoquit
+</br> 
+<input type="checkbox" name ="Betriebsart_Quit_Kabelbruch" id="Betriebsart_Quit_Kabelbruch"  value="{Betriebsart_Quit_Kabelbruch}"  size="1" maxlength="1" {checked7} >
+Quit Kabelbruch
 </form>
+</br> 
+<b>Status: {status}</b></br>
+{st_Info}
+</br>
+</br>
+<b>Befehl: {befehl}</b>
+</br>
 </br>
 <b>Antwort: {received}</b>

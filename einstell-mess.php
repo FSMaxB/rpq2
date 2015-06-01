@@ -3,7 +3,7 @@
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
-    Author: Max Bruckner, Andreas Bruckner
+    Author: Max Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ include_once('templates.php');
 include_once('file.php');
 
 $title = 'Einstell-/Messwerttabellen verwalten';
-$author = 'Max Bruckner, Andreas Bruckner';
+$author = 'Max Bruckner';
 $heading = 'Einstell-/Messwerttabellen verwalten';
 
 
@@ -50,18 +50,24 @@ foreach ( get_files($settings['ordner_einstell-mess']) as $file ) {
     }
 }
 $mess_list .= '</table>';
-$output .= get_newline();
+$output .= '</br>';
 //$output = get_heading($heading);
 $output .= get_form_upload($settings['ordner_einstell-mess'], $extension, $return, $return);
-$output .= get_button_inline('index.php', '<b>Zum Hauptmenü</b>');
-$output .= ' ';
-$output .= get_button_inline("editor.php?ordner={$settings['ordner_einstell-mess']}&return=einstell-mess.php", 'Neue Datei');
-$output .= get_newline();
+
 $output .= '<br><b>Einstellwerte:</b></br>';
 $output .= get_container($einstell_list, "315px");
 $output .= '<b>Messwerte:</b></br>';
-$output .= get_container($mess_list, "150px");
-//$output .= get_button_menu_back();
-
+$output .= get_container($mess_list, "100px");
+//$output .= '</br>';
+$output .= get_button_inline("editor.php?ordner={$settings['ordner_einstell-mess']}&return=einstell-mess.php", '<b>Neue Datei</b>');
+$output .= '</br>';
+$output .= '</br>';
+$output .= get_button_inline('index.php', '<b>Zum Hauptmenü</b>');
+$output .= ' ';
+$output .= get_button_inline('sollwert.php', '<b>Sollwerte</b>');
+$output .= ' ';
+$output .= get_button_inline('pdo_mapping.php', '<b>PDO Mapping</b>');
+$output .= ' ';
+$output .= get_button_inline('wartung.php', '<b>Manuelle Geräteeinstellung</b>');
 draw_page($output, $title, $author, HEAD);
 ?>

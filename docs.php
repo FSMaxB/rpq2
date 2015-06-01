@@ -3,7 +3,7 @@
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
-    Author: Max Bruckner, Andreas Bruckner
+    Author: Max Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ include_once('file.php');
 include_once('page.php');
 
 $title = 'Dokumentationen';
-$author = 'Max Bruckner, Andreas Bruckner';
+$author = 'Max Bruckner';
 $heading = 'Dokumentationen';
 
 $return = 'docs.php';

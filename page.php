@@ -3,7 +3,7 @@
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
-    Author: Max Bruckner, Andreas Bruckner
+    Author: Max Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,7 +31,8 @@ function draw_page( $content, $title, $author, $type, $header = '') {
 
     switch ($type) {
         case NAKED:
-            $output = $content;
+ //           $output = $content;
+            $output = get_page_header($content, $current);
             break;
         case RAW:
             $output = get_page($content, $current);
@@ -41,7 +42,7 @@ function draw_page( $content, $title, $author, $type, $header = '') {
             break;
       case HEAD:
             $output = get_page_header($content, $current);
-            break;
+            break;            
     }
     echo get_html($output, $title, $author, $header);
 }

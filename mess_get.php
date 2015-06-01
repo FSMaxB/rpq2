@@ -87,9 +87,11 @@ function get_mess_lines($messwerte, $mess_format) {
         $bin = '&nbsp;';
         if($line['bin'] === '1') {
             $bin = $messwerte[$pos]['bin'];
-            $bin1 = substr($bin, 0, 8);
-            $bin2 = substr($bin, 8, 8);
-            $bin = "$bin1 $bin2";
+            $bin1 = substr($bin, 0, 4);
+            $bin2 = substr($bin, 4, 4);
+			$bin3 = substr($bin, 8, 4);
+			$bin4 = substr($bin, 12, 4);			
+            $bin = "$bin1 $bin2 $bin3 $bin4";
         }
 
         $output .= get_zeile_mess_get($text, $skal, $proz, $hex, $bin);

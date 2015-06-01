@@ -3,7 +3,7 @@
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
-    Author: Max Bruckner, Andreas Bruckner
+    Author: Max Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ include_once('tty.php');
 set_tty();
 
 $heading = 'Messwerte Regler';
-$author = 'Max Bruckner, Andreas Bruckner';
+$author = 'Max Bruckner';
 $title = 'Messwerte Regler';
 
 $filename = $_GET['filename'];
@@ -38,9 +38,9 @@ $regler = get_value('Regler', $lines);
 $comment = get_comment($lines);
 $container = get_container('', '450px', '0px', 'messwerte');
 
-$output = get_heading("$heading $regler");
+//$output = get_heading("$heading $regler");
+$output = '</br> ';
 $output .= get_mess(nl2br($comment), $container);
-//$output .= get_button('einstell.php?filename=default.ew', 'Zu Einstellwerten');
-//$output .= get_button_menu_back();
+
 draw_page($output, "$title $regler", $author, HEAD, get_script_mess($filename));
 ?>

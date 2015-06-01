@@ -58,7 +58,7 @@ const bool SIGNED = true;
 const bool UNSIGNED = false;
 const bool READY = true;
 const bool BUSY = false;
-const unsigned int BUFFER = 256;
+const unsigned int BUFFER = 512;
 
 //Variablen
 ifstream g_csv_in;
@@ -520,8 +520,7 @@ void Einstellwert::set(string line) {
 
     if(skal == 0)
         skal = 1;
- //   value = (unsigned int) temp_value / skal;
-    value = (signed int) temp_value / skal;
+    value = (unsigned int) temp_value / skal;
 
     text = temp;
 }

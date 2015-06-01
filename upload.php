@@ -43,12 +43,14 @@ if(move_uploaded_file($_FILES['datei']['tmp_name'],$ziel))
 {
     //Wenn erfolgreich, leite nach 1 Sekunde automatisch um und gebe Meldung aus
     $header = get_redirect(1, $return_success);
-    $output = get_success("Datei \"{$_FILES['datei']['name']}\" erfolgreich hochgeladen.");
+	$output = '</br> ';   
+    $output .= get_success("Datei \"{$_FILES['datei']['name']}\" erfolgreich hochgeladen.");
 } else {
     //Wenn nicht erfolgreich, leite nach 3 Sekunden automatisch um und gebe Meldung aus
     $header = get_redirect(3, $return_failure);
-    $output = get_failure("Beim Hochladen der Datei \"{$_FILES['datei']['name']}\" ist ein Fehler aufgetreten.");
+ 	$output = '</br> ';   
+    $output .= get_failure("Beim Hochladen der Datei \"{$_FILES['datei']['name']}\" ist ein Fehler aufgetreten.");
 }
 
-draw_page($output, $title, $author, NAKED, $header);
+draw_page($output, $title, $author, HEAD, $header);
 ?>

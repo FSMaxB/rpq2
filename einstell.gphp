@@ -39,16 +39,12 @@ include_once('settings.php');
 include_once('page.php');
 include_once('templates.php');
 include_once('csv.php');
-include_once('tty.php');
-include_once('file.php');
 
 $title = 'Einstellwerte';
 $author = 'Max Bruckner';
 $heading = 'Einstellwerte';
 
 $filename = $_GET['filename'];
-$info = $_GET['info'];
-
 
 function get_einstellwerte($lines) {
     $i = 0;
@@ -110,7 +106,6 @@ function get_list($einstellwerte) {
     return $output;
 }
 
-
 $einstell_lines = file("{$settings['ordner_einstell-mess']}/$filename", FILE_IGNORE_NEW_LINES);
 
 $comment = get_comment($einstell_lines);
@@ -118,7 +113,6 @@ $regler = get_value('Regler', $einstell_lines);
 $index = get_value('Index', $einstell_lines);
 $einstellwerte = get_einstellwerte($einstell_lines);
 $einstell_list = get_list($einstellwerte);
-
 
 $output = '</br> ';
 //$output = get_heading($heading);
@@ -133,7 +127,5 @@ $output .= ' ';
 $output .= get_button_inline('pdo_mapping.php', '<b>PDO Mapping</b>');
 $output .= ' ';
 $output .= get_button_inline('wartung.php', '<b>Zu Geräteeinstellung</b>');
-$output .= $info;
-
 draw_page($output, $title, $author, HEAD);
 ?>

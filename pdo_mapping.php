@@ -24,22 +24,11 @@ include_once('settings.php');
 include_once('templates.php');
 include_once('file.php');
 include_once('tty.php');
+include_once('glob_function.php');
 
 $comment = NULL;
 
-function send($send) {
-    global $settings;
 
-    $received = NULL;
-    $befehl = NULL;
-
-    exec("nativ/einstell wartung {$settings['serial_interface']} $send", $results);
-
-    foreach ( $results as $result ) {
-         $received .= "$result\n";
-    }
-    return $received;
-}
 
 function get_file_list() {
     global $settings;
@@ -53,13 +42,12 @@ function get_file_list() {
 }
 
 $title = 'PDO Mapping';
-$author = 'Max Bruckner, Andreas Bruckner';
-$heading = 'PDO Mapping';
+$author = 'Andreas Bruckner';
+$heading = '<b>PDO Mapping</b>';
 
 $filename = $_GET['filename'];
 
 $regler = $_POST['regler'];
-$wert = $_POST['wert'];
 $mode = $_POST['mode'];
 
 $map_high = $_POST['map_high'];
@@ -67,61 +55,99 @@ $map_low = $_POST['map_low'];
 $map_index = $_POST['map_index'];
 $mapped_high = $_POST['mapped_high'];
 $mapped_low = $_POST['mapped_low'];
-$mapped_index = $_POST['mapped_low'];
+$mapped_index = $_POST['mapped_index'];
 
 function read_file($lines) {
-    global $comment, $regler, $map_high, $map_low, $map_index, $mapped_high, $mapped_low, $mapped_index;
-    foreach($lines as $line) {
-        if(strpos($line, '#') === 0) {
-            $comment .= substr($line, 1);
-        } else if(strpos($line, 'Regler') === 0) {
-            $split = explode(',', $line);
-            $regler = $split[1];
-        } else {
-            $split = explode(',', $line);
-            if((count($split) == 4) && (strlen($split[0]) == 4) && (strlen($split[1]) <= 2) && (strlen($split[2]) == 4) && (strlen($split[3]) <= 2)) {
-                $map_high = substr($split[0], 0, 2);
-                $map_low = substr($split[0], 2, 2);
-                $map_index = $split[1];
-                $mapped_high = substr($split[2], 0, 2);
-                $mapped_low = substr($split[2], 2, 2);
-                $mapped_index = $split[3];
-            }
-        }
-    }
+	global $comment, $regler, $map_high, $map_low, $map_index, $mapped_high, $mapped_low, $mapped_index;
+	foreach($lines as $line) {
+		if(strpos($line, '#') === 0) {
+			$comment .= substr($line, 1);
+		} else if(strpos($line, 'Regler') === 0) {
+			$split = explode(',', $line);
+			$regler = $split[1];
+		} else {
+			$split = explode(',', $line);
+			if((count($split) == 4) && (strlen($split[0]) == 4) && (strlen($split[1]) <= 2) && (strlen($split[2]) == 4) && (strlen($split[3]) <= 2)) {
+				$map_high = substr($split[0], 0, 2);
+				$map_low = substr($split[0], 2, 2);
+				$map_index = $split[1];
+				$mapped_high = substr($split[2], 0, 2);
+				$mapped_low = substr($split[2], 2, 2);
+				$mapped_index = $split[3];
+			}
+		}
+	}
 }
 
 set_tty();
 
 if($filename != '') {
-    $lines = file("{$settings['ordner_pdo']}/$filename", FILE_IGNORE_NEW_LINES);
-    read_file($lines);
+	$lines = file("{$settings['ordner_pdo']}/$filename", FILE_IGNORE_NEW_LINES);
+	read_file($lines);
 } else if($regler != '') {
-    $command = 0x0600 + $regler;
+	$command = 0x0600 + $regler;
+	$Vergleich =  0x0580 + $regler;
+	$Vergleich = hex($Vergleich,4);
+	$command = hex($command, 4) . ' ';
+	if ($mode == 'write') {
+		$command .= '23 ' .  $map_low . $map_high . ' ' . $map_index . ' ' . '-' .' 10 ';
+		$command .= $mapped_index . ' ' . $mapped_low . $mapped_high . ' 8000';
+	} else {
+		$command .= '40 ' . $map_low . $map_high . ' ' . $map_index;
+		$command .= ' - 00 00 00 00 8000';
+	}
+	$temp = ereg_replace("-","",$command);
+	$temp = ereg_replace(" ","",$temp);
+    $received = send($temp);
+	$temp = substr($received,0,3) . ' ';
+	$temp .= substr($received,3,4) . ' ';
+	$temp .= substr($received,7,2) . ' ';	
+	$temp .= substr($received,9,4) . ' ';	
+	$temp .= substr($received,13,2) . ' ';
+	
+	$temp .= substr($received,15,2) . ' ';	
 
-    $command = hex($command, 4);
-    if ($mode == 'write') {
-        $command .= '23' . $map_low . $map_high . $map_index .'10';
-        $command .= $mapped_low . $mapped_high . $mapped_index .'8000';
-    } else {
-        $command .= '40' . $map_low . $map_high . $map_index;
-        $command .= '000000008000';
-    }
-
-    $received = send($command);
+	if ($mode == 'write')
+	{
+		$temp .= substr($received,17,2) . ' ';	
+		$temp .= substr($received,19,2) . ' ';
+		$temp .= substr($received,21,2);		
+	}
+	else
+	{
+		$mapped_index = substr($received,17,2);
+		$temp .= $mapped_index . ' ';	
+		$mapped_low = substr($received,19,2);
+		$temp .= $mapped_low . ' ';
+		$mapped_high = substr($received,21,2);
+		$temp .= $mapped_high;	
+	}
+	$received = $temp;
+	$comment =  substr($received,4,4);
+	if ($Vergleich == $comment)
+		$comment = get_success(' Übertragung erfolgreich !');
+	else
+		$comment = get_failure(' Fehler Übertragung !');
  }
 
 $file_list = get_file_list();
 
-$output = get_heading($heading);
+//$output = get_heading($heading);
+$output = '</br> ';
 $output .= get_form_upload($settings['ordner_pdo'], '', 'pdo_mapping.php', 'pdo_mapping.php');
-$output .= get_newline();
-$output .= get_container($file_list, '330px');
+$output .= '</br> ';
+$output .= get_container($file_list, '200px');
+$output .= '</br> ';
 $output .= get_pdo_mapping($comment, $received, $command, $regler, $map_high, $map_low, $map_index, $mapped_high, $mapped_low, $mapped_index);
-$output .= get_newline();
-$output .= get_newline();
+$output .= '</br>';
+$output .= '</br>';
 $output .= get_button_inline('index.php', '<b>Zum Hauptmenü</b>');
 $output .= ' ';
-$output .= get_button_inline('wartung.php', '<b>Zurück</b>');
+$output .= get_button_inline('einstell-mess.php', '<b>Weitere Einstellwerte</b>');
+$output .= ' ';
+$output .= get_button_inline('mess.php?filename=default.mw', '<b>Zu Messwerten</b>');
+$output .= ' ';
+$output .= get_button_inline('wartung.php', '<b>Manuelle Geräteeinstellung</b>');
+
 draw_page( $output, $title, $author, HEAD);
 ?>

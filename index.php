@@ -3,7 +3,7 @@
     RPQ2-Webinterface
 
     Copyright (C) 2012-2013 Innowatt Energiesysteme GmbH
-    Author: Max Bruckner, Andreas Bruckner
+    Author: Max Bruckner
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,18 +24,19 @@ include_once('templates.php');
 
 
 $title = 'RPQ2 Webinterface';
-$author = 'Max Bruckner, Andreas Bruckner';
+$author = 'Max Bruckner';
 
 $output = get_button_menu('einstell-mess.php', 'Einstell-/Messwerttabellen verwalten');
 $output .= get_button_menu('einstell.php?filename=default.ew', 'Einstellwerte');
 $output .= get_button_menu('mess.php?filename=default.mw', 'Messwerte');
-$output .= get_button_menu('sollwert.php', 'Sollwertvorgabe');
+$output .= get_button_menu('sollwert.php', 'Sollwertvorgabe-/Steuerung Betriebsart');
 $output .= get_button_menu('logs.php', 'Aufzeichnungen verwalten');
-$output .= get_button_menu('wartung.php', 'Manuelle Geräteeinstellung');
+//$output .= get_button_menu('wartung.php', 'Manuelle Geräteeinstellung');
 $output .= get_button_menu('docs.php', 'Dokumentationen');
 $output .= get_button_menu('settings_menu.php', 'Einstellungen');
-$output .= get_vspace();
-$output .= get_button_shutdown();
+$output .= get_button_menu('shutdown.php?mode=halt', 'Herunterfahren');
+//$output .= get_vspace();
+//$output .= get_button_shutdown();
 
 draw_page($output, $title, $author, LAYOUT);
 ?>

@@ -520,8 +520,7 @@ void Einstellwert::set(string line) {
 
     if(skal == 0)
         skal = 1;
- //   value = (unsigned int) temp_value / skal;
-    value = (signed int) temp_value / skal;
+    value = (unsigned int) temp_value / skal;
 
     text = temp;
 }
